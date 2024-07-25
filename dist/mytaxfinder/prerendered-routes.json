@@ -1,0 +1,16 @@
+{
+  "routes": [
+    "/accountingService",
+    "/auth",
+    "/auth/login",
+    "/auth/register",
+    "/BusinessRegistration",
+    "/enquiryForm",
+    "/FinancialPlanning",
+    "/gstRegistrationAndReturn",
+    "/home",
+    "/services-details",
+    "/tax-calculator",
+    "/taxPlanning"
+  ]
+}
