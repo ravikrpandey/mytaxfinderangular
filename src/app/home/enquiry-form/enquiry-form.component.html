@@ -1,0 +1,88 @@
+<app-header></app-header>
+
+
+<div id="booking" class="section">
+    <div class="section-center">
+        <div class="container">
+            <div class="row">
+                <div class="booking-form">
+
+                    <form id="myForm">
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="firstName" placeholder="First Name"
+                                        required>
+                                    <span class="form-label">First Name</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="lastName" placeholder="Last Name"
+                                        required>
+                                    <span class="form-label">Last Name</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <select class="form-control" name="documentType" required>
+                                        <option>PDF</option>
+                                        <option>JPEG</option>
+                                        <option>Excel</option>
+                                        <option>Word</option>
+                                    </select>
+                                    <span class="select-arrow"></span>
+                                    <span class="form-label">Document Type</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <select class="form-control" name="serviceType" required>
+                                        <option>GST</option>
+                                        <option>Company</option>
+                                        <option>Registration</option>
+                                        <option>ITR Type</option>
+                                    </select>
+                                    <span class="select-arrow"></span>
+                                    <span class="form-label">Service Type</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="email"
+                                        placeholder="mytaxfinder@outlook.com" required>
+                                    <span class="form-label">Email</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="file" class="form-control" id="uploadedfile" name="uploadedfile"
+                                        accept=".pdf, .jpeg, .jpg, .png, .xls, .xlsx, .doc, .docx" required>
+                                    <span class="form-label">Document Type file</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="contact" placeholder="+91 9955755523"
+                                        required>
+                                    <span class="form-label">Contact</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-btn">
+                                    <button type="submit" class="submit-btn">Submit Enquery</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

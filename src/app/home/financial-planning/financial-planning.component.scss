@@ -1,0 +1,84 @@
+$color_1: #433f39;
+$color_2: #e84545;
+$color_3: #777777;
+$color_4: #fff;
+$border-color_1: #e84545;
+
+/*--------------------------------------------------------------
+# Specials
+--------------------------------------------------------------*/
+.spanText {
+    color: #e84545;
+}
+
+#specials.specials p::before {
+    content: "\2022";
+    color: red;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.specials {
+    overflow: hidden;
+
+    .nav-tabs {
+        border: 0;
+    }
+
+    .nav-link {
+        border: 0;
+        padding: 12px 15px 12px 0;
+        transition: 0.3s;
+        color: $color_1;
+        border-radius: 0;
+        border-right: 2px solid #e8e7e4;
+        font-weight: 600;
+        font-size: 15px;
+
+        &:hover {
+            color: $color_2;
+        }
+    }
+
+    .nav-link.active {
+        color: $color_2;
+        border-color: $border-color_1;
+    }
+
+    .tab-pane.active {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .details {
+        h3 {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: $color_1;
+        }
+
+        p {
+            color: $color_3;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .specials {
+        .nav-link {
+            border: 0;
+            padding: 15px;
+        }
+
+        .nav-link.active {
+            color: $color_4;
+            background: #e84545;
+        }
+    }
+}

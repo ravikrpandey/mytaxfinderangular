@@ -1,0 +1,123 @@
+$color_1: #090a0b;
+$color_2: #b1b6bd;
+$color_3: #c32323;
+$color_4: #fff;
+$border-color_1: #f2f1f1 transparent transparent transparent;
+
+/* Mobile styles */
+.booking-form {
+	background: #e8454500;
+	padding: 100px 30px 11px 30px;
+	border-radius: 4px;
+	overflow: auto;
+	.form-group {
+		position: relative;
+		margin-bottom: 30px;
+	}
+	.form-control {
+		border: none;
+		height: 65px;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		font-size: 24px;
+		color: $color_1;
+		font-weight: 300;
+		background: #f2f1f1;
+		border-radius: 4px;
+		&::-webkit-input-placeholder {
+			color: $color_2;
+		}
+		&:-ms-input-placeholder {
+			color: $color_2;
+		}
+		&::placeholder {
+			color: $color_2;
+		}
+	}
+	input[type="date"].form-control {
+		&:invalid {
+			color: $color_2;
+		}
+	}
+	select.form-control {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+	select.form-control+.select-arrow {
+		position: absolute;
+		right: 0px;
+		top: 0px;
+		width: 24px;
+		text-align: center;
+		pointer-events: none;
+		height: 65px;
+		line-height: 65px;
+		color: $color_2;
+		font-size: 14px;
+		&:after {
+			content: '\279C';
+			display: block;
+			-webkit-transform: rotate(90deg);
+			transform: rotate(90deg);
+		}
+	}
+	.form-label {
+		color: $color_3;
+		display: block;
+		font-weight: 600;
+		height: 25px;
+		line-height: 25px;
+		font-size: 16px;
+		position: relative;
+		margin-top: 10px;
+		text-transform: uppercase;
+		&:after {
+			content: '';
+			position: absolute;
+			left: 10px;
+			top: -10px;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 10px 10px 0 10px;
+			border-color: $border-color_1;
+		}
+	}
+	.form-btn {
+		margin-bottom: 30px;
+	}
+	.submit-btn {
+		background: #184c8f;
+		border: none;
+		font-weight: 600;
+		text-transform: uppercase;
+		height: 90px;
+		font-size: 18px;
+		width: 100%;
+		color: $color_4;
+		border-radius: 4px;
+		display: block;
+	}
+}
+@media screen and (max-width: 768px) {
+	.booking-form {
+		padding: 196px 30px 11px 30px;
+		.form-control {
+			height: 45px;
+			font-size: 16px;
+		}
+		select.form-control {
+			height: 45px;
+			font-size: 16px;
+		}
+		.form-label {
+			font-size: 14px;
+			margin-top: 5px;
+		}
+	}
+	.submit-btn {
+		height: 60px;
+		font-size: 16px;
+	}
+}

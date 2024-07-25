@@ -1,0 +1,239 @@
+<app-header></app-header>
+
+<!-- ======= Specials Section ======= -->
+<section id="texCalcuator" class="texCalcuator">
+
+
+    <div class="container">
+
+        <div class="section-title">
+            <h2>INCOME TAX <span class="spanText">CALCULATOR</span></h2>
+
+        </div>
+
+        <div class="section-body">
+            <form id="incomeTaxForm">
+                <div class="incomeTax-body">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Select Financial Year (FY)*:</label>
+                                    </div>
+                                    <div class="form-control">
+                                        <input type="radio" name="financialYear" value="2024-25" checked> FY 2024-25
+                                        <input type="radio" name="financialYear" value="2023-24"> FY 2023-24
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Your Age (in Years)*:</label>
+                                    </div>
+                                    <div class="form-control">
+                                        <input type="radio" name="age" value="0-60" checked> 0 - 60
+                                        <input type="radio" name="age" value="60-80"> 60 - 80
+                                        <input type="radio" name="age" value="80+"> 80 & Above
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Salaried or Own Business?*:</label>
+                                    </div>
+                                    <div class="form-control">
+                                        <input type="radio" name="employment" value="Salaried" checked> Salaried
+                                        <input type="radio" name="employment" value="Business"> Business
+                                        <input type="radio" name="employment" value="Pensioner"> Pensioner
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="title">Income</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Income from Salary*:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="incomeFromSalary">
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Interest Income:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="interestIncome" placeholder="">
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Other Sources:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="otherSources">
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="title">Deductions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Section 80C:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="section80C">
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Section 80TTA/B:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="section80TTA_B">
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Section 80D:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="section80D">
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Section 80CCD:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="section80CCD">
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Section 24:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="section24">
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Section 80G:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="section80G">
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>HRA:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="hra">
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label>Other Deductions:</label>
+                                    </div>
+                                    <input type="text" class="form-control" name="otherDeductions">
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="title">Income Tax</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="tex-content">
+                            <p><strong>Old Tax Regime:</strong> <span id="oldTax"></span></p>
+                            <p><strong>New Tax Regime:</strong> <span id="newTax"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div class="incomeTax-footer">
+                    <button type="button" class="btn btn-primary">Calculate Tax</button>
+                </div>
+
+
+            </form>
+        </div>
+
+    </div>
+</section>
+<!-- End Specials Section -->
+
+<app-footer></app-footer>
