@@ -15,20 +15,16 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/mytaxfinder",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
             "allowedCommonJsDependencies": [
-        "lodash",
-        "aos"
-     ],
+              "aos"
+            ],
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -36,21 +32,14 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
-
               "node_modules/swiper/swiper-bundle.min.css",
               "src/styles.scss",
               "node_modules/aos/dist/aos.css"
-
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/swiper/swiper-bundle.min.js"
-            ],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -102,7 +91,6 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
