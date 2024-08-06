@@ -13,7 +13,7 @@ import { EnquiryFormComponent } from './enquiry-form/enquiry-form.component';
 import { GstRegistrationAndReturnComponent } from './gst-registration-and-return/gst-registration-and-return.component';
 import { AccountingServicesComponent } from './accounting-services/accounting-services.component';
 import { TaxPlanningComponent } from './tax-planning/tax-planning.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 const routes: Routes = [
   { path: '', component: HomeComponent }
 ];
@@ -35,7 +35,8 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ReactiveFormsModule
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
