@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-enquiry-form',
   templateUrl: './enquiry-form.component.html',
-  styleUrl: './enquiry-form.component.scss'
+  styleUrls: ['./enquiry-form.component.scss'] // Corrected the key from styleUrl to styleUrls
 })
 export class EnquiryFormComponent {
   myForm: FormGroup;
@@ -22,12 +22,12 @@ export class EnquiryFormComponent {
   }
 
   onSubmit() {
+    debugger;
     if (this.myForm.valid) {
       console.log(this.myForm.value);
-
+      // Handle the form submission logic here, e.g., send the data to a server
     } else {
       console.log('Form is invalid');
     }
   }
-
 }

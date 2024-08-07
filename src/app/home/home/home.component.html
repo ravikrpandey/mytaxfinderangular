@@ -294,7 +294,7 @@
         <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
 
           <div class="swiper">
-          
+
             <div class="swiper-wrapper">
 
               <div class="col-4-image">
@@ -391,7 +391,7 @@
                   convenient and secure way to confirm the authenticity of your ITR filing. E-verify via Net Banking,
                   E-verify
                   via Aadhaar OTP, E-verify via Bank ATM, E-verify via Bank Account, E-verify via Electronic
-                  Verification Code 
+                  Verification Code
                   (EVC).</p>
               </div>
               <i class="faq-toggle bi bi-chevron-right"></i>
@@ -446,7 +446,7 @@
 
         <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
           <swiper-container class="swiper" pagination-clickable="true" pagination="true" speed="1000" loop="true" autoplay="true">
-           
+
             <swiper-slide>
               <div class="testimonial-item">
                 <div class="d-flex">
@@ -515,7 +515,7 @@
                     <h3>Gaurav Lakhera</h3>
                     <h4>Freelancer</h4>
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i 
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
                       class="bi bi-star-fill"></i>
                     </div>
                   </div>
@@ -549,8 +549,8 @@
             </swiper-slide>
             <!-- Add more slides as needed -->
           </swiper-container>
-          
-         
+
+
 
         </div>
 
@@ -687,7 +687,7 @@
             </div>
 
             <!-- End Info Item -->
-           
+
               <div class="col-md-6">
                 <div class="info-item" data-aos="fade" data-aos-delay="400">
                   <a href="mailto:mytaxfinder@hotmail.com"> <i class="bi bi-envelope"></i></a>
@@ -696,7 +696,7 @@
                   <p><a href="mailto:mytaxfinder@hotmail.com">info@mytaxfinder.com</a></p> -->
                 </div>
               </div>
-           
+
             <!-- End Info Item -->
 
             <div class="col-md-6">
@@ -716,29 +716,41 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
         <div class="col-lg-6">
-          <form action="forms/submit_form.php" method="post" class="php-email-form" data-aos="fade-up"
-            data-aos-delay="200">
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
             <div class="row gy-4">
               <div class="col-md-6">
-                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                <input type="text" formControlName="name" class="form-control" placeholder="Your Name" required>
+                <div *ngIf="contactForm.controls['name'].invalid && (contactForm.controls['name'].dirty || contactForm.controls['name'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['name'].errors?.['required']">Name is required.</small>
+                </div>
               </div>
               <div class="col-md-6">
-                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                <input type="email" formControlName="email" class="form-control" placeholder="Your Email" required>
+                <div *ngIf="contactForm.controls['email'].invalid && (contactForm.controls['email'].dirty || contactForm.controls['email'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['email'].errors?.['required']">Email is required.</small>
+                  <small class="text-danger" *ngIf="contactForm.controls['email'].errors?.['email']">Email is not valid.</small>
+                </div>
               </div>
               <div class="col-md-12">
-                <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                <input type="text" formControlName="subject" class="form-control" placeholder="Subject" required>
+                <div *ngIf="contactForm.controls['subject'].invalid && (contactForm.controls['subject'].dirty || contactForm.controls['subject'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['subject'].errors?.['required']">Subject is required.</small>
+                </div>
               </div>
               <div class="col-md-12">
-                <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                <textarea formControlName="message" class="form-control" rows="6" placeholder="Message" required></textarea>
+                <div *ngIf="contactForm.controls['message'].invalid && (contactForm.controls['message'].dirty || contactForm.controls['message'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['message'].errors?.['required']">Message is required.</small>
+                </div>
               </div>
               <div class="col-md-12 text-center">
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-                <button type="submit">Send Message</button>
+                <div class="sent-message" *ngIf="submitted && contactForm.valid">Your message has been sent. Thank you!</div>
+                <button type="submit" [disabled]="contactForm.invalid">Send Message</button>
               </div>
-
             </div>
           </form>
         </div>
+
 
       </div>
 

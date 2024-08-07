@@ -5,6 +5,10 @@ $color_4: #fff;
 $border-color_1: #f2f1f1 transparent transparent transparent;
 
 /* Mobile styles */
+.text-danger {
+  color: red;
+  font-size: 0.875em;
+}
 .booking-form {
 	background: #e8454500;
 	padding: 100px 30px 11px 30px;
