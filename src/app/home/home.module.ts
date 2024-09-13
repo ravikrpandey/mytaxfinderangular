@@ -14,6 +14,7 @@ import { GstRegistrationAndReturnComponent } from './gst-registration-and-return
 import { AccountingServicesComponent } from './accounting-services/accounting-services.component';
 import { TaxPlanningComponent } from './tax-planning/tax-planning.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 const routes: Routes = [
   { path: '', component: HomeComponent }
 ];
@@ -36,6 +37,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    HttpClientModule,
     ReactiveFormsModule
   ],
 

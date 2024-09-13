@@ -1,3 +1,4 @@
+import { CommonService } from './../../shared/services/common.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -9,7 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class EnquiryFormComponent {
   myForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private commonService: CommonService) { // Corrected injection here
+
     this.myForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -24,8 +26,18 @@ export class EnquiryFormComponent {
   onSubmit() {
     debugger;
     if (this.myForm.valid) {
+      this.commonService.submitForm(this.myForm.value).subscribe(
+        (response) => {
+          // Handle the response from the server here
+          console.log('Form submitted successfully', response);
+        },
+        (error) => {
+          // Handle any errors that occur during the submission
+          console.log('Error occurred during form submission', error);
+        }
+      );
       console.log(this.myForm.value);
-      // Handle the form submission logic here, e.g., send the data to a server
+      // Handle additional logic if needed
     } else {
       console.log('Form is invalid');
     }
