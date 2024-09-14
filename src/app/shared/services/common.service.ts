@@ -21,7 +21,6 @@ export class CommonService {
     return this.http.post(this.apiUrls.contactEnquiry, formData, { headers });
   }
 
-  // Example method for another endpoint
   enquiryForm(formData: any): Observable<any> {
     return this.http.get(this.apiUrls.enquiryForm, formData);
   }
