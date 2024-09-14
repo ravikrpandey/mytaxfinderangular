@@ -5,39 +5,66 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-enquiry-form',
   templateUrl: './enquiry-form.component.html',
-  styleUrls: ['./enquiry-form.component.scss'] // Corrected the key from styleUrl to styleUrls
+  styleUrls: ['./enquiry-form.component.scss']
 })
 export class EnquiryFormComponent {
   myForm: FormGroup;
+  base64Files: string[] = [];
 
-  constructor(private fb: FormBuilder, private commonService: CommonService) { // Corrected injection here
-
+  constructor(private fb: FormBuilder, private commonService: CommonService) {
     this.myForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       documentType: ['', Validators.required],
       serviceType: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      uploadedfile: ['', Validators.required],
+      uploadedfile: [[], Validators.required],  // Array to store multiple files
       contact: ['', Validators.required]
     });
   }
 
+  // Handler for file input change event
+  onFileChange(event: any) {
+    const files = event.target.files;
+    this.base64Files = []; // Clear previous files
+
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.convertFileToBase64(file).then((base64: string) => {
+          this.base64Files.push(base64);
+          this.myForm.patchValue({
+            uploadedfile: this.base64Files  // Update form control with base64 files
+          });
+        });
+      }
+    }
+  }
+
+  // Convert the file to Base64
+  convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        resolve(reader.result as string); // This will give base64 encoded string
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);  // Convert file to base64 format
+    });
+  }
+
   onSubmit() {
-    debugger;
-    if (this.myForm.valid) {
-      this.commonService.submitForm(this.myForm.value).subscribe(
+    if (this.myForm.value) {
+      console.log(this.myForm.value);
+
+      this.commonService.enquiryForm(this.myForm.value).subscribe(
         (response) => {
-          // Handle the response from the server here
           console.log('Form submitted successfully', response);
         },
         (error) => {
-          // Handle any errors that occur during the submission
           console.log('Error occurred during form submission', error);
         }
       );
-      console.log(this.myForm.value);
-      // Handle additional logic if needed
     } else {
       console.log('Form is invalid');
     }
