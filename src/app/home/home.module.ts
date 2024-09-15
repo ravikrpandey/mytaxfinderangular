@@ -15,6 +15,10 @@ import { AccountingServicesComponent } from './accounting-services/accounting-se
 import { TaxPlanningComponent } from './tax-planning/tax-planning.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppComponent } from '../app.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent }
 ];
@@ -31,16 +35,17 @@ const routes: Routes = [
     EnquiryFormComponent,
     GstRegistrationAndReturnComponent,
     AccountingServicesComponent,
-    TaxPlanningComponent
+    TaxPlanningComponent,
 
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // BrowserAnimationsModule,
+    MatSnackBarModule,
   ],
-
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomeModule { }

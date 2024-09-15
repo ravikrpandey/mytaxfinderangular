@@ -1,3 +1,22 @@
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';  // or any other theme of your choice
+
+/* Ensure these styles apply globally for the Snackbar */
+.snackbar-success {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  transform: translateX(0);
+}
+
+.snackbar-error {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  transform: translateX(0);
+}
+
+
 $color_1: #090a0b;
 $color_2: #b1b6bd;
 $color_3: #c32323;

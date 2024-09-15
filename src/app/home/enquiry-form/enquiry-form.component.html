@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<div id="booking" class="section" style="margin-top: 100px; margin-bottom: 100px;">
+<div id="booking" class="section" style="margin-top: 120px; margin-bottom: 100px;">
   <div class="section-center">
     <div class="container">
       <div class="row">
@@ -70,27 +70,29 @@
               <div class="form-group">
                 <input type="file" class="form-control" (change)="onFileChange($event)" multiple>
                 <span class="form-label">Upload Files</span>
-                <div *ngIf="myForm.controls['uploadedfile'].invalid && (myForm.controls['uploadedfile'].dirty || myForm.controls['uploadedfile'].touched)">
-                  <small class="text-danger" *ngIf="myForm.controls['uploadedfile'].errors?.['required']">File is required.</small>
+                <div *ngIf="myForm.controls['files'].touched && (myForm.controls['files'].dirty || myForm.controls['files'].invalid)">
+                  <small class="text-danger" *ngIf="myForm.controls['files'].errors?.['required']">File is required.</small>
                 </div>
               </div>
             </div>
 
-              <div class="col-md-6">
-                <div class="form-group">
-                  <input class="form-control" formControlName="contact" placeholder="+91 9955755523" required>
-                  <span class="form-label">Contact</span>
-                  <div *ngIf="myForm.controls['contact'].invalid && (myForm.controls['contact'].dirty || myForm.controls['contact'].touched)">
-                    <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['required']">Contact number is required.</small>
-                  </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" formControlName="contact" placeholder="+91 9955755523" required>
+                <span class="form-label">Contact</span>
+                <div *ngIf="myForm.controls['contact'].invalid && (myForm.controls['contact'].dirty || myForm.controls['contact'].touched)">
+                  <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['required']">Contact number is required.</small>
+                  <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['minlength']">Contact number must be at least 10 digits.</small>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="form-btn">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button style="margin-left: 10px; color: antiquewhite;" type="submit" class="btn btn-danger">Cancel</button>
-                </div>
+            </div>
+          
+            <div class="col-md-12">
+              <div class="form-btn">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button style="margin-left: 10px; color: antiquewhite;" type="submit" class="btn btn-danger">Cancel</button>
               </div>
+            </div>
             </div>
           </form>
         </div>

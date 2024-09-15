@@ -1,6 +1,8 @@
 import { CommonService } from './../../shared/services/common.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-enquiry-form',
@@ -11,22 +13,35 @@ export class EnquiryFormComponent {
   myForm: FormGroup;
   base64Files: string[] = [];
 
-  constructor(private fb: FormBuilder, private commonService: CommonService) {
+  constructor(private fb: FormBuilder, private commonService: CommonService, private snackBar: MatSnackBar) {
     this.myForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      documentType: ['', Validators.required],
       serviceType: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      uploadedfile: [[], Validators.required],  // Array to store multiple files
+      files: [[], Validators.required],
       contact: ['', Validators.required]
+    });
+  }
+
+  showSuccessNotification() {
+    this.snackBar.open('Form submitted successfully!', 'Close', {
+      duration: 3000,  // Duration in milliseconds
+      panelClass: ['snackbar-success'] // Optional, for custom styling
+    });
+  }
+
+  showErrorNotification() {
+    this.snackBar.open('An error occurred!', 'Close', {
+      duration: 3000,
+      panelClass: ['snackbar-error']
     });
   }
 
   // Handler for file input change event
   onFileChange(event: any) {
     const files = event.target.files;
-    this.base64Files = []; // Clear previous files
+    this.base64Files = [];
 
     if (files.length > 0) {
       for (let i = 0; i < files.length; i++) {
@@ -34,7 +49,7 @@ export class EnquiryFormComponent {
         this.convertFileToBase64(file).then((base64: string) => {
           this.base64Files.push(base64);
           this.myForm.patchValue({
-            uploadedfile: this.base64Files  // Update form control with base64 files
+            files: this.base64Files
           });
         });
       }
@@ -55,18 +70,21 @@ export class EnquiryFormComponent {
 
   onSubmit() {
     if (this.myForm.value) {
-      console.log(this.myForm.value);
-
       this.commonService.enquiryForm(this.myForm.value).subscribe(
         (response) => {
-          console.log('Form submitted successfully', response);
+          // Show success toast
+          this.showSuccessNotification();
+          console.log("success")
         },
         (error) => {
-          console.log('Error occurred during form submission', error);
+          // Show error toast
+          console.log("error")
+          this.showErrorNotification();
         }
       );
     } else {
-      console.log('Form is invalid');
+      console.log("error")
+      this.showErrorNotification();
     }
   }
 }

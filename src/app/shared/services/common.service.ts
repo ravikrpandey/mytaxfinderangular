@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 export class CommonService {
   private apiUrls = {
     contactEnquiry: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/contact-enquiry`,
-    enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry`
+    enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/enquiry-form`
 
   };
 
@@ -22,6 +22,7 @@ export class CommonService {
   }
 
   enquiryForm(formData: any): Observable<any> {
-    return this.http.get(this.apiUrls.enquiryForm, formData);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(this.apiUrls.enquiryForm, formData, {headers});
   }
 }
