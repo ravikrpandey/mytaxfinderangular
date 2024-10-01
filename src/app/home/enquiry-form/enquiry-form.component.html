@@ -9,8 +9,8 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <input class="form-control" formControlName="firstName" placeholder="First Name" required>
-                  <span class="form-label">First Name</span>
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input class="form-control" formControlName="firstName" id="firstName" placeholder="Enter your first name" required>
                   <div *ngIf="myForm.controls['firstName'].invalid && (myForm.controls['firstName'].dirty || myForm.controls['firstName'].touched)">
                     <small class="text-danger" *ngIf="myForm.controls['firstName'].errors?.['required']">First Name is required.</small>
                   </div>
@@ -18,38 +18,23 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <input class="form-control" formControlName="lastName" placeholder="Last Name" required>
-                  <span class="form-label">Last Name</span>
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input class="form-control" formControlName="lastName" id="lastName" placeholder="Enter your last name" required>
                   <div *ngIf="myForm.controls['lastName'].invalid && (myForm.controls['lastName'].dirty || myForm.controls['lastName'].touched)">
                     <small class="text-danger" *ngIf="myForm.controls['lastName'].errors?.['required']">Last Name is required.</small>
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-md-6">
-                <div class="form-group">
-                  <select class="form-control" formControlName="documentType" required>
-                    <option value="">Select Document Type</option>
-                    <option>PDF</option>
-                    <option>JPEG</option>
-                    <option>Excel</option>
-                    <option>Word</option>
-                  </select>
-                  <span class="form-label">Document Type</span>
-                  <div *ngIf="myForm.controls['documentType'].invalid && (myForm.controls['documentType'].dirty || myForm.controls['documentType'].touched)">
-                    <small class="text-danger" *ngIf="myForm.controls['documentType'].errors?.['required']">Document Type is required.</small>
-                  </div>
-                </div>
-              </div> -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <select class="form-control" formControlName="serviceType" required>
+                  <label for="serviceType" class="form-label">Service Type</label>
+                  <select class="form-control" formControlName="serviceType" id="serviceType" required>
                     <option value="">Select Service Type</option>
                     <option>GST</option>
                     <option>Company</option>
                     <option>Registration</option>
                     <option>ITR Type</option>
                   </select>
-                  <span class="form-label">Service Type</span>
                   <div *ngIf="myForm.controls['serviceType'].invalid && (myForm.controls['serviceType'].dirty || myForm.controls['serviceType'].touched)">
                     <small class="text-danger" *ngIf="myForm.controls['serviceType'].errors?.['required']">Service Type is required.</small>
                   </div>
@@ -57,43 +42,36 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <input class="form-control" formControlName="email" placeholder="mytaxfinder@outlook.com" required>
-                  <span class="form-label">Email</span>
+                  <label for="email" class="form-label">Email</label>
+                  <input class="form-control" formControlName="email" id="email" placeholder="Enter your email" required>
                   <div *ngIf="myForm.controls['email'].invalid && (myForm.controls['email'].dirty || myForm.controls['email'].touched)">
                     <small class="text-danger" *ngIf="myForm.controls['email'].errors?.['required']">Email is required.</small>
                     <small class="text-danger" *ngIf="myForm.controls['email'].errors?.['email']">Invalid email format.</small>
                   </div>
                 </div>
               </div>
-
               <div class="col-md-6">
-              <div class="form-group">
-                <input type="file" class="form-control" (change)="onFileChange($event)" multiple>
-                <span class="form-label">Upload Files</span>
-                <div *ngIf="myForm.controls['files'].touched && (myForm.controls['files'].dirty || myForm.controls['files'].invalid)">
-                  <small class="text-danger" *ngIf="myForm.controls['files'].errors?.['required']">File is required.</small>
+                <div class="form-group">
+                  <label for="contact" class="form-label">Contact</label>
+                  <input class="form-control" formControlName="contact" id="contact" placeholder="Enter your contact number" required>
+                  <div *ngIf="myForm.controls['contact'].invalid && (myForm.controls['contact'].dirty || myForm.controls['contact'].touched)">
+                    <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['required']">Contact number is required.</small>
+                    <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['minlength']">Contact number must be at least 10 digits.</small>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <input class="form-control" formControlName="contact" placeholder="+91 9955755523" required>
-                <span class="form-label">Contact</span>
-                <div *ngIf="myForm.controls['contact'].invalid && (myForm.controls['contact'].dirty || myForm.controls['contact'].touched)">
-                  <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['required']">Contact number is required.</small>
-                  <small class="text-danger" *ngIf="myForm.controls['contact'].errors?.['minlength']">Contact number must be at least 10 digits.</small>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="files" class="form-label">Upload Files</label>
+                  <input type="file" class="form-control" (change)="onFileChange($event)" id="files" multiple>
                 </div>
               </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="form-btn">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button style="margin-left: 10px; color: antiquewhite;" type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+              <div class="col-md-12">
+                <div class="form-btn">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button style="margin-left: 10px; color: antiquewhite;" type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+                </div>
               </div>
-            </div>
-
             </div>
           </form>
         </div>

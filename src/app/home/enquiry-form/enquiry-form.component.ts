@@ -69,7 +69,8 @@ export class EnquiryFormComponent {
   }
 
   onSubmit() {
-    if (this.myForm.value) {
+    debugger;
+    if (this.myForm.valid) {
       this.commonService.enquiryForm(this.myForm.value).subscribe(
         (response) => {
           this.showSuccessNotification();

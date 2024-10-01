@@ -108,12 +108,12 @@ $border-top-color_1: var(--background-color);
 	  cursor: pointer;
 	  transition: color 0.3s;
 	}
-  
+
 	.navmenu {
 	  padding: 0;
 	  z-index: 9997;
 	}
-  
+
 	.navmenu ul {
 	  display: none;
 	  position: absolute;
@@ -127,7 +127,7 @@ $border-top-color_1: var(--background-color);
 	  z-index: 9998;
 	  box-shadow: 0px 0px 30px rgba(var(--default-color-rgb), 0.1);
 	}
-  
+
 	.navmenu a,
 	.navmenu a:focus {
 	  color: var(--nav-dropdown-color);
@@ -141,7 +141,7 @@ $border-top-color_1: var(--background-color);
 	  white-space: nowrap;
 	  transition: 0.3s;
 	}
-  
+
 	.navmenu a i,
 	.navmenu a:focus i {
 	  font-size: 12px;
@@ -156,26 +156,26 @@ $border-top-color_1: var(--background-color);
 	  transition: 0.3s;
 	  background-color: rgba(var(--primary-color-rgb), 0.1);
 	}
-  
+
 	.navmenu a i:hover,
 	.navmenu a:focus i:hover {
 	  background-color: var(--primary-color);
 	  color: var(--contrast-color);
 	}
-  
+
 	.navmenu a:hover,
 	.navmenu .active,
 	.navmenu .active:focus {
 	  color: var(--nav-dropdown-hover-color);
 	}
-  
+
 	.navmenu .active i,
 	.navmenu .active:focus i {
 	  background-color: var(--primary-color);
 	  color: var(--contrast-color);
 	  transform: rotate(180deg);
 	}
-  
+
 	.navmenu .dropdown ul,
 	.navmenu .megamenu ul {
 	  position: static;
@@ -186,22 +186,22 @@ $border-top-color_1: var(--background-color);
 	  background-color: var(--nav-dropdown-background-color);
 	  transition: all 0.5s ease-in-out;
 	}
-  
+
 	.navmenu .dropdown ul ul,
 	.navmenu .megamenu ul ul {
 	  background-color: rgba(33, 37, 41, 0.1);
 	}
-  
+
 	.navmenu .dropdown>.dropdown-active,
 	.navmenu .megamenu>.dropdown-active {
 	  display: block;
 	  background-color: rgba(33, 37, 41, 0.03);
 	}
-  
+
 	.mobile-nav-active {
 	  overflow: hidden;
 	}
-  
+
 	.mobile-nav-active .mobile-nav-toggle {
 	  color: #fff;
 	  position: absolute;
@@ -211,7 +211,7 @@ $border-top-color_1: var(--background-color);
 	  margin-right: 0;
 	  z-index: 9999;
 	}
-  
+
 	.mobile-nav-active .navmenu {
 	  position: fixed;
 	  overflow: hidden;
@@ -219,7 +219,7 @@ $border-top-color_1: var(--background-color);
 	  background: rgba(33, 37, 41, 0.8);
 	  transition: 0.3s;
 	}
-  
+
 	.mobile-nav-active .navmenu>ul {
 	  display: block;
 	}
@@ -229,18 +229,18 @@ $border-top-color_1: var(--background-color);
 	.header .logo {
 	  order: 1;
 	}
-  
+
 	.header .btn-getstarted {
 	  order: 2;
 	  margin: 0 15px 0 0;
 	  padding: 6px 20px;
 	}
-  
+
 	.header .navmenu {
 	  order: 3;
 	}
   }
-  
+
   @media (min-width: 1200px) {
 	.navmenu {
 		ul {
@@ -328,23 +328,22 @@ $border-top-color_1: var(--background-color);
     border-radius: 4px;
     transition: all 0.4s;
   }
-  
+
   .scroll-top i {
     font-size: 24px;
     color: #ffffff;
     line-height: 0;
   }
-  
+
   .scroll-top:hover {
     background-color: rgba(var(--primary-color-rgb), 0.8);
     color: #ffffff;
   }
-  
+
   .scroll-top.active {
     visibility: visible;
     opacity: 1;
   }
-  
-  
-  
-  
+
+
+
