@@ -26,7 +26,7 @@ export class EnquiryFormComponent {
 
   showSuccessNotification() {
     this.snackBar.open('Form submitted successfully!', 'Close', {
-      duration: 3000,  // Duration in milliseconds
+      duration: 5000,  // Duration in milliseconds
       panelClass: ['snackbar-success'] // Optional, for custom styling
     });
   }
