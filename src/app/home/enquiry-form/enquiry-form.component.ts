@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class EnquiryFormComponent {
   myForm: FormGroup;
   base64Files: string[] = [];
+  
 
   constructor(private fb: FormBuilder, private commonService: CommonService, private snackBar: MatSnackBar) {
     this.myForm = this.fb.group({
@@ -23,6 +24,7 @@ export class EnquiryFormComponent {
       contact: ['', Validators.required]
     });
   }
+  message = 'Form is invalid'
 
   showSuccessNotification() {
     this.snackBar.open('Form submitted successfully!', 'Close', {
@@ -31,12 +33,13 @@ export class EnquiryFormComponent {
     });
   }
 
-  showErrorNotification() {
-    this.snackBar.open('An error occurred!', 'Close', {
+  showErrorNotification(message: string) {  // Accept message as parameter
+    this.snackBar.open(message, 'Close', {
       duration: 3000,
       panelClass: ['snackbar-error']
     });
   }
+
 
   // Handler for file input change event
   onFileChange(event: any) {
@@ -80,12 +83,12 @@ export class EnquiryFormComponent {
         },
         (error) => {
           console.log("error")
-          this.showErrorNotification();
+          this.showErrorNotification('An error occurred while submitting the form.');
         }
       );
     } else {
-      console.log("error")
-      this.showErrorNotification();
+      console.log("Form is invalid")
+      this.showErrorNotification(this.message);
     }
   };
 
