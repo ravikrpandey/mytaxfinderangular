@@ -69,15 +69,16 @@ export class EnquiryFormComponent {
   }
 
   onSubmit() {
-    if (this.myForm.value) {
+    debugger;
+    if (this.myForm.valid) {
       this.commonService.enquiryForm(this.myForm.value).subscribe(
         (response) => {
-          // Show success toast
           this.showSuccessNotification();
           console.log("success")
+          this.myForm.reset();
+          this.base64Files = [];
         },
         (error) => {
-          // Show error toast
           console.log("error")
           this.showErrorNotification();
         }
@@ -86,5 +87,11 @@ export class EnquiryFormComponent {
       console.log("error")
       this.showErrorNotification();
     }
+  };
+
+  cancel() {
+  window.history.back();
   }
 }
+
+
