@@ -225,6 +225,76 @@ $border-top-color_1: var(--background-color);
 	}
   }
 
+
+
+.navmenu {
+  position: fixed;
+  left: -100%; /* Start off-screen */
+  top: 0;
+  width: 280px; /* Slightly narrower for a sleek look */
+  height: 100%;
+  background: linear-gradient(135deg, #f0f0f0 0%, #ccc 100%); /* Gradient background for a more modern look */
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+  transition: left 0.5s ease; /* Smooth and slightly slower sliding transition */
+  z-index: 9999;
+  overflow-y: auto; /* Enable scrolling if menu items overflow */
+
+  &.mobile-nav-active {
+    left: 0; /* Slide in from the left */
+  }
+
+  ul {
+    padding: 40px 20px; /* Increase padding for more space */
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Add spacing between menu items */
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  a {
+    font-size: 20px; /* Larger font for better readability */
+    font-weight: 600; /* Bold for emphasis */
+    color: #333; /* Darker color for better contrast */
+    padding: 15px 20px; /* Increase padding for a larger clickable area */
+    display: block;
+    text-align: left;
+    border-radius: 8px; /* Slight rounding for buttons */
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+
+    &:hover {
+      background-color: #333; /* Dark background on hover */
+      color: white; /* White text on hover */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle hover shadow */
+    }
+  }
+}
+
+.mobile-nav-toggle {
+  font-size: 32px; /* Slightly larger for easier interaction */
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  z-index: 10000;
+  color: #333; /* Darker icon color */
+  // background-color: #f0f0f0; /* Matching background */
+  // padding: 0px;
+  border-radius: 50%; /* Circle background for the toggle icon */
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    color: white; /* White color on hover */
+    // background-color: #333; /* Dark background on hover */
+  }
+}
+
+
+
   @media (max-width: 1200px) {
 	.header .logo {
 	  order: 1;
