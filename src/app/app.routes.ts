@@ -10,6 +10,7 @@ import { HeaderComponent } from './home/header/header.component';
 import { GstRegistrationAndReturnComponent } from './home/gst-registration-and-return/gst-registration-and-return.component';
 import { TaxPlanningComponent } from './home/tax-planning/tax-planning.component';
 import { AccountingServicesComponent } from './home/accounting-services/accounting-services.component';
+import { TaxByRegionComponent } from './home/tax-by-region/tax-by-region.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -24,6 +25,7 @@ export const routes: Routes = [
   {path: 'gstRegistrationAndReturn', component: GstRegistrationAndReturnComponent},
   {path: 'taxPlanning', component: TaxPlanningComponent},
   {path: 'accountingService', component: AccountingServicesComponent},
+  {path: 'tax-by-region', component: TaxByRegionComponent},
 ];
 
 @NgModule({

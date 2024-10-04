@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from '../app.component';
+import { TaxByRegionComponent } from './tax-by-region/tax-by-region.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }
@@ -36,6 +37,7 @@ const routes: Routes = [
     GstRegistrationAndReturnComponent,
     AccountingServicesComponent,
     TaxPlanningComponent,
+    TaxByRegionComponent
 
   ],
   imports: [
