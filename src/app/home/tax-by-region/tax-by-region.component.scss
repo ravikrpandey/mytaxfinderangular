@@ -9,8 +9,8 @@ body {
 
 /* Container for the table */
 .table-container {
-//   margin-top: 200px;
-//   margin-bottom: 200px;
+  margin-top: 68px !important;
+  margin-bottom: 50px !important;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -77,6 +77,13 @@ h2 {
 
 /* Responsive table on small screens */
 @media screen and (max-width: 600px) {
+  .tax-table {
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fdfdfd;
+  }
+
   .tax-table thead {
     display: none;
   }
@@ -84,24 +91,85 @@ h2 {
   .tax-table, .tax-table tbody, .tax-table tr, .tax-table td {
     display: block;
     width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
   }
 
   .tax-table tbody tr {
     margin-bottom: 10px;
+    margin-top: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
   }
 
   .tax-table tbody td {
-    text-align: right;
-    padding-left: 50%;
+    text-align: center;
+    padding: 15px;
+    font-size: 16px;
+    color: #555;
     position: relative;
+    border-bottom: 1px solid #ddd;
   }
 
   .tax-table tbody td::before {
     content: attr(data-label);
     position: absolute;
-    left: 0;
+    left: 15px;
     padding-left: 10px;
     font-weight: bold;
+    font-size: 14px;
+    color: #8e44ad; /* Accent color for label text */
     text-align: left;
   }
+
+  /* Add hover effect with vibrant color */
+  .tax-table tbody tr:hover {
+    background-color: #f1c40f;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Alternating background colors */
+  .tax-table tbody td:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .tax-table tbody td:nth-child(even) {
+    background-color: #f1f2f6; /* Light shade for alternating rows */
+  }
+
+  /* Highlight first column (description) with gradient */
+  .tax-table tbody td:first-child {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Styling buttons or interactive elements */
+  .tax-table tbody td a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #e74c3c;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .tax-table tbody td a:hover {
+    color: white;
+    background-color: #e74c3c;
+    text-decoration: none;
+  }
+
+  /* Stylish table border */
+  .tax-table {
+    border: 2px solid #bdc3c7;
+  }
 }
+
+
