@@ -1,22 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar for notifications
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonService } from '../../shared/services/common.service';
+import { ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'], // Fixed 'styleUrl' to 'styleUrls'
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   contactForm: FormGroup;
   submitted = false;
   message: string = 'Form is invalid';
 
   constructor(
-    private fb: FormBuilder, 
-    private commonService: CommonService, 
-    private snackBar: MatSnackBar // Properly declare MatSnackBar in the constructor
+    private fb: FormBuilder,
+    private commonService: CommonService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private viewportScroller: ViewportScroller
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -26,14 +30,22 @@ export class HomeComponent {
     });
   }
 
-  showSuccessNotification() {
-    this.snackBar.open('Form submitted successfully!', 'Close', {
-      duration: 5000,  // Duration in milliseconds
-      panelClass: ['snackbar-success'] // Optional, for custom styling
+  ngOnInit(): void {
+    this.route.fragment.subscribe((fragment) => {
+      if (fragment) {
+        this.viewportScroller.scrollToAnchor(fragment);
+      }
     });
   }
 
-  showErrorNotification(message: string) {  // Accept message as parameter
+  showSuccessNotification() {
+    this.snackBar.open('Form submitted successfully!', 'Close', {
+      duration: 5000,
+      panelClass: ['snackbar-success']
+    });
+  }
+
+  showErrorNotification(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       panelClass: ['snackbar-error']
@@ -56,7 +68,7 @@ export class HomeComponent {
       console.log(this.contactForm.value);
     } else {
       console.log('Form is invalid');
-      this.showErrorNotification(this.message); // Use predefined message
+      this.showErrorNotification(this.message);
     }
   }
 }
