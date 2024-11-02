@@ -1,20 +1,20 @@
 <app-header></app-header>
 <section id="specials" class="specials">
-    <style>
-#specials.specials {
-list-style: none;
-margin-top: 30px;
-}
+  <style>
+    #specials.specials {
+      list-style: none;
+      margin-top: 30px;
+    }
 
-#specials.specials p::before {
-content: "\2022";
-color: red;
-font-weight: bold;
-display: inline-block; 
-width: 1em;
-margin-left: -1em;
-}
-</style>
+    #specials.specials p::before {
+      content: "\2022";
+      color: red;
+      font-weight: bold;
+      display: inline-block; 
+      width: 1em;
+      margin-left: -1em;
+    }
+  </style>
 
   <div class="container">
 
@@ -27,39 +27,62 @@ margin-left: -1em;
       <div class="col-lg-3">
         <ul class="nav nav-tabs flex-column">
           <li class="nav-item">
-            <a class="nav-link active show" data-bs-toggle="tab" href="#tab-1">Salary & House Property Income</a>
+            <a 
+              class="nav-link" 
+              [ngClass]="{'active show': activeTab === 'tab-1'}" 
+              (click)="setActiveTab('tab-1')">Salary & House Property Income</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-2">Salary, H & P And Capital Gain</a>
+            <a 
+              class="nav-link" 
+              [ngClass]="{'active show': activeTab === 'tab-2'}" 
+              (click)="setActiveTab('tab-2')">Salary, H & P And Capital Gain</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-3">Salary, H & P And Capital Gain, Business & Profession</a>
+            <a 
+              class="nav-link" 
+              [ngClass]="{'active show': activeTab === 'tab-3'}" 
+              (click)="setActiveTab('tab-3')">Salary, H & P And Capital Gain, Business & Profession</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-4">Salary & Business Income</a>
+            <a 
+              class="nav-link" 
+              [ngClass]="{'active show': activeTab === 'tab-4'}" 
+              (click)="setActiveTab('tab-4')">Salary & Business Income</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-5">Tax Planning</a>
+            <a 
+              class="nav-link" 
+              [ngClass]="{'active show': activeTab === 'tab-5'}" 
+              (click)="setActiveTab('tab-5')">Tax Planning</a>
           </li>
         </ul>
       </div>
       <div class="col-lg-9 mt-4 mt-lg-0">
         <div class="tab-content">
-          <div class="tab-pane active show" id="tab-1">
+          <!-- Tab 1 -->
+          <div 
+            class="tab-pane" 
+            [ngClass]="{'active show': activeTab === 'tab-1'}" 
+            id="tab-1">
             <div class="row">
               <div class="col-lg-8 details order-2 order-lg-1">
                 <h3>Salary & House Property Income <span style="color:#e84545">Rs.1000</span></h3>
-                <!-- <p class="fst-italic">Single & Multiple Employers.</p> -->
                 <p>Single & Multiple Employers.</p>
                 <p>Income from Other Sources.</p>
                 <p>Agriculture Income.</p>
               </div>
               <div class="col-lg-4 text-center order-1 order-lg-2">
-                <!-- <img src="https://img.freepik.com/premium-photo/thai-traditional-therapy-spine-legs-shocking-strong-massage_274719-370.jpg?w=2000" alt="" class="img-fluid"> -->
+                <!-- Optional Image -->
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="tab-2">
+          
+          <!-- Tab 2 -->
+          <div 
+            class="tab-pane" 
+            [ngClass]="{'active show': activeTab === 'tab-2'}" 
+            id="tab-2">
             <div class="row">
               <div class="col-lg-8 details order-2 order-lg-1">
                 <h3>Salary, H & P And Capital Gain <span style="color:#e84545"> Rs.3000 </span></h3>
@@ -68,16 +91,20 @@ margin-left: -1em;
                 <p>Income from Other Sources.</p>
               </div>
               <div class="col-lg-4 text-center order-1 order-lg-2">
-                <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReBtlZSb1LOPxY1eWpBU1IT61KloH_Dp91BQ&usqp=CAU" alt="" 
-                class="img-fluid"> -->
+                <!-- Optional Image -->
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="tab-3">
+          
+          <!-- Tab 3 -->
+          <div 
+            class="tab-pane" 
+            [ngClass]="{'active show': activeTab === 'tab-3'}" 
+            id="tab-3">
             <div class="row">
               <div class="col-lg-8 details order-2 order-lg-1">
-                <h3>Salary, H & P And Capital Gain, Bussiness & Profession <span style="color:#e84545"> Rs.7500</span> </h3>
-                <p>Single & Multiple Employers..</p>
+                <h3>Salary, H & P And Capital Gain, Business & Profession <span style="color:#e84545"> Rs.7500</span> </h3>
+                <p>Single & Multiple Employers.</p>
                 <p>Single & Multiple House Property.</p>
                 <p>Future & Options.</p>
                 <p>Capital Gain (Indian & Foreign Shares, Mutual Fund, RSU & ESOP).</p>
@@ -87,42 +114,50 @@ margin-left: -1em;
                 <p>Agriculture Income.</p>
               </div>
               <div class="col-lg-4 text-center order-1 order-lg-2">
-                <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbdk0S-CczEuHRTgr_snXi_WvBBj82C7qAGQ&usqp=CAU" alt="" class="img-fluid"> -->
+                <!-- Optional Image -->
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="tab-4">
+          
+          <!-- Tab 4 -->
+          <div 
+            class="tab-pane" 
+            [ngClass]="{'active show': activeTab === 'tab-4'}" 
+            id="tab-4">
             <div class="row">
               <div class="col-lg-8 details order-2 order-lg-1">
-                <h3>Salary & Bussiness Income <span style="color:#e84545">Rs. 4000 </span></h3>
+                <h3>Salary & Business Income <span style="color:#e84545">Rs. 4000</span></h3>
                 <p>Single & Multiple Employers.</p>
                 <p>Business & Professional Income (Non Audit) - Without B/S P/L*.</p>
                 <p>Income from Other Sources.</p>
                 <p>Agriculture Income.</p>
               </div>
               <div class="col-lg-4 text-center order-1 order-lg-2">
-                <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS86boxPbDCcmhHIp0kd1U5gkQ09MT98dDtfg&usqp=CAU" alt="" 
-                class="img-fluid"> -->
+                <!-- Optional Image -->
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="tab-5">
+          
+          <!-- Tab 5: Tax Planning -->
+          <div 
+            class="tab-pane" 
+            [ngClass]="{'active show': activeTab === 'tab-5'}" 
+            id="tab-5">
             <div class="row">
               <div class="col-lg-8 details order-2 order-lg-1">
                 <h3>Tax Planning <span style="color:#e84545">Rs: 7500</span></h3>
                 <p>Maximize your financial potential with Us.</p>
                 <p>Generate an in-depth tax report based on your investments.</p> 
                 <p>Get detailed guidance on investments that will help reduce your tax liabilities.</p> 
-                <p>Receive expert guidance tailored to your specific needs All types of tax planning in one place (Individual, Business, NRI, Capital
-                 Gain).</p> 
-                <p>Step by step tax planning strategy for single taxpayer Extensive overview on income sources (only for current financial year).</p>  
+                <p>Receive expert guidance tailored to your specific needs. All types of tax planning in one place (Individual, Business, NRI, Capital Gain).</p> 
+                <p>Step-by-step tax planning strategy for single taxpayers. Extensive overview on income sources (only for the current financial year).</p>  
               </div>
               <div class="col-lg-4 text-center order-1 order-lg-2">
-                <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCe0PP3g7gFMvLMuMbGiB3ap4r13HGIZTpmw&usqp=CAU" alt="" 
-                class="img-fluid"> -->
+                <!-- Optional Image -->
               </div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>

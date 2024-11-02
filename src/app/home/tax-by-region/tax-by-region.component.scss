@@ -2,173 +2,92 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f5f5;
-  margin: 0;
+  margin: 0px;
   padding: 20px;
-  min-height: 100vh;
 }
 
 /* Container for the table */
 .table-container {
-  margin-top: 68px !important;
-  margin-bottom: 50px !important;
+  // margin-top: 77px;
+  // margin-bottom: 80px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px; /* Increased padding for a more spacious feel */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+}
+
+/* Styles for the accordion button */
+.accordion-button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  padding: 15px 20px; /* Added horizontal padding for spaciousness */
+  text-align: left;
+  font-size: 18px; /* Slightly larger font size for better readability */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  width: 100%;
+  outline: none;
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 10px; /* Space between buttons */
+}
+
+/* Hover effect for the accordion button */
+.accordion-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Styles for the accordion body */
+.accordion-body {
+  padding: 15px 20px; /* Added padding for better spacing */
+  display: none; /* Initially hidden */
+  background-color: #e7f0ff; /* Light blue background */
+  transition: max-height 0.3s ease, padding 0.3s ease; /* Smooth transitions */
+  border: 1px solid #007bff; /* Blue border */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 15px; /* Space below accordion body */
+}
+
+/* Active activity styles */
+.activity-item {
+  background-color: #cce5ff; /* Lighter blue for each activity */
+  border-radius: 3px; /* Rounded corners */
+  padding: 10px;
+  margin-bottom: 5px; /* Spacing between activities */
+  transition: background-color 0.3s; /* Smooth background color change */
+}
+
+/* Hover effect for activity items */
+.activity-item:hover {
+  background-color: #b3d7ff; /* Darker shade on hover */
 }
 
 /* Heading styles */
-h2 {
-  text-align: center;
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
+.tax-title {
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically, if applicable */
+  color: #333; /* Text color */
+  font-size: 24px; /* Font size */
+  margin-bottom: 20px; /* Space below the heading */
 }
 
-/* Table styles */
-.tax-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  overflow: hidden;
-  table-layout: auto;
-}
 
-/* Header styles */
-.tax-table thead th {
-  background-color: #4CAF50;
-  color: white;
-  padding: 15px;
-  text-align: left;
-  font-size: 16px;
-}
-
-/* Body row styles */
-.tax-table tbody tr {
-  border-bottom: 1px solid #ddd;
-}
-
-.tax-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.tax-table tbody td {
-  padding: 12px;
-  font-size: 14px;
-  color: #333;
-  white-space: nowrap;
-}
-
-/* Hover effect on rows */
-.tax-table tbody tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
-
-/* Table borders */
-.tax-table td, .tax-table th {
-  border: 1px solid #ddd;
-}
-
-/* Responsive table on small screens */
+/* Responsive Styles */
 @media screen and (max-width: 600px) {
-  .tax-table {
-    border-collapse: collapse;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    background-color: #fdfdfd;
+  .accordion-button {
+    font-size: 16px; /* Responsive font size */
   }
-
-  .tax-table thead {
-    display: none;
+  
+  .accordion-body {
+    padding: 10px; /* Reduce padding for smaller screens */
   }
-
-  .tax-table, .tax-table tbody, .tax-table tr, .tax-table td {
-    display: block;
-    width: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    margin-bottom: 15px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-  }
-
-  .tax-table tbody tr {
-    margin-bottom: 10px;
-    margin-top: 10px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .tax-table tbody td {
-    text-align: center;
-    padding: 15px;
-    font-size: 16px;
-    color: #555;
-    position: relative;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .tax-table tbody td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 15px;
-    padding-left: 10px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #8e44ad; /* Accent color for label text */
-    text-align: left;
-  }
-
-  /* Add hover effect with vibrant color */
-  .tax-table tbody tr:hover {
-    background-color: #f1c40f;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-
-  /* Alternating background colors */
-  .tax-table tbody td:nth-child(odd) {
-    background-color: #f9f9f9;
-  }
-
-  .tax-table tbody td:nth-child(even) {
-    background-color: #f1f2f6; /* Light shade for alternating rows */
-  }
-
-  /* Highlight first column (description) with gradient */
-  .tax-table tbody td:first-child {
-    background: linear-gradient(90deg, #3498db, #2980b9);
-    color: white;
-    font-weight: bold;
-  }
-
-  /* Styling buttons or interactive elements */
-  .tax-table tbody td a {
-    color: #e74c3c;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: #fff;
-    border: 1px solid #e74c3c;
-    transition: background-color 0.3s ease-in-out;
-  }
-
-  .tax-table tbody td a:hover {
-    color: white;
-    background-color: #e74c3c;
-    text-decoration: none;
-  }
-
-  /* Stylish table border */
-  .tax-table {
-    border: 2px solid #bdc3c7;
+  
+  .activity-item {
+    padding: 8px; /* Adjust padding for smaller screens */
   }
 }
 

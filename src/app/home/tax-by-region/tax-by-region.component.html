@@ -1,109 +1,57 @@
 <app-header></app-header>
 
-<div class="table-container">
-    <h2>Tax Activity by Region</h2>
-  
-    <table class="tax-table">
-      <thead>
-        <tr>
-          <th>Region</th>
-          <th>Activity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>New Zealand (NZ)</td>
-          <td>Advance Tax</td>
-        </tr>
-        <tr>
-          <td>New Zealand (NZ)</td>
-          <td>Corporate Income Tax</td>
-        </tr>
-        <tr>
-          <td>New Zealand (NZ)</td>
-          <td>GST</td>
-        </tr>
-        <tr>
-          <td>Singapore (SG)</td>
-          <td>Advance Tax</td>
-        </tr>
-        <tr>
-          <td>Singapore (SG)</td>
-          <td>Corporate Income Tax (Form C- C/S)</td>
-        </tr>
-        <tr>
-          <td>Singapore (SG)</td>
-          <td>GST</td>
-        </tr>
-        <tr>
-          <td>France (FR)</td>
-          <td>Corporate Income Tax (Liasse Fiscale)</td>
-        </tr>
-        <tr>
-          <td>France (FR)</td>
-          <td>VAT Intrastat and Intracommunity</td>
-        </tr>
-        <tr>
-          <td>France (FR)</td>
-          <td>Advance Tax</td>
-        </tr>
-        <tr>
-          <td>Netherlands (NL)</td>
-          <td>Corporate Income Tax (Vennootschapsbelasting)</td>
-        </tr>
-        <tr>
-          <td>Netherlands (NL)</td>
-          <td>Advance Tax</td>
-        </tr>
-        <tr>
-          <td>Netherlands (NL)</td>
-          <td>VAT Intrastat and Intracommunity</td>
-        </tr>
-        <tr>
-          <td>Belgium (BE)</td>
-          <td>VAT Intrastat and Intracommunity</td>
-        </tr>
-        <tr>
-          <td>Belgium (BE)</td>
-          <td>Corporate Income Tax (AANGIFTE IN DE VENNOOTSCHAPSBELASTING)</td>
-        </tr>
-        <tr>
-          <td>United Kingdom (UK)</td>
-          <td>VAT</td>
-        </tr>
-        <tr>
-          <td>United Kingdom (UK)</td>
-          <td>Corporate Income Tax (CT-600)</td>
-        </tr>
-        <tr>
-          <td>United Kingdom (UK)</td>
-          <td>Advance Tax</td>
-        </tr>
-        <tr>
-          <td>United Kingdom (UK)</td>
-          <td>Tax Provision</td>
-        </tr>
-        <tr>
-          <td>Mexico</td>
-          <td>MX VAT (IVA personas morales) VAT withholding</td>
-        </tr>
-        <tr>
-          <td>Mexico</td>
-          <td>MX Advance Tax and Annual Corporate Income Tax (ISR personas morales)</td>
-        </tr>
-        <tr>
-          <td>Mexico</td>
-          <td>MX Informative return (DISSIF)</td>
-        </tr>
-        <tr>
-          <td>Mexico</td>
-          <td>Appendix 9 (TP return)</td>
-        </tr>
-        <tr>
-          <td>Mexico</td>
-          <td>DIOT Vendor Filing</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="table-container" style="margin-top: 60px; margin-bottom: 80px;">
+  <h2 class="tax-title">Tax Activity by Region</h2>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">New Zealand (NZ)</button>
+  <div class="accordion-body">
+    <div class="activity-item">Advance Tax</div>
+    <div class="activity-item">Corporate Income Tax</div>
+    <div class="activity-item">GST</div>
   </div>
-  <app-footer></app-footer>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">Singapore (SG)</button>
+  <div class="accordion-body">
+    <div class="activity-item">Advance Tax</div>
+    <div class="activity-item">Corporate Income Tax (Form C- C/S)</div>
+    <div class="activity-item">GST</div>
+  </div>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">France (FR)</button>
+  <div class="accordion-body">
+    <div class="activity-item">Corporate Income Tax (Liasse Fiscale)</div>
+    <div class="activity-item">VAT Intrastat and Intracommunity</div>
+    <div class="activity-item">Advance Tax</div>
+  </div>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">Netherlands (NL)</button>
+  <div class="accordion-body">
+    <div class="activity-item">Corporate Income Tax (Vennootschapsbelasting)</div>
+    <div class="activity-item">Advance Tax</div>
+    <div class="activity-item">VAT Intrastat and Intracommunity</div>
+  </div>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">Belgium (BE)</button>
+  <div class="accordion-body">
+    <div class="activity-item">VAT Intrastat and Intracommunity</div>
+    <div class="activity-item">Corporate Income Tax (AANGIFTE IN DE VENNOOTSCHAPSBELASTING)</div>
+  </div>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">United Kingdom (UK)</button>
+  <div class="accordion-body">
+    <div class="activity-item">VAT</div>
+    <div class="activity-item">Corporate Income Tax (CT-600)</div>
+    <div class="activity-item">Advance Tax</div>
+    <div class="activity-item">Tax Provision</div>
+  </div>
+
+  <button class="accordion-button" (click)="toggleAccordion($event)">Mexico</button>
+  <div class="accordion-body">
+    <div class="activity-item">MX VAT (IVA personas morales) VAT withholding</div>
+    <div class="activity-item">MX Advance Tax and Annual Corporate Income Tax (ISR personas morales)</div>
+    <div class="activity-item">MX Informative return (DISSIF)</div>
+    <div class="activity-item">Appendix 9 (TP return)</div>
+    <div class="activity-item">DIOT Vendor Filing</div>
+  </div>
+</div>
+<app-footer></app-footer>

@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.addClickListeners();
+    this.scrollToTop();
   }
 
   @HostListener('window:scroll', ['$event'])
