@@ -11,6 +11,8 @@ import { GstRegistrationAndReturnComponent } from './home/gst-registration-and-r
 import { TaxPlanningComponent } from './home/tax-planning/tax-planning.component';
 import { AccountingServicesComponent } from './home/accounting-services/accounting-services.component';
 import { TaxByRegionComponent } from './home/tax-by-region/tax-by-region.component';
+import { TermsAndConditionsComponent } from './home/terms-and-conditions/terms-and-conditions.component';
+import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,6 +28,8 @@ export const routes: Routes = [
   {path: 'taxPlanning', component: TaxPlanningComponent},
   {path: 'accountingService', component: AccountingServicesComponent},
   {path: 'tax-by-region', component: TaxByRegionComponent},
+  {path: 'terms-of-service', component: TermsAndConditionsComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
 ];
 
 @NgModule({

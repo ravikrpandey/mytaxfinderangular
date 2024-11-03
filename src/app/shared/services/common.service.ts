@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
+declare module '@srexi/purecounterjs';
 
 
 @Injectable({
@@ -10,7 +11,8 @@ import { environment } from '../../../environment/environment';
 export class CommonService {
   private apiUrls = {
     contactEnquiry: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/contact-enquiry`,
-    enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/enquiry-form`
+    enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/enquiry-form`,
+    checkApplicationStatus: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/check-application-status`,
 
   };
 
@@ -25,4 +27,9 @@ export class CommonService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(this.apiUrls.enquiryForm, formData, {headers});
   }
+  checkApplicationStatus(uniqueId: string): Observable<any> {
+    const url = `${this.apiUrls.checkApplicationStatus}/${uniqueId}`;
+    return this.http.get(url);
+  }
+
 }
