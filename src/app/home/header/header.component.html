@@ -3,37 +3,42 @@
   <div class="container-fluid d-flex align-items-center justify-content-between">
 
     <div>
-
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <h1 style="color: black;">MyTax</h1>
         <span>Finder</span>
       </a>
     </div>
 
-
     <nav id="navmenu" class="navmenu" [ngClass]="{'mobile-nav-active': mobileNavActive}">
       <ul>
-        <li><a href="home#hero" class="active" (click)="closeMobileNav()">Home</a></li>
-        <li><a href="home#about" (click)="closeMobileNav()">About</a></li>
-        <li><a href="home#services" (click)="closeMobileNav()">Services</a></li>
-        <li><a href="home#recent-posts" (click)="closeMobileNav()">Blog</a></li>
-        <li><a href="home#contact" (click)="closeMobileNav()">Contact</a></li>
+        <li><a href="home#hero" [class.active]="activeSection === 'hero'" (click)="closeMobileNav()">Home</a></li>
+        <li><a href="home#about" [class.active]="activeSection === 'about'" (click)="closeMobileNav()">About</a></li>
+        <li><a href="home#services" [class.active]="activeSection === 'services'" (click)="closeMobileNav()">Services</a></li>
+        <li><a href="home#recent-posts" [class.active]="activeSection === 'recent-posts'" (click)="closeMobileNav()">Blog</a></li>
+        <li><a href="home#contact" [class.active]="activeSection === 'contact'" (click)="closeMobileNav()">Contact</a></li>
         <li><a routerLink="/tax-by-region" fragment="contact">Tax-By-Region</a></li>
+
+        <!-- Search field as a list item with toggle behavior for mobile view -->
+        <li class="search-list-item">
+          <div class="query-status-input-wrapper" [ngClass]="{'expanded': isSearchExpanded}">
+            <input type="text" [(ngModel)]="uniqueId" name="uniqueId" placeholder="Check Ref_No Status"
+                   class="form-control form-control-sm search-input" />
+            <i class="bi bi-search query-status-icon" (click)="checkQueryStatus()"></i>
+          </div>
+        </li>
       </ul>
 
       <i class="mobile-nav-toggle d-xl-none bi bi-list" (click)="toggleMobileNav()"></i>
     </nav>
 
-
     <div class="me-5">
       <a class="btn-getstarted" routerLink="/enquiryForm">File Now</a>
-
     </div>
 
-
-
   </div>
-</header><!-- End Header -->
+</header>
+
+
 
 <!-- Scroll Top Button -->
 <div id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center" (click)="scrollToTop()">

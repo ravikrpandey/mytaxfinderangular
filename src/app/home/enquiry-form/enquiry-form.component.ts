@@ -73,7 +73,7 @@ export class EnquiryFormComponent {
 
   onSubmit() {
     debugger;
-    if (this.myForm.valid) {
+    if (this.myForm.value) {
       this.commonService.enquiryForm(this.myForm.value).subscribe(
         (response) => {
           this.showSuccessNotification();
@@ -87,7 +87,7 @@ export class EnquiryFormComponent {
         }
       );
     } else {
-      console.log("Form is invalid")
+      console.log("Please Fill All The Required Fields")
       this.showErrorNotification(this.message);
     }
   };

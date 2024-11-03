@@ -97,9 +97,130 @@ $border-top-color_1: var(--background-color);
 	}
 }
 
+.query-status-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 0 auto; /* Center the search wrapper */
+    position: relative; /* Positioning for absolute elements */
+}
+
+.query-status-input-wrapper {
+    position: relative; /* For positioning the icon */
+}
+
+.form-control {
+    width: 180px; /* Default width for desktop */
+    padding-right: 40px; /* Space for the icon */
+    border-radius: 20px; /* Rounded corners */
+    transition: border-color 0.3s ease; /* Smooth border color transition */
+}
+
+.form-control::placeholder {
+    color: #aaa; /* Placeholder color */
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.query-status-icon {
+    position: absolute; /* Positioning the icon inside the input */
+    right: 10px; /* Space from the right */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for vertical alignment */
+    cursor: pointer; /* Pointer cursor for button */
+    color: #007bff; /* Icon color */
+    font-size: 18px; /* Icon size */
+}
+
+/* Media Queries for Mobile View */
+// @media (max-width: 768px) {
+
+// }
+
+
+  /* Mobile-specific styling */
+  @media (max-width: 768px) {
+	/* Adjust width of input field on mobile */
+	.query-status-input-wrapper.expanded .form-control {
+	  width: 100px; /* Adjust to fit mobile view */
+	}
+  
+	/* Optionally, make the input field take more space in smaller screens */
+	.query-status-input-wrapper.expanded {
+	  display: flex;
+	  justify-content: flex-start;
+	}
+  
+	/* Adjust alignment to avoid layout shift */
+	.query-status-icon {
+	  position: absolute;
+	  right: 10px;
+	  top: 50%;
+	  transform: translateY(-50%);
+	}
+  }
+  
+
+
 
 /* Mobile Navigation */
 @media (max-width: 1199px) {
+
+	
+/* Base styling for the search wrapper */
+.query-status-input-wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+  }
+  
+  /* Initially hide the input field */
+  .form-control {
+	padding-right: 30px;
+	border-radius: 20px;
+	width: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  /* Show the input field when expanded */
+  .query-status-input-wrapper.expanded .form-control {
+	width: 180px; /* Default for desktop */
+	opacity: 1;
+	visibility: visible;
+  }
+  
+  /* Search icon styling */
+  .query-status-icon {
+	font-size: 18px;
+	cursor: pointer;
+	margin-left: 5px;
+  }
+  
+
+	.query-status-wrapper {
+        flex-direction: column; /* Stack elements on small screens */
+        align-items: stretch; /* Stretch to fill the container */
+    }
+
+    .form-control {
+        display: none; /* Hide the input field on mobile */
+    }
+
+    .query-status-icon {
+        display: block; /* Ensure the icon is visible */
+        margin: 0 auto; /* Center the icon */
+        font-size: 24px; /* Slightly larger icon for visibility */
+        width: 40px; /* Set a width for the icon area */
+        height: 40px; /* Set a height for the icon area */
+        background-color: #f0f0f0; /* Light background for visibility */
+        border-radius: 50%; /* Circle shape */
+        text-align: center; /* Center the icon */
+        line-height: 40px; /* Center vertically */
+    }
 
 	.mobile-nav-toggle {
 	  color: var(--nav-color);

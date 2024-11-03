@@ -13,12 +13,14 @@ import { EnquiryFormComponent } from './enquiry-form/enquiry-form.component';
 import { GstRegistrationAndReturnComponent } from './gst-registration-and-return/gst-registration-and-return.component';
 import { AccountingServicesComponent } from './accounting-services/accounting-services.component';
 import { TaxPlanningComponent } from './tax-planning/tax-planning.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from '../app.component';
 import { TaxByRegionComponent } from './tax-by-region/tax-by-region.component';
+import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }
@@ -37,7 +39,9 @@ const routes: Routes = [
     GstRegistrationAndReturnComponent,
     AccountingServicesComponent,
     TaxPlanningComponent,
-    TaxByRegionComponent
+    TaxByRegionComponent,
+    TermsAndConditionsComponent,
+    PrivacyPolicyComponent
 
   ],
   imports: [
@@ -47,6 +51,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     // BrowserAnimationsModule,
     MatSnackBarModule,
+    FormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

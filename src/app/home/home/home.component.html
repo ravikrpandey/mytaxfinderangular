@@ -12,20 +12,28 @@
       <div class="row">
         <div class="col-lg-10">
           <h2 data-aos="fade-up" data-aos-delay="100">Welcome to MyTax<span style="color: #e84545;">Finder</span></h2>
-          <p data-aos="fade-up" data-aos-delay="200"><a href="mailto:mytaxfinder@hotmail.com"
-              style="color: #e84545; text-decoration: none;">
-              E-File Now for Assessment year 2024-25</a></p>
+          <p data-aos="fade-up" data-aos-delay="200">
+            <a href="mailto:mytaxfinder@hotmail.com" style="color: #e84545; text-decoration: none;">
+              E-File Now for Assessment year 2024-25
+            </a>
+          </p>
         </div>
         <div class="col-lg-5">
-          <form class="sign-up-form d-flex"  data-aos-easing="ease">
-            <input class="form-control" placeholder="Enter email address" required>
-            <a class="btn btn-primary" href="mailto:mytaxfinder@hotmail.com"
-              style="color: white; text-decoration: none;">Submit </a>
+          <form class="sign-up-form d-flex" (submit)="submitEmail(); $event.preventDefault()">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter email address"
+              required
+              [(ngModel)]="email"
+              name="email"
+            />
+            <button type="submit" class="btn btn-primary" style="color: white;">Submit</button>
           </form>
         </div>
-
       </div>
     </div>
+    
 
   </section><!-- End Hero Section -->
 
@@ -37,27 +45,28 @@
       <div class="row gy-4">
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-1.png" class="img-fluid" alt="">
+          <img src="assets/client-1.png" class="img-fluid" style="background-color: white;" alt="">
         </div><!-- End Client Item -->
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-2.png" class="img-fluid" alt="">
+          <img src="assets/client-2.png" class="img-fluid"  style="background-color: white;" alt="">
         </div><!-- End Client Item -->
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-3.png" class="img-fluid" alt="">
+          <img src="assets/client-3.png" class="img-fluid" style="background-color: white;" alt="">
         </div><!-- End Client Item -->
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-4.png" class="img-fluid" alt="">
+          <img src="assets/client-4.png" class="img-fluid" style="background-color: white;" alt="">
+        </div><!-- End Client Item -->
+        
+
+        <div class="col-xl-2 col-md-3 col-6 client-logo">
+          <img src="assets/client-5.png" class="img-fluid" style="background-color: white;" alt="">
         </div><!-- End Client Item -->
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-5.png" class="img-fluid" alt="">
-        </div><!-- End Client Item -->
-
-        <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-6.png" class="img-fluid" alt="">
+          <img src="assets/client-6.jpg" class="img-fluid" style="background-color: white;" alt="">
         </div><!-- End Client Item -->
 
       </div>
@@ -129,48 +138,61 @@
 
   </section><!-- End About Section -->
 
-  <!-- Stats Section - Home Page -->
-  <section id="stats" class="stats">
+<!-- Stats Section - Home Page -->
+<section id="stats" class="stats">
+  <img src="assets/stats-bg.jpg" alt="" data-aos="fade-in">
 
-    <img src="assets/stats-bg.jpg" alt="" data-aos="fade-in">
+  <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
 
-    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+      <!-- Clients Counter -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span class="purecounter" 
+                data-purecounter-start="0" 
+                data-purecounter-end="1500" 
+                data-purecounter-duration="2">1500+</span>
+          <p>Clients</p>
+        </div>
+      </div><!-- End Stats Item -->
 
-      <div class="row gy-4">
+      <!-- Servicable Countries Counter -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span class="purecounter" 
+                data-purecounter-start="0" 
+                data-purecounter-end="8" 
+                data-purecounter-duration="2">08</span>
+          <p>Serviceable Countries</p>
+        </div>
+      </div><!-- End Stats Item -->
 
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item text-center w-100 h-100">
-            <span class="purecounter">1500</span>
-            <p>Clients</p>
-          </div>
-        </div><!-- End Stats Item -->
+      <!-- Years of Experience Counter -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span class="purecounter" 
+                data-purecounter-start="0" 
+                data-purecounter-end="7" 
+                data-purecounter-duration="2">07</span>
+          <p>Year Of Experience</p>
+        </div>
+      </div><!-- End Stats Item -->
 
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item text-center w-100 h-100">
-            <span class="purecounter">25</span>
-            <p>Reviews</p>
-          </div>
-        </div><!-- End Stats Item -->
-
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item text-center w-100 h-100">
-            <span class="purecounter">07</span>
-            <p>Year Of experience</p>
-          </div>
-        </div><!-- End Stats Item -->
-
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item text-center w-100 h-100">
-            <span class="purecounter">1500</span>
-            <p>Works Completed</p>
-          </div>
-        </div><!-- End Stats Item -->
-
-      </div>
+      <!-- Works Completed Counter -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span class="purecounter" 
+                data-purecounter-start="0" 
+                data-purecounter-end="1459" 
+                data-purecounter-duration="2">1459</span>
+          <p>Works Completed</p>
+        </div>
+      </div><!-- End Stats Item -->
 
     </div>
+  </div>
+</section><!-- End Stats Section -->
 
-  </section><!-- End Stats Section -->
 
   <!-- Services Section - Home Page -->
   <section id="services" class="services">
@@ -319,92 +341,34 @@
 
   </section><!-- End Testimonials Section -->
 
-  <!-- Faq Section - Home Page -->
-  <section id="faq" class="faq">
-
-    <div class="container">
-
-      <div class="row gy-4">
-
-        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="content px-xl-5">
-            <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
-          </div>
-        </div>
-
-        <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="faq-container">
-            <div class="faq-item faq-active">
-              <h3><span class="num">1.</span> <span>What is e Filing of income tax return (ITR)?</span></h3>
-              <div class="faq-content">
-                <p>Individuals, except senior citizens, have to mandatorily file the ITR through the online mode which
-                  is also known as electronic filing, i.e. e-filing of the income tax return.
-
-                  An income tax return is a form that a person is required to submit to the Income Tax Department. It
-                  contains information related to individual’s income and taxes paid, starting from 1st April to 31st
-                  March of the financial year. There are seven ITR forms prescribed by the Income Tax Department
-                  according to the amount of income, income source and the category to which the taxpayer belongs.</p>
-              </div>
-              <i class="faq-toggle bi bi-chevron-right"></i>
-            </div><!-- End Faq item-->
-
-            <div class="faq-item">
-              <h3><span class="num">2.</span> <span>Who should file an ITR??</span></h3>
-              <div class="faq-content">
-                <p>Any individual whose total income before deductions exceeds the basic exemption limit is required
-                  to file an
-                  ITR. The exemption limit can vary based on age and other factors.</p>
-              </div>
-              <i class="faq-toggle bi bi-chevron-right"></i>
-            </div><!-- End Faq item-->
-
-            <div class="faq-item">
-              <h3><span class="num">3.</span> <span>How can you file an income tax return in India?</span></h3>
-              <div class="faq-content">
-                <p>You can file your income tax returns online, either on the income tax department’s website or with
-                  us at www.MyTaxFinder.com Income
-                  Tax filing or e-filling is made easy on MyTaxFinder. You can e-file your returns with us. Also, note
-                  that the due date to e-file
-                  your income tax returns for the assessment year 2023-24 is on or before 31st July 2023.</p>
-              </div>
-              <i class="faq-toggle bi bi-chevron-right"></i>
-            </div><!-- End Faq item-->
-
-            <div class="faq-item">
-              <h3><span class="num">4.</span> <span>How can I claim deductions for tax saving?</span></h3>
-              <div class="faq-content">
-                <p>To claim these deductions, individuals need to declare them while filing their Income Tax Return
-                  (ITR). It's
-                  important to keep proper documentation, such as investment receipts, premium payment receipts, and
-                  loan
-                  statements, to substantiate the claims.</p>
-              </div>
-              <i class="faq-toggle bi bi-chevron-right"></i>
-            </div><!-- End Faq item-->
-
-            <div class="faq-item">
-              <h3><span class="num">5.</span> <span>How to e-verify my ITR?</span></h3>
-              <div class="faq-content">
-                <p>To e-verify your Income Tax Return (ITR) in India, you can choose from several methods.
-                  E-verification is a
-                  convenient and secure way to confirm the authenticity of your ITR filing. E-verify via Net Banking,
-                  E-verify
-                  via Aadhaar OTP, E-verify via Bank ATM, E-verify via Bank Account, E-verify via Electronic
-                  Verification Code
-                  (EVC).</p>
-              </div>
-              <i class="faq-toggle bi bi-chevron-right"></i>
-            </div><!-- End Faq item-->
-
-          </div>
-
+<!-- Faq Section -->
+<section id="faq" class="faq">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="content px-xl-5">
+          <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
         </div>
       </div>
 
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+        <div class="faq-container">
+          <div *ngFor="let faq of faqs; let i = index" class="faq-item" [class.faq-active]="expandedIndex === i">
+            <h3 (click)="toggleAnswer(i)">
+              <span class="num">{{ i + 1 }}.</span>
+              <span>{{ faq.question }}</span>
+              <i class="faq-toggle bi bi-chevron-right" [ngClass]="{'bi-chevron-down': expandedIndex === i}"></i>
+            </h3>
+            <div class="faq-content" *ngIf="expandedIndex === i">
+              <p>{{ faq.answer }}</p>
+            </div>
+          </div><!-- End Faq item -->
+        </div>
+      </div>
     </div>
+  </div>
+</section><!-- End Faq Section -->
 
-  </section><!-- End Faq Section -->
 
 
   <!-- Call-to-action Section - Home Page -->

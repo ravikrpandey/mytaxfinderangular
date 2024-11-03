@@ -105,6 +105,64 @@ $border-top-color_1: var(--background-color);
   font-size: 0.875em;
 }
 
+/* Styling for the search field within the hero section */
+.search-list-item {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+  }
+  
+  /* Base styling for the query status input wrapper */
+  .query-status-input-wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	transition: all 0.3s ease;
+  }
+  
+  /* Initially hide input field for compact display */
+  .search-input {
+	width: 0;
+	padding-right: 30px;
+	opacity: 0;
+	visibility: hidden;
+	transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  /* Expanded class: show the input field */
+  .query-status-input-wrapper.expanded .search-input {
+	width: 200px; /* Full width on larger screens */
+	opacity: 1;
+	visibility: visible;
+  }
+  
+  /* Search icon styling */
+  .query-status-icon {
+	font-size: 18px;
+	cursor: pointer;
+  }
+  
+  /* Mobile view adjustments */
+  @media (max-width: 768px) {
+	.query-status-input-wrapper.expanded .search-input {
+	  width: 100%; /* Adjust to full width for mobile view */
+	}
+	
+	/* Center the search input in the hero section */
+	.search-list-item {
+	  justify-content: flex-start;
+	}
+  
+	/* Position icon to the right of the input field */
+	.query-status-icon {
+	  position: absolute;
+	  right: 10px;
+	  top: 50%;
+	  transform: translateY(-50%);
+	}
+  }
+  
+
 
 .hero {
   --default-color: #ffffff;
@@ -130,6 +188,14 @@ $border-top-color_1: var(--background-color);
   object-fit: cover;
   z-index: 1;
 }
+
+// .plus-sign {
+// 	display: block;
+// 	font-size: 1.2em;
+// 	position: relative;
+// 	top: -0.5em;
+//   }
+  
 
 .hero:before {
   content: "";
