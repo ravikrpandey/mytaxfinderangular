@@ -20,14 +20,14 @@ export class EnquiryFormComponent {
       lastName: ['', Validators.required],
       serviceType: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      files: [[], Validators.required],
+      files: [[]],
       contact: ['', Validators.required]
     });
   }
-  message = 'Form is invalid'
+  message = "Please fill in all the required fields."
 
-  showSuccessNotification() {
-    this.snackBar.open('Form submitted successfully!', 'Close', {
+  showSuccessNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
       duration: 5000,  // Duration in milliseconds
       panelClass: ['snackbar-success'] // Optional, for custom styling
     });
@@ -73,11 +73,10 @@ export class EnquiryFormComponent {
 
   onSubmit() {
     debugger;
-    if (this.myForm.value) {
+    if (this.myForm.valid) {
       this.commonService.enquiryForm(this.myForm.value).subscribe(
         (response) => {
-          this.showSuccessNotification();
-          console.log("success")
+          this.showSuccessNotification(response.message);
           this.myForm.reset();
           this.base64Files = [];
         },
