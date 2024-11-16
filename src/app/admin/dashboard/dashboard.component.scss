@@ -1,0 +1,122 @@
+// * {
+//   box-sizing: border-box;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .dashboard-container {
+//   display: flex;
+//   height: 100vh;
+//   font-family: Arial, sans-serif;
+// }
+
+// /* Sidebar */
+// .sidebar {
+//   background-color: #063178;
+//   color: white;
+//   width: 250px;
+//   padding: 20px;
+// }
+
+// .sidebar-title {
+//   font-size: 1.5rem;
+//   text-align: center;
+//   margin-bottom: 20px;
+// }
+
+// .accordion-menu {
+//   width: 100%;
+// }
+
+// .accordion-item {
+//   margin-bottom: 10px;
+// }
+
+// .accordion-button {
+//   background: none;
+//   border: none;
+//   color: white;
+//   font-size: 1rem;
+//   text-align: left;
+//   width: 100%;
+//   cursor: pointer;
+//   padding: 10px;
+//   border-bottom: 1px solid #2a4a7a;
+// }
+
+// .accordion-content {
+//   display: none;
+//   padding-left: 20px;
+//   background-color: #2a4a7a;
+// }
+
+// .accordion-content a {
+//   display: block;
+//   padding: 5px;
+//   color: white;
+//   text-decoration: none;
+// }
+
+// .accordion-content a:hover {
+//   background-color: #3a5b8a;
+// }
+
+// /* Main Content */
+// .main-content {
+//   flex: 1;
+//   background-color: #f9f9f9;
+//   padding: 20px;
+// }
+
+// .page-header h1 {
+//   font-size: 2rem;
+//   color: #063178;
+// }
+
+// .page-header p {
+//   color: #333;
+//   margin-top: 5px;
+// }
+
+// .stats-container {
+//   display: flex;
+//   gap: 15px;
+//   margin: 20px 0;
+// }
+
+// .stat-panel {
+//   background-color: white;
+//   border-radius: 8px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   padding: 20px;
+//   text-align: center;
+//   width: 100%;
+// }
+
+// .stat-panel h3 {
+//   font-size: 1.2rem;
+//   color: #063178;
+// }
+
+// .stat-percentage {
+//   font-size: 2rem;
+//   color: #ff5722;
+// }
+
+// .graphs-container {
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   gap: 20px;
+// }
+
+// .graph-card {
+//   background-color: white;
+//   border-radius: 8px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   height: 200px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 1.5rem;
+//   color: #063178;
+// }
