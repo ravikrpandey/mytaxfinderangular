@@ -1,0 +1,22 @@
+<div class="sidebar" id="sidebar">
+  <h3>Dashboard</h3>
+  <ul>
+    <li (click)="toggleSubmenu($event.target)">
+      <i class="fas fa-tachometer-alt"></i> Dashboard
+      <i class="fas fa-chevron-down"></i>
+      <ul class="submenu">
+        <li>Overview</li>
+        <li>Reports</li>
+      </ul>
+    </li>
+    <li (click)="toggleSubmenu($event.target)">
+      <i class="fas fa-users"></i> Lead Management
+      <i class="fas fa-chevron-down"></i>
+      <ul class="submenu">
+        <li>New Leads</li>
+        <li>Active Leads</li>
+        <li>Closed Leads</li>
+      </ul>
+    </li>
+  </ul>
+</div>
