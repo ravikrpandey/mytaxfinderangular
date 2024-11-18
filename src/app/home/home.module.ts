@@ -43,6 +43,7 @@ const routes: Routes = [
     TermsAndConditionsComponent,
     PrivacyPolicyComponent
 
+
   ],
   imports: [
     CommonModule,
