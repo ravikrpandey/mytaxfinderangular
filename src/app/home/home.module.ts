@@ -41,7 +41,7 @@ const routes: Routes = [
     TaxPlanningComponent,
     TaxByRegionComponent,
     TermsAndConditionsComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
 
   ],
   imports: [

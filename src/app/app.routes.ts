@@ -13,7 +13,6 @@ import { AccountingServicesComponent } from './home/accounting-services/accounti
 import { TaxByRegionComponent } from './home/tax-by-region/tax-by-region.component';
 import { TermsAndConditionsComponent } from './home/terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
-import { DashboardComponent } from './home/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -31,7 +30,8 @@ export const routes: Routes = [
   {path: 'tax-by-region', component: TaxByRegionComponent},
   {path: 'terms-of-service', component: TermsAndConditionsComponent},
   {path: 'privacy-policy', component: PrivacyPolicyComponent},
-  {path: 'dashboard', component: DashboardComponent},
+  { path: 'admin', loadChildren: () => import('./admin/admin-menu/admin-menu.module').then(m => m.AdminMenuModule) },
+
 
 ];
 
