@@ -9,19 +9,37 @@ const routes: Routes = [
     component: AdminMainComponent,
     children: [
       {
-        path: 'dashboard',
-        component: DashboardComponent
+        path: '',
+        component: DashboardComponent,
       },
-      { path: 'queries', loadChildren: () => import('../admin-menu/queries/queries.module').then(m => m.QueriesModule) },
-      // { path: 'dashboard', loadChildren: () => import('../admin/admin-menu/dashboard').then(m => m.AdminMenuModule) },
-      // { path: 'album', loadChildren: () => import('../admin-menu/album/album.module').then(m => m.AlbumModule) },
-      // { path: 'song', loadChildren: () => import('../admin-menu/songs/songs.module').then(m => m.SongsModule) }
-    ]
-  }
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'queries',
+        loadChildren: () =>
+          import('../admin-menu/queries/queries.module').then(
+            (m) => m.QueriesModule
+          ),
+      },
+      // Uncomment and modify as needed for additional modules
+      // {
+      //   path: 'album',
+      //   loadChildren: () =>
+      //     import('../admin-menu/album/album.module').then((m) => m.AlbumModule),
+      // },
+      // {
+      //   path: 'song',
+      //   loadChildren: () =>
+      //     import('../admin-menu/songs/songs.module').then((m) => m.SongsModule),
+      // },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminMenuRoutingModule { }
+export class AdminMenuRoutingModule {}

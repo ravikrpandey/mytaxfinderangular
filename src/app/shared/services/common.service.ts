@@ -12,6 +12,7 @@ export class CommonService {
   private apiUrls = {
     contactEnquiry: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/contact-enquiry`,
     enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/enquiry-form`,
+    listEnquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/list-enquiry-form`,
     checkApplicationStatus: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/check-application-status`,
 
   };
@@ -29,6 +30,10 @@ export class CommonService {
   }
   checkApplicationStatus(uniqueId: string): Observable<any> {
     const url = `${this.apiUrls.checkApplicationStatus}/${uniqueId}`;
+    return this.http.get(url);
+  }
+  litEnquiry(): Observable<any> {
+    const url = `${this.apiUrls.listEnquiryForm}`;
     return this.http.get(url);
   }
 

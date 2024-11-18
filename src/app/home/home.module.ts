@@ -21,6 +21,7 @@ import { AppComponent } from '../app.component';
 import { TaxByRegionComponent } from './tax-by-region/tax-by-region.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }
@@ -53,6 +54,7 @@ const routes: Routes = [
     // BrowserAnimationsModule,
     MatSnackBarModule,
     FormsModule,
+    AgGridModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

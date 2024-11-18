@@ -67,9 +67,6 @@ export class AdminMainComponent implements OnInit, AfterContentChecked, DoCheck 
   nav1: any[] = [];
 
   ngOnInit(): void {
-    console.log('====================================');
-    console.log();
-    console.log('====================================');
 
     this.navData = [
       {
@@ -90,21 +87,21 @@ export class AdminMainComponent implements OnInit, AfterContentChecked, DoCheck 
         "access": true,
         "subModules": [
           {
-            "moduleName": "Filed Queries",
-            "route": "queries/filed",
+            "moduleName": "Queries Filed List",
+            "route": "queries/list-filed",
             "read": true,
             "write": true,
             "delete": true,
             "access": true
           },
           {
-            "moduleName": "Contacted",
-            "route": "queries/contacted-queries",
+            "moduleName": "Enquire List",
+            "route": "queries/enquire-list",
             "read": true,
             "write": true,
             "delete": true,
             "access": true
-          },
+          }
 
         ]
       },

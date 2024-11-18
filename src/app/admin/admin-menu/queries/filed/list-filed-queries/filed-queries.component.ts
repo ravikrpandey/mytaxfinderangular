@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonService } from '../../../../../shared/services/common.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActionCellRendererComponent } from '../../../../../shared/components/action-cell-renderer/action-cell-renderer.component';
 
 @Component({
   selector: 'app-filed-queries',
@@ -14,6 +15,10 @@ export class FiledQueriesComponent implements OnInit {
   message = "Please fill in all the required fields.";
   rowData: any[] = [];
 
+  frameworkComponents = {
+    actionCellRenderer: ActionCellRendererComponent
+  };
+
   columnDefs = [
     { headerName: 'ID', field: 'id' },
     { headerName: 'First Name', field: 'firstName' },
@@ -25,8 +30,27 @@ export class FiledQueriesComponent implements OnInit {
     { headerName: 'Application Status', field: 'application_status' },
     { headerName: 'Ref Number', field: 'ref_number' },
     { headerName: 'Created At', field: 'createdAt' },
-    { headerName: 'Updated At', field: 'updatedAt' }
+    { headerName: 'Updated At', field: 'updatedAt' },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      cellRenderer: 'actionCellRenderer',
+      width: 150, // Optional: Adjust the column width
+    }
   ];
+
+  onEditRow(data: any) {
+    console.log('Edit row data:', data);
+    // Navigate to the edit page or open a modal for editing
+  }
+
+  gridOptions = {
+    context: {
+      componentParent: this,
+    },
+  };
+  
+  
 
   // Reference to ag-Grid API for filtering
   gridApi: any;
