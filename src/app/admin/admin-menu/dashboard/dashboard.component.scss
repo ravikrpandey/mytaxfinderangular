@@ -1,0 +1,122 @@
+/* Main Content Styling */
+.content {
+  margin-left: 0px; /* Matches the sidebar width */
+  padding: 10px;
+  padding-bottom: 60px; /* Prevent content from overlapping footer */
+  transition: margin-left 0.3s ease;
+}
+
+.content.expanded {
+  margin-left: 20px; /* Adjust for collapsed sidebar */
+}
+
+
+
+.content h2 {
+  font-size: 22px;
+  color: #163865;
+  margin-bottom: 20px;
+}
+
+/* Main Dashboard Card Styling */
+.main-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.card h3 {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.card .percentage {
+  font-size: 24px;
+  color: #163865;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.card .footer {
+  background-color: #163865;
+  color: white;
+  padding: 5px 0;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+/* Different Card Colors */
+.card-blue .footer {
+  background-color: #1b3a6f;
+}
+.card-orange .footer {
+  background-color: #e6982d;
+}
+.card-red .footer {
+  background-color: #d54b4b;
+}
+.card-green .footer {
+  background-color: #1b3a6f;
+}
+
+/* Chart Containers */
+.charts-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.chart-card {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styling */
+.footer {
+  background-color: #0f2c5f;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: calc(100% - 240px); /* Matches the content width */
+  left: 240px; /* Matches the sidebar width */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0; /* No sidebar on mobile */
+  }
+
+  .footer {
+    width: 100%; /* Full width on mobile */
+    left: 0;
+  }
+}
