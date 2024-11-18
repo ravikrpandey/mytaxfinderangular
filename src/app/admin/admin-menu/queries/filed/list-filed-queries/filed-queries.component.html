@@ -1,0 +1,22 @@
+<div class="query-header">
+  <h2>Query Filed List</h2>
+</div>
+
+<div class="search-container">
+  <input 
+    type="text" 
+    class="search-input" 
+    placeholder="Search..." 
+    (input)="onSearchChanged($event)" />
+</div>
+
+<ag-grid-angular
+  #agGrid
+  style="width: 100%; height: 500px;"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [pagination]="true"
+  [paginationPageSize]="20"
+  (gridReady)="onGridReady($event)">
+</ag-grid-angular>

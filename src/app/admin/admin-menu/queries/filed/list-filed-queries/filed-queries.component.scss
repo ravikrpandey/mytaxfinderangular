@@ -1,0 +1,38 @@
+.ag-theme-alpine {
+    --ag-background-color: #f8f9fa;
+    --ag-header-background-color: #163865;
+    --ag-header-foreground-color: white;
+    --ag-font-size: 14px;
+  }
+  .query-header {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  
+  .query-header h2 {
+    font-size: 24px;
+    color: #163865;
+    font-weight: bold;
+  }
+  
+  .search-container {
+    margin: 15px 0;
+    text-align: right; /* Align the search input to the right */
+    padding: 0 20px;
+  }
+  
+  .search-input {
+    width: 250px;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #163865; /* Border color */
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  
+    /* Focus effect */
+    &:focus {
+      border-color: #00b0ff; /* Light blue on focus */
+    }
+  }
+  

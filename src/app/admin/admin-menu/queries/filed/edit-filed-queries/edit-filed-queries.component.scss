@@ -1,0 +1,37 @@
+.edit-query-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  input.form-control {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+  }
+  
+  .is-invalid {
+    border-color: red;
+  }
+  
+  .invalid-feedback {
+    color: red;
+    font-size: 0.875em;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+  }
+  
