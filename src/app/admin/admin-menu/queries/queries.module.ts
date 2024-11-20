@@ -11,7 +11,7 @@ import { ActionCellRendererComponent } from '../../../shared/components/action-c
 
 
 @NgModule({
-  declarations: [FiledQueriesComponent, HomeQueriesComponent, EditFiledQueriesComponent, ActionCellRendererComponent],
+  declarations: [FiledQueriesComponent, HomeQueriesComponent, EditFiledQueriesComponent],
   imports: [
     CommonModule,
     QueriesRoutingModule,

@@ -7,13 +7,14 @@
     type="text" 
     class="search-input" 
     placeholder="Search..." 
-    (input)="onSearchChanged($event)" />
+    (input)="onSearchChanged($event)" 
+    aria-label="Search Queries" />
 </div>
 
 <ag-grid-angular
   #agGrid
-  style="width: 100%; height: 500px;"
   class="ag-theme-alpine"
+  style="width: 100%; height: 500px;"
   [columnDefs]="columnDefs"
   [rowData]="rowData"
   [gridOptions]="gridOptions"

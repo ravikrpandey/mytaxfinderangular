@@ -55,6 +55,7 @@ const routes: Routes = [
     MatSnackBarModule,
     FormsModule,
     AgGridModule,
+    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

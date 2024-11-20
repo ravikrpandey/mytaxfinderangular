@@ -46,7 +46,7 @@ export class AdminMainComponent implements OnInit, AfterContentChecked, DoCheck 
   userData: any;
   roles: any;
 
-  isNotificationDropdownOpen = true;
+  isNotificationDropdownOpen = false;
   isProfileDropdownOpen = false;
 
 
@@ -358,31 +358,6 @@ export class AdminMainComponent implements OnInit, AfterContentChecked, DoCheck 
       userType: "Admin"
     };
     this.subscription = timer(0, 10 * 5000).pipe(
-      //   switchMap(() => this.battery.postNoti(data))).subscribe((res:any)=>{
-      //    this.MyDatadata=res.data
-      //    this.newArr=this.MyDatadata.map(i=>i.id)
-      //     if(res.data.length>=1){
-      //      if (this.dialog.openDialogs.length>0)
-      //      {
-
-
-      //     }else{
-      //     const dialogRef = this.dialog.open(BatteryAlertComponent, {
-      //       width: '550px',
-      //        disableClose: true ,
-      //       data:{name:this.MyDatadata}
-      //     });
-      //     dialogRef.afterClosed().subscribe(result => {
-      //       console.log('The dialog was closed');
-      //     });
-      //   }
-      //   }else{
-      //     return ;
-      //   }
-      //   })
-      // }
-
-
 
     );
   }

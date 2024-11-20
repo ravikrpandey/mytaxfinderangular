@@ -4,3 +4,13 @@
     cursor: pointer;
   }
   
+  .edit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mat-icon {
+    font-size: 20px; /* Adjust size */
+  }
+  

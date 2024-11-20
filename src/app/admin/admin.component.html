@@ -1,40 +1,42 @@
 <div class="top-nav">
-    <div class="left">
-      <h2>MyTaxFinder</h2>
-    </div>
-    <div class="right">
-      <i class="fas fa-home"></i>
+  <div class="left">
+    <h2>MyTaxFinder</h2>
+  </div>
+  <div class="right">
+    <i class="fas fa-home"></i>
 
-      <!-- Notification Bell Icon -->
-      <div class="notification" (click)="toggleDropdown('notification')">
-        <i class="fas fa-bell"></i>
-        <div
-          class="notification-dropdown"
-          *ngIf="isNotificationDropdownOpen"
-          (click)="$event.stopPropagation()">
-          <p>You have 3 new notifications</p>
-          <ul>
-            <li>New user registered</li>
-            <li>System update completed</li>
-            <li>Profile settings changed</li>
-          </ul>
-        </div>
+    <!-- Notification Bell Icon -->
+    <div class="notification" (click)="toggleDropdown('notification')">
+      <i class="fas fa-bell"></i>
+      <div
+        class="notification-dropdown"
+        *ngIf="isNotificationDropdownOpen"
+        (click)="$event.stopPropagation()">
+        <p>You have 3 new notifications</p>
+        <ul>
+          <li>New user registered</li>
+          <li>System update completed</li>
+          <li>Profile settings changed</li>
+        </ul>
       </div>
+    </div>
 
-      <!-- Profile Section -->
-      <div class="profile" (click)="toggleDropdown('profile')">
-        <img src="assets/profile-pic.jpg" alt="Profile Picture" class="profile-pic" />
-        <div
-          class="profile-dropdown"
-          *ngIf="isProfileDropdownOpen"
-          (click)="$event.stopPropagation()">
-          <a routerLink="/profile">My Profile</a>
-          <a routerLink="/settings">Settings</a>
-          <a routerLink="/logout">Logout</a>
-        </div>
+    <!-- Profile Section -->
+    <div class="profile" (click)="toggleDropdown('profile')">
+      <span class="profile-name">Deepak Jha</span>
+      <img src="assets/profile-pic.jpg" alt="Profile Picture" class="profile-pic" />
+      <div
+        class="profile-dropdown"
+        *ngIf="isProfileDropdownOpen"
+        (click)="$event.stopPropagation()">
+        <a routerLink="/profile">My Profile</a>
+        <a routerLink="/settings">Settings</a>
+        <a routerLink="/logout">Logout</a>
       </div>
     </div>
   </div>
+</div>
+
 
 
 
