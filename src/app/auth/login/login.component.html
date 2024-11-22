@@ -1,14 +1,38 @@
-<!-- <div>
-    <h2>Login</h2>
-    <form (ngSubmit)="login()">
-      <label for="username">Username:</label>
-      <input type="text" id="username" [(ngModel)]="username" name="username">
-      <label for="password">Password:</label>
-      <input type="password" id="password" [(ngModel)]="password" name="password">
-      <button type="submit">Login</button>
+<div class="login-container">
+  <mat-card>
+    <div class="logo-container">
+      <img src="assets/mtf-logo.jpeg" alt="Tax Filing Logo" />
+      <h2>MyTaxFinder Admin Panel</h2>
+    </div>
+
+    <!-- Gmail Login -->
+    <button mat-raised-button color="primary" (click)="signInWithGoogle()">
+      <mat-icon>login</mat-icon> Sign in with Gmail
+    </button>
+
+    <hr />
+
+    <!-- OTP Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="sendOtp()">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="Enter your email" />
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" [disabled]="!loginForm.valid">
+        Send OTP
+      </button>
     </form>
-  </div>
-   -->\
 
+    <form *ngIf="otpSent" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+      <mat-form-field appearance="outline">
+        <mat-label>Enter OTP</mat-label>
+        <input matInput type="text" formControlName="otp" placeholder="Enter the OTP" />
+      </mat-form-field>
 
-   hbjkml,;./'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      <button mat-raised-button color="primary" [disabled]="!otpForm.valid">
+        Verify OTP
+      </button>
+    </form>
+  </mat-card>
+</div>

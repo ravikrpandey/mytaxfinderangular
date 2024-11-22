@@ -31,6 +31,7 @@ export const routes: Routes = [
   {path: 'terms-of-service', component: TermsAndConditionsComponent},
   {path: 'privacy-policy', component: PrivacyPolicyComponent},
   { path: 'admin', loadChildren: () => import('./admin/admin-menu/admin-menu.module').then(m => m.AdminMenuModule) },
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
 
 
 ];
