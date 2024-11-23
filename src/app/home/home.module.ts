@@ -1,7 +1,11 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
-
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AgGridModule } from 'ag-grid-angular';
+
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -13,19 +17,17 @@ import { EnquiryFormComponent } from './enquiry-form/enquiry-form.component';
 import { GstRegistrationAndReturnComponent } from './gst-registration-and-return/gst-registration-and-return.component';
 import { AccountingServicesComponent } from './accounting-services/accounting-services.component';
 import { TaxPlanningComponent } from './tax-planning/tax-planning.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponent } from '../app.component';
 import { TaxByRegionComponent } from './tax-by-region/tax-by-region.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { AgGridModule } from 'ag-grid-angular';
 
+// Define routes for HomeModule
 const routes: Routes = [
   { path: '', component: HomeComponent }
 ];
+
+
+
 
 @NgModule({
   declarations: [
@@ -43,20 +45,16 @@ const routes: Routes = [
     TaxByRegionComponent,
     TermsAndConditionsComponent,
     PrivacyPolicyComponent,
-
-
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     HttpClientModule,
     ReactiveFormsModule,
-    // BrowserAnimationsModule,
-    MatSnackBarModule,
     FormsModule,
+    MatSnackBarModule,
     AgGridModule,
-    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomeModule { }
+export class HomeModule {}

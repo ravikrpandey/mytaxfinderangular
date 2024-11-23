@@ -68,6 +68,10 @@ export class AdminMainComponent implements OnInit, AfterContentChecked, DoCheck 
 
   ngOnInit(): void {
 
+    if(!localStorage.getItem('email')) {
+      this.router.navigate(['/auth/login']);
+    }
+
     this.navData = [
       {
         "moduleName": "Dashboard",

@@ -14,6 +14,8 @@ export class CommonService {
     enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/enquiry-form`,
     listEnquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/list-enquiry-form`,
     checkApplicationStatus: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/check-application-status`,
+    registerUser: `${environment.apiHost}/api/v1/client-user/meta-data/user/register-user`,
+    verifyUser: `${environment.apiHost}/api/v1/client-user/meta-data/user/verify-user`,
 
   };
 
@@ -36,5 +38,15 @@ export class CommonService {
     const url = `${this.apiUrls.listEnquiryForm}`;
     return this.http.get(url);
   }
+  registerUser(email: string): Observable<any> {
+    const url = `${this.apiUrls.registerUser}`;
+    const payload = { email };
+    return this.http.post(url, payload);
+  }
+  verifyUser(otp: any, email: string): Observable<any> {
+    const url = `${this.apiUrls.verifyUser}`;
+    const payload = { otp, email };
+    return this.http.post(url, payload);
+  }  
 
 }

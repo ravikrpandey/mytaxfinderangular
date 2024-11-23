@@ -5,14 +5,12 @@
       <h2>MyTaxFinder Admin Panel</h2>
     </div>
 
-    <!-- Gmail Login -->
-    <button mat-raised-button color="primary" (click)="signInWithGoogle()">
+    <!-- <button mat-raised-button color="primary" (click)="signInWithGoogle()">
       <mat-icon>login</mat-icon> Sign in with Gmail
-    </button>
+    </button> -->
 
     <hr />
 
-    <!-- OTP Login Form -->
     <form [formGroup]="loginForm" (ngSubmit)="sendOtp()">
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
