@@ -123,7 +123,7 @@ export class HeaderComponent implements OnInit {
                     this.showErrorNotification('We regret to inform you that your query has been rejected. Please contact support for more details.');
                     break;
                 default:
-                    this.showErrorNotification('Status unknown. Please check your Query ID and try again.');
+                    this.showErrorNotification(`Status: ${applicationStatus}.`);
             }
         } else {
             this.showErrorNotification('Error: ' + res.message);
