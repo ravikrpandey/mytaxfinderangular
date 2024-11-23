@@ -37,6 +37,7 @@ export const routes: Routes = [
   { path: 'tax-by-region', component: TaxByRegionComponent },
   { path: 'terms-of-service', component: TermsAndConditionsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'enquiryForm', component: EnquiryFormComponent },
 
   // Wildcard route (optional, uncomment if `PageNotFoundComponent` is available)
   // { path: '**', component: PageNotFoundComponent },

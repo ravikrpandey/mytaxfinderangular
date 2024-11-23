@@ -74,7 +74,7 @@ export class EnquiryFormComponent {
   onSubmit() {
     debugger;
     if (this.myForm.valid) {
-      this.commonService.enquiryForm(this.myForm.value).subscribe(
+      this.commonService.enquiryForm(JSON.stringify(this.myForm.value)).subscribe(
         (response) => {
           this.showSuccessNotification(response.message);
           this.myForm.reset();
