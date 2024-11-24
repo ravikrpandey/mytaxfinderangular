@@ -1,44 +1,52 @@
-$color_1: #433f39;
-$color_2: #e84545;
-$color_3: #777777;
-$color_4: #fff;
-$border-color_1: #e84545;
+$color_1: #433f39; // Primary text color
+$color_2: #e84545; // Accent color
+$color_3: #777777; // Secondary text color
+$color_4: #fff; // White
+$border-color_1: #e84545; // Border color
 
 /*--------------------------------------------------------------
-# Specials
+# General Styles
 --------------------------------------------------------------*/
-.spanText {
-    color: #e84545;
+body {
+    font-family: Arial, sans-serif;
+    color: $color_1;
+    line-height: 1.6;
 }
 
-#specials.specials p::before {
-    content: "\2022";
-    color: red;
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+h3 {
+    color: $color_1;
 }
 
+p {
+    color: $color_3;
+}
+
+/*--------------------------------------------------------------
+# Specials Section
+--------------------------------------------------------------*/
 .specials {
     overflow: hidden;
+    padding: 40px 20px;
 
     .nav-tabs {
         border: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
     .nav-link {
         border: 0;
-        padding: 12px 15px 12px 0;
+        padding: 12px 15px;
         transition: 0.3s;
         color: $color_1;
-        border-radius: 0;
         border-right: 2px solid #e8e7e4;
         font-weight: 600;
         font-size: 15px;
 
         &:hover {
             color: $color_2;
+            text-decoration: underline;
         }
     }
 
@@ -52,6 +60,8 @@ $border-color_1: #e84545;
     }
 
     .details {
+        padding: 20px;
+
         h3 {
             font-size: 26px;
             font-weight: 600;
@@ -61,6 +71,7 @@ $border-color_1: #e84545;
 
         p {
             color: $color_3;
+            margin-bottom: 10px;
 
             &:last-child {
                 margin-bottom: 0;
@@ -69,16 +80,72 @@ $border-color_1: #e84545;
     }
 }
 
+/*--------------------------------------------------------------
+# Call-to-Action Section
+--------------------------------------------------------------*/
+.call-to-action {
+    background: #f8f9fa;
+    padding: 40px 20px;
+
+    .rectangular-box {
+        border: 2px solid $border-color_1;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 8px;
+        background: $color_4;
+
+        h4 {
+            margin-bottom: 15px;
+            color: $color_2;
+            font-size: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            color: $color_1;
+        }
+    }
+
+    .left-box {
+        margin-bottom: 20px;
+    }
+
+    .right-box {
+        margin-top: 20px;
+    }
+}
+
+/*--------------------------------------------------------------
+# Responsive Styles
+--------------------------------------------------------------*/
 @media (max-width: 992px) {
     .specials {
         .nav-link {
             border: 0;
             padding: 15px;
+            text-align: center;
         }
 
         .nav-link.active {
             color: $color_4;
-            background: #e84545;
+            background: $color_2;
         }
+    }
+
+    .call-to-action {
+        .rectangular-box {
+            padding: 15px;
+            text-align: center;
+        }
+    }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

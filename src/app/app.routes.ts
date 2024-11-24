@@ -38,6 +38,11 @@ export const routes: Routes = [
   { path: 'terms-of-service', component: TermsAndConditionsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'enquiryForm', component: EnquiryFormComponent },
+  { path: 'gstRegistrationAndReturn', component: GstRegistrationAndReturnComponent },
+  { path: 'taxPlanning', component: TaxPlanningComponent },
+  { path: 'accountingService', component: AccountingServicesComponent },
+  { path: 'BusinessRegistration', component: BusinessRegistrationComponent },
+  { path: 'FinancialPlanning', component: FinancialPlanningComponent },
 
   // Wildcard route (optional, uncomment if `PageNotFoundComponent` is available)
   // { path: '**', component: PageNotFoundComponent },
