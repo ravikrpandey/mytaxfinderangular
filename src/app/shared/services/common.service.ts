@@ -9,10 +9,12 @@ declare module '@srexi/purecounterjs';
   providedIn: 'root'
 })
 export class CommonService {
+ 
   private apiUrls = {
     contactEnquiry: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/contact-enquiry`,
     enquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/enquiry-form`,
     listEnquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/list-enquiry-form`,
+    updateEnquiryForm: `${environment.apiHost}/api/v1/client-user/meta-data/contact-enquiry/update-enquiry-form`,
     checkApplicationStatus: `${environment.apiHost}/api/v1/client-user/meta-data/contact-form/check-application-status`,
     registerUser: `${environment.apiHost}/api/v1/client-user/meta-data/user/register-user`,
     verifyUser: `${environment.apiHost}/api/v1/client-user/meta-data/user/verify-user`,
@@ -47,6 +49,12 @@ export class CommonService {
     const url = `${this.apiUrls.verifyUser}`;
     const payload = { otp, email };
     return this.http.post(url, payload);
-  }  
+  } 
+  
+  updateQuery(queryId: number, updatedQueryData: any): Observable<any> {
+    const url = `${this.apiUrls.updateEnquiryForm}`;
+    const payload = { queryId, updatedQueryData };
+    return this.http.patch(url, payload);
+  }
 
 }

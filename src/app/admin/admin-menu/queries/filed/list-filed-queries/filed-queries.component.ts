@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonService } from '../../../../../shared/services/common.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionCellRendererComponent } from '../../../../../shared/components/action-cell-renderer/action-cell-renderer.component';
+import { Router } from '@angular/router';
+import { SharedModule } from '../../../../../shared/shared.module';
+import { SharedService } from '../../../../../shared/services/shared.service';
 
 @Component({
   selector: 'app-filed-queries',
@@ -10,14 +12,10 @@ import { ActionCellRendererComponent } from '../../../../../shared/components/ac
 })
 export class FiledQueriesComponent implements OnInit {
 
-  constructor(private commonService: CommonService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {}
-
-  message = "Please fill in all the required fields.";
+  message = 'Please fill in all the required fields.';
   rowData: any[] = [];
-
-  frameworkComponents = {
-    actionCellRenderer: ActionCellRendererComponent
-  };
+  gridApi: any; // Reference to ag-Grid API
+  gridColumnApi: any;
 
   columnDefs = [
     { headerName: 'ID', field: 'id' },
@@ -31,92 +29,99 @@ export class FiledQueriesComponent implements OnInit {
     { headerName: 'Ref Number', field: 'ref_number' },
     { headerName: 'Created At', field: 'createdAt' },
     { headerName: 'Updated At', field: 'updatedAt' },
+    { headerName: 'Uploaded Files', field: 'files' },
     {
       headerName: 'Actions',
       field: 'actions',
-      cellRenderer: 'actionCellRenderer',
-      width: 150, // Optional: Adjust the column width
+      width: 150,
+      cellRenderer: (params: { data: { id: any } }) => {
+        // Create an edit icon as a button
+        const button = document.createElement('button');
+        button.innerHTML = `<i class="material-icons" style="cursor: pointer;">edit</i>`;
+        button.style.background = 'none';
+        button.style.border = 'none';
+        button.style.cursor = 'pointer';
+
+        // Add click event listener
+        button.addEventListener('click', () => {
+          this.onEditRow(params.data);
+        });
+
+        return button;
+      }
     }
   ];
 
-  onEditRow(data: any) {
-    console.log('Edit row data:', data);
-    // Navigate to the edit page or open a modal for editing
-  }
-
   gridOptions = {
-    context: {
-      componentParent: this,
-    },
+    enableRangeSelection: true,
+    enableClipboard: true,
+    clipboardDelimiter: '\t', // Use proper spelling for 'delimiter'
+    suppressClipboardPaste: true, // Prevent pasting back into the grid
   };
-  
-  
 
-  // Reference to ag-Grid API for filtering
-  gridApi: any;
-  gridColumnApi: any;
+  constructor(
+    private commonService: CommonService,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private sharedService: SharedService
+  ) {}
 
-  ngOnInit() {
-    this.litEnquiry();
+  ngOnInit(): void {
     this.fetchData();
-    this.rowData = [];
   }
 
-  fetchData() {
-    this.commonService.litEnquiry().subscribe((res: any) => {
-      this.rowData = res.data;
-      this.cdr.detectChanges();  // Manually trigger change detection
-    });
-  }
-
-  // Fetch data and populate the grid
-  litEnquiry() {
-    this.commonService.litEnquiry().subscribe((res: any) => {
-      if (res.success) {
-        this.rowData = res.data;
-        this.cdr.detectChanges();
-        this.showSuccessNotification(res.message);
-      } else {
-        this.showErrorNotification('Failed to load data.');
+  fetchData(): void {
+    this.commonService.litEnquiry().subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.rowData = res.data;
+          this.cdr.detectChanges(); // Trigger change detection
+          this.showSuccessNotification(res.message);
+        } else {
+          this.showErrorNotification('Failed to load data.');
+        }
+      },
+      error: () => {
+        this.showErrorNotification('An error occurred while fetching data.');
       }
-    }, (error) => {
-      this.showErrorNotification('An error occurred while fetching data.');
     });
   }
 
-  
+  onEditRow(data: any): void {
+    this.sharedService.setQueryData(data);
+    this.router.navigate(['/admin/queries/edit-filed-queries'], { state: { queryData: data } });
+    console.log('Edit row data:', data);
+    // Add additional logic for handling the edit action, such as opening a modal if needed
+  }  
 
-  // Show success notification
-  showSuccessNotification(message: string) {
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    console.log('Grid API initialized:', this.gridApi);
+    this.gridApi.setRowData(this.rowData);
+  }
+
+  onSearchChanged(event: any): void {
+    const searchValue = event.target.value;
+    if (this.gridApi) {
+      this.gridApi.setQuickFilter(searchValue);
+    } else {
+      console.error('Grid API is not initialized yet');
+    }
+  }
+
+  showSuccessNotification(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 2000,
       panelClass: ['snackbar-success']
     });
   }
 
-  // Show error notification
-  showErrorNotification(message: string) {
+  showErrorNotification(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       panelClass: ['snackbar-error']
     });
-  }
-
-  onGridReady(params: any) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    console.log('Grid API initialized:', this.gridApi);
-    this.gridApi.setRowData(this.rowData); 
-  }
-
-
-  // Method to apply filter based on search input
-  onSearchChanged(event: any) {
-    const searchValue = event.target.value;
-    if (this.gridApi) {
-      this.gridApi.setQuickFilter(searchValue);
-    } else {
-      console.log("gridApi is not initialized yet");
-    }
   }
 }

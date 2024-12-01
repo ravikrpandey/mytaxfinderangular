@@ -1,54 +1,118 @@
-<h2>Edit Filed Queries</h2>
+<div class="edit-query-container">
+  <h2>Edit Filed Query</h2>
 
-<form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="firstName">First Name</label>
-      <input id="firstName" formControlName="firstName" class="form-control" 
-             [ngClass]="{ 'is-invalid': f['firstName'].invalid && f['firstName'].touched }">
-      <div *ngIf="f['firstName'].invalid && f['firstName'].touched" class="invalid-feedback">
-        <div *ngIf="f['firstName'].errors?.['required']">First Name is required</div>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="firstName">First Name</label>
+        <input id="firstName" formControlName="firstName" class="form-control"
+          [ngClass]="{ 'is-invalid': f['firstName'].invalid && f['firstName'].touched }">
+        <div *ngIf="f['firstName'].invalid && f['firstName'].touched" class="invalid-feedback">
+          <div *ngIf="f['firstName'].errors?.['required']">First Name is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" formControlName="lastName" class="form-control"
+          [ngClass]="{ 'is-invalid': f['lastName'].invalid && f['lastName'].touched }">
+        <div *ngIf="f['lastName'].invalid && f['lastName'].touched" class="invalid-feedback">
+          <div *ngIf="f['lastName'].errors?.['required']">Last Name is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label for="serviceType">Service Type</label>
+        <input id="serviceType" formControlName="serviceType" class="form-control"
+          [ngClass]="{ 'is-invalid': f['serviceType'].invalid && f['serviceType'].touched }">
+        <div *ngIf="f['serviceType'].invalid && f['serviceType'].touched" class="invalid-feedback">
+          <div *ngIf="f['serviceType'].errors?.['required']">Service Type is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label for="ref_number">Ref_number</label>
+        <input id="ref_number" formControlName="ref_number" class="form-control"
+          [ngClass]="{ 'is-invalid': f['ref_number'].invalid && f['ref_number'].touched }"
+          readonly>
+        <div *ngIf="f['ref_number'].invalid && f['ref_number'].touched" class="invalid-feedback">
+          <div *ngIf="f['ref_number'].errors?.['required']">Ref_number is required</div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" class="form-control"
+          [ngClass]="{ 'is-invalid': f['email'].invalid && f['email'].touched }">
+        <div *ngIf="f['email'].invalid && f['email'].touched" class="invalid-feedback">
+          <div *ngIf="f['email'].errors?.['required']">Email is required</div>
+          <div *ngIf="f['email'].errors?.['email']">Invalid email address</div>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label for="contact">Contact</label>
+        <input id="contact" formControlName="contact" class="form-control"
+          [ngClass]="{ 'is-invalid': f['contact'].invalid && f['contact'].touched }">
+        <div *ngIf="f['contact'].invalid && f['contact'].touched" class="invalid-feedback">
+          <div *ngIf="f['contact'].errors?.['required']">Contact is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label for="status">Status</label>
+        <input id="status" formControlName="status" class="form-control"
+          [ngClass]="{ 'is-invalid': f['status'].invalid && f['status'].touched }" readonly>
+        <div *ngIf="f['status'].invalid && f['status'].touched" class="invalid-feedback">
+          <div *ngIf="f['status'].errors?.['required']">Status is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col">
+        <label for="application_status">Application_status</label>
+        <input id="application_status" formControlName="application_status" class="form-control"
+          [ngClass]="{ 'is-invalid': f['application_status'].invalid && f['application_status'].touched }">
+        <div *ngIf="f['application_status'].invalid && f['application_status'].touched" class="invalid-feedback">
+          <div *ngIf="f['application_status'].errors?.['required']">application_status is required</div>
+        </div>
       </div>
     </div>
-  
-    <div class="form-group">
-      <label for="lastName">Last Name</label>
-      <input id="lastName" formControlName="lastName" class="form-control" 
-             [ngClass]="{ 'is-invalid': f['lastName'].invalid && f['lastName'].touched }">
-      <div *ngIf="f['lastName'].invalid && f['lastName'].touched" class="invalid-feedback">
-        <div *ngIf="f['lastName'].errors?.['required']">Last Name is required</div>
+
+    <div class="uploaded-files">
+      <h3>Uploaded Files</h3>
+      <div class="file-icons">
+        <div *ngFor="let file of uploadedFiles" class="file-item">
+          <!-- Image File Preview -->
+          <img
+            *ngIf="isImage(file)"
+            [src]="file"
+            alt="Image file"
+            (mouseover)="showPreview(file)"
+            (mouseout)="hidePreview()"
+          />
+    
+          <!-- Document File Icon (PDF, DOC, DOCX) -->
+          <a *ngIf="isDocument(file)" [href]="file" target="_blank">
+            <i class="fa" [ngClass]="getDocumentIcon(file)"></i>
+          </a>
+        </div>
       </div>
     </div>
-  
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" formControlName="email" class="form-control" 
-             [ngClass]="{ 'is-invalid': f['email'].invalid && f['email'].touched }">
-      <div *ngIf="f['email'].invalid && f['email'].touched" class="invalid-feedback">
-        <div *ngIf="f['email'].errors?.['required']">Email is required</div>
-        <div *ngIf="f['email'].errors?.['email']">Invalid email address</div>
-      </div>
+    
+    <!-- Hover Preview -->
+    <div class="file-preview" *ngIf="previewFile && isImage(previewFile)">
+      <img [src]="previewFile" alt="Preview" />
     </div>
-  
-    <div class="form-group">
-      <label for="contact">Contact</label>
-      <input id="contact" formControlName="contact" class="form-control" 
-             [ngClass]="{ 'is-invalid': f['contact'].invalid && f['contact'].touched }">
-      <div *ngIf="f['contact'].invalid && f['contact'].touched" class="invalid-feedback">
-        <div *ngIf="f['contact'].errors?.['required']">Contact is required</div>
-      </div>
-    </div>
-  
-    <div class="form-group">
-      <label for="status">Status</label>
-      <input id="status" formControlName="status" class="form-control" 
-             [ngClass]="{ 'is-invalid': f['status'].invalid && f['status'].touched }">
-      <div *ngIf="f['status'].invalid && f['status'].touched" class="invalid-feedback">
-        <div *ngIf="f['status'].errors?.['required']">Status is required</div>
-      </div>
-    </div>
-  
-    <!-- Repeat for other fields (application_status, ref_number, etc.) -->
+    
   
     <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Submit</button>
+
+
   </form>
-  
+
+
+
+</div>

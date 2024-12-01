@@ -12,4 +12,14 @@ import { ActionCellRendererComponent } from './components/action-cell-renderer/a
   exports: [ActionCellRendererComponent],
   
 })
-export class SharedModule { }
+export class SharedModule {
+  private queryData: any;
+
+  setQueryData(data: any): void {
+    this.queryData = data;
+  }
+
+  getQueryData(): any {
+    return this.queryData;
+  }
+ }
