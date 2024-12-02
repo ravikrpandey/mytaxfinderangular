@@ -16,6 +16,7 @@ export class FiledQueriesComponent implements OnInit {
   rowData: any[] = [];
   gridApi: any; // Reference to ag-Grid API
   gridColumnApi: any;
+  filteredData: any[] = [];
 
   columnDefs = [
     { headerName: 'ID', field: 'id' },
@@ -91,25 +92,25 @@ export class FiledQueriesComponent implements OnInit {
   onEditRow(data: any): void {
     this.sharedService.setQueryData(data);
     this.router.navigate(['/admin/queries/edit-filed-queries'], { state: { queryData: data } });
-    console.log('Edit row data:', data);
-    // Add additional logic for handling the edit action, such as opening a modal if needed
-  }  
+  }
 
   onGridReady(params: any): void {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    console.log('Grid API initialized:', this.gridApi);
-    this.gridApi.setRowData(this.rowData);
+    if (this.rowData) {
+      this.gridApi.setRowData(this.rowData);
+    }
   }
 
   onSearchChanged(event: any): void {
-    const searchValue = event.target.value;
+    const searchValue = event.target.value.trim();
     if (this.gridApi) {
       this.gridApi.setQuickFilter(searchValue);
     } else {
-      console.error('Grid API is not initialized yet');
     }
   }
+
+
 
   showSuccessNotification(message: string): void {
     this.snackBar.open(message, 'Close', {
