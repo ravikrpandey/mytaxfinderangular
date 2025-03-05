@@ -28,10 +28,11 @@ export class CommonService {
     return this.http.post(this.apiUrls.contactEnquiry, formData, { headers });
   }
 
-  enquiryForm(formData: any): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(this.apiUrls.enquiryForm, formData, {headers});
+  enquiryForm(formData: FormData): Observable<any> {
+    // No need to manually set Content-Type for FormData
+    return this.http.post(this.apiUrls.enquiryForm, formData);
   }
+  
   checkApplicationStatus(uniqueId: string): Observable<any> {
     const url = `${this.apiUrls.checkApplicationStatus}/${uniqueId}`;
     return this.http.get(url);

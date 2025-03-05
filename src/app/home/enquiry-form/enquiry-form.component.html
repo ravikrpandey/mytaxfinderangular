@@ -5,7 +5,8 @@
     <div class="container">
       <div class="row">
         <div class="booking-form">
-          <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+          <!-- The enctype="multipart/form-data" ensures the form handles file uploads properly -->
+          <form [formGroup]="myForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -62,8 +63,8 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="files" class="form-label">Upload Files</label>
-                  <input type="file" class="form-control" (change)="onFileChange($event)" id="files" multiple>
+                  <label for="fileInput" class="form-label">Upload Files</label>
+                  <input type="file" class="form-control" id="fileInput" (change)="onFileChange($event)" multiple>
                 </div>
               </div>
               <div class="col-md-12">

@@ -1,8 +1,7 @@
-import { CommonService } from './../../shared/services/common.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { CommonService } from './../../shared/services/common.service';
 
 @Component({
   selector: 'app-enquiry-form',
@@ -11,89 +10,88 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class EnquiryFormComponent {
   myForm: FormGroup;
-  base64Files: string[] = [];
-  
+  formData: FormData = new FormData(); // FormData instance for file uploads
+  selectedFiles: File[] = []; // Store selected files
 
-  constructor(private fb: FormBuilder, private commonService: CommonService, private snackBar: MatSnackBar) {
+  constructor(
+    private fb: FormBuilder, 
+    private commonService: CommonService, 
+    private snackBar: MatSnackBar
+  ) {
     this.myForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       serviceType: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      files: [[]],
       contact: ['', Validators.required]
     });
   }
+
   message = "Please fill in all the required fields."
 
   showSuccessNotification(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 5000,  // Duration in milliseconds
-      panelClass: ['snackbar-success'] // Optional, for custom styling
+      duration: 5000,
+      panelClass: ['snackbar-success']
     });
   }
 
-  showErrorNotification(message: string) {  // Accept message as parameter
+  showErrorNotification(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       panelClass: ['snackbar-error']
     });
   }
 
-
-  // Handler for file input change event
+  // Handle file input change
   onFileChange(event: any) {
-    const files = event.target.files;
-    this.base64Files = [];
-
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        this.convertFileToBase64(file).then((base64: string) => {
-          this.base64Files.push(base64);
-          this.myForm.patchValue({
-            files: this.base64Files
-          });
-        });
+    if (event.target && event.target.files) {
+      const files = event.target.files;
+      if (files.length > 0) {
+        this.selectedFiles = Array.from(files); // Convert FileList to an array
+        console.log('Selected files:', this.selectedFiles);
       }
     }
-  }
+  }  
 
-  // Convert the file to Base64
-  convertFileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        resolve(reader.result as string); // This will give base64 encoded string
-      };
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);  // Convert file to base64 format
-    });
-  }
-
+  // Handle form submission
   onSubmit() {
-    debugger;
     if (this.myForm.valid) {
-      this.commonService.enquiryForm(JSON.stringify(this.myForm.value)).subscribe(
+      this.formData = new FormData(); // Reset FormData before appending
+
+      // Append form fields to FormData
+      ['firstName', 'lastName', 'serviceType', 'email', 'contact'].forEach(field => {
+        const value = this.myForm.get(field)?.value;
+        if (value) {
+          this.formData.append(field, value);
+        }
+      });
+
+      // Append files to FormData
+      this.selectedFiles.forEach(file => {
+        this.formData.append('files', file);
+      });
+
+      // Send form data to the backend
+      this.commonService.enquiryForm(this.formData).subscribe(
         (response) => {
           this.showSuccessNotification(response.message);
-          this.myForm.reset();
-          this.base64Files = [];
+          this.myForm.reset(); // Reset form
+          this.selectedFiles = []; // Clear selected files
+          this.formData = new FormData(); // Reset FormData
         },
         (error) => {
-          console.log("error")
+          console.error('Error:', error);
           this.showErrorNotification('An error occurred while submitting the form.');
         }
       );
     } else {
-      console.log("Please Fill All The Required Fields")
-      this.showErrorNotification(this.message);
+      this.showErrorNotification('Please fill all required fields.');
     }
-  };
+  }
 
+  // Cancel the form and navigate back
   cancel() {
-  window.history.back();
+    window.history.back();
   }
 }
-
-
