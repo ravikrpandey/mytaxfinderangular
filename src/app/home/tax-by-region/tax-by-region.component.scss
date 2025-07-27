@@ -21,7 +21,8 @@ body {
 
 /* Styles for the accordion button */
 .accordion-button {
-  background-color: #007bff; /* Blue background */
+  // background-color: #154194; /* Blue background */
+  background-color: #154194; /* Blue background */
   color: white; /* White text */
   border: none;
   padding: 15px 20px; /* Added horizontal padding for spaciousness */
@@ -37,7 +38,7 @@ body {
 
 /* Hover effect for the accordion button */
 .accordion-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #007bff; /* Darker blue on hover */
 }
 
 /* Styles for the accordion body */
