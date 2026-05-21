@@ -12,6 +12,7 @@ import { AccountingServicesComponent } from './home/accounting-services/accounti
 import { TaxByRegionComponent } from './home/tax-by-region/tax-by-region.component';
 import { TermsAndConditionsComponent } from './home/terms-and-conditions/terms-and-conditions.component';
 import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
+import { FinancialPlanningAiComponent } from './home/financial-planning-ai/financial-planning-ai.component';
 
 // Optional: Import a PageNotFoundComponent for unmatched routes
 // import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -43,6 +44,7 @@ export const routes: Routes = [
   { path: 'accountingService', component: AccountingServicesComponent },
   { path: 'BusinessRegistration', component: BusinessRegistrationComponent },
   { path: 'FinancialPlanning', component: FinancialPlanningComponent },
+  { path: 'financial-planning-ai', component: FinancialPlanningAiComponent},
 
   // Wildcard route (optional, uncomment if `PageNotFoundComponent` is available)
   // { path: '**', component: PageNotFoundComponent },

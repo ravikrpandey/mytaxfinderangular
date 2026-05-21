@@ -21,6 +21,7 @@ export class HomeComponent implements AfterViewInit {
   message: string = 'Form is invalid';
   expandedIndex: number | null = null;
   email: string = '';
+  currentYear: string = `${new Date().getFullYear() - 1}-${(new Date().getFullYear()).toString().slice(-2)}`; // Set to previous year for assessment year display
 
   faqs: Faq[] = [
     {
@@ -41,7 +42,7 @@ export class HomeComponent implements AfterViewInit {
       question: "How can you file an income tax return in India?",
       answer: `You can file your income tax returns online, either on the income tax department’s website or with
                 us at www.MyTaxFinder.com. Income Tax filing or e-filing is made easy on MyTaxFinder. You can e-file your returns with us. Also, note
-                that the due date to e-file your income tax returns for the assessment year 2023-24 is on or before 31st July 2023.`
+                that the due date to e-file your income tax returns for the assessment year ${this.currentYear} is on or before 31st July ${parseInt(this.currentYear.split('-')[0]) + 1}.`
     },
     {
       question: "How can I claim deductions for tax saving?",
