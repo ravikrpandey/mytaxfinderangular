@@ -12,7 +12,7 @@
     "admin": "cd admin && npm start",
     "admin:install": "cd admin && npm install",
     "admin:build": "cd admin && npm run build",
-    "admin:build:prod": "cd admin && ng build --configuration production --base-href /admin/",
+    "admin:build:prod": "cd admin && ng build --configuration production --base-href /adminpanel/",
     "admin:watch": "cd admin && npm run watch",
     "admin:test": "cd admin && npm test",
 

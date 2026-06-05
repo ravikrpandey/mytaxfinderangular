@@ -36,7 +36,7 @@ fi
 # ── STEP 3: Create web directories ─────────────────────────
 echo "▶ Creating web directories..."
 sudo mkdir -p /var/www/mytaxfinder/portal
-sudo mkdir -p /var/www/mytaxfinder/admin
+sudo mkdir -p /var/www/mytaxfinder/adminpanel
 sudo chown -R $USER:$USER /var/www/mytaxfinder
 
 # ── STEP 4: Copy Nginx config ──────────────────────────────
@@ -71,16 +71,16 @@ cd ..
 echo "▶ Building Admin (Angular 20) with --base-href /admin/..."
 npm run admin:build:prod
 
-echo "▶ Copying Admin build to /var/www/mytaxfinder/admin..."
-cp -r admin/dist/my-tax-finder/* /var/www/mytaxfinder/admin/ 2>/dev/null || \
-cp -r admin/dist/MyTaxFinder/*   /var/www/mytaxfinder/admin/ 2>/dev/null || \
-cp -r admin/dist/*/*              /var/www/mytaxfinder/admin/ 2>/dev/null || true
+echo "▶ Copying Admin build to /var/www/mytaxfinder/adminpanel..."
+cp -r admin/dist/MyTaxFinder/* /var/www/mytaxfinder/adminpanel/ 2>/dev/null || \
+cp -r admin/dist/my-tax-finder/* /var/www/mytaxfinder/adminpanel/ 2>/dev/null || \
+cp -r admin/dist/*/*             /var/www/mytaxfinder/adminpanel/ 2>/dev/null || true
 
 echo ""
 echo "▶ Final folder structure:"
-ls /var/www/mytaxfinder/portal | head -5
+ls /var/www/mytaxfinder/portal    | head -5
 echo "---"
-ls /var/www/mytaxfinder/admin  | head -5
+ls /var/www/mytaxfinder/adminpanel | head -5
 
 # ── STEP 8: Restart Nginx ──────────────────────────────────
 echo ""
@@ -91,6 +91,7 @@ sudo systemctl enable nginx
 echo ""
 echo "=============================================="
 echo "  ✅ Deployment Complete!"
-echo "  Portal → http://YOUR_DOMAIN_OR_IP/"
-echo "  Admin  → http://YOUR_DOMAIN_OR_IP/admin/"
+echo "  Portal        → http://YOUR_DOMAIN_OR_IP/"
+echo "  Portal Admin  → http://YOUR_DOMAIN_OR_IP/admin  (portal's built-in admin)"
+echo "  New Admin App → http://YOUR_DOMAIN_OR_IP/adminpanel/"
 echo "=============================================="

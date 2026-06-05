@@ -5,7 +5,7 @@ import { adminGuard } from './guards/role.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -68,6 +68,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/login'
+    redirectTo: 'login'
   }
 ];
