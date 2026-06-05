@@ -1,0 +1,253 @@
+<div class="login-container">
+  <div class="login-shell">
+    <div class="login-wrapper">
+      <div class="login-hero">
+        <div class="hero-content">
+          <div class="hero-brand">
+            <span class="brand-mark">MTF</span>
+            <div>
+              <h2>MyTaxFinder</h2>
+              <p>Simplify Your Tax Filing & Compliance</p>
+            </div>
+          </div>
+          <div class="hero-features">
+            <h3>Professional Tax Services</h3>
+            <ul>
+              <li>
+                <span class="feature-icon">📊</span>
+                <div>
+                  <strong>Tax Filing Made Easy</strong>
+                  <p>File GST, Income Tax & TDS returns seamlessly</p>
+                </div>
+              </li>
+              <li>
+                <span class="feature-icon">📅</span>
+                <div>
+                  <strong>Compliance Tracking</strong>
+                  <p>Never miss a deadline with smart reminders</p>
+                </div>
+              </li>
+              <li>
+                <span class="feature-icon">📈</span>
+                <div>
+                  <strong>Financial Reports</strong>
+                  <p>Generate detailed tax reports instantly</p>
+                </div>
+              </li>
+              <li>
+                <span class="feature-icon">🔒</span>
+                <div>
+                  <strong>Secure & Reliable</strong>
+                  <p>Bank-grade security for your data</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="login-card">
+        <div class="card-header">
+          <h1>MyTaxFinder</h1>
+          <h2>Login</h2>
+        </div>
+
+        @if (error()) {
+          <div class="error-message">{{ error() }}</div>
+        }
+
+        <!-- Phone/Email Login Mode -->
+        @if (loginMode() === 'phone-email') {
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            @if (!showOtpInput()) {
+              <div class="form-group">
+                <label for="phoneOrEmail">Phone or Email<span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-prefix">+91</span>
+                  <input
+                    type="text"
+                    id="phoneOrEmail"
+                    name="phoneOrEmail"
+                    [(ngModel)]="phoneOrEmail"
+                    required
+                    placeholder="Enter your phone number or email address"
+                    [disabled]="isLoading()"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="remember-me">
+                  <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+                  <span>Remember me on this device</span>
+                </label>
+              </div>
+
+              <div class="button-group">
+                <button type="submit" class="btn-primary btn-login" [disabled]="isLoading()">
+                  @if (isLoading()) {
+                    <span>Sending OTP...</span>
+                  } @else {
+                    <span>Login</span>
+                  }
+                </button>
+
+                <button type="button" class="btn-secondary btn-create" (click)="createNewAccount()">
+                  Create New Account
+                </button>
+              </div>
+            } @else {
+              <!-- OTP Input Section -->
+              <div class="otp-section">
+                <h3 class="otp-title">Enter OTP</h3>
+                <p class="otp-subtitle">We've sent a 4-digit code to {{ phoneOrEmail() }}</p>
+                
+                <div class="otp-inputs">
+                  @for (digit of otp(); track $index) {
+                    <input
+                      type="text"
+                      [id]="'otp-' + $index"
+                      maxlength="1"
+                      class="otp-input"
+                      [value]="digit"
+                      (input)="onOtpInput($index, $event)"
+                      (keydown)="onOtpKeydown($index, $event)"
+                      [disabled]="isLoading()"
+                    />
+                  }
+                </div>
+
+                <button type="submit" class="btn-primary btn-verify" [disabled]="isLoading()">
+                  @if (isLoading()) {
+                    <span>Verifying...</span>
+                  } @else {
+                    <span>Verify OTP</span>
+                  }
+                </button>
+
+                <button type="button" class="btn-link" (click)="showOtpInput.set(false)">
+                  ← Change Phone/Email
+                </button>
+              </div>
+            }
+
+            <div class="divider">
+              <span>OR</span>
+            </div>
+
+            <button type="button" class="btn-outline" (click)="switchToUserIdMode()">
+              Login using User ID
+            </button>
+          </form>
+        }
+
+        <!-- User ID Login Mode -->
+        @if (loginMode() === 'user-id') {
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="form-group">
+              <label for="userId">Please enter your user id<span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input
+                  type="text"
+                  id="userId"
+                  name="userId"
+                  [(ngModel)]="userId"
+                  required
+                  placeholder="User ID"
+                  [disabled]="isLoading()"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Please enter your password<span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input
+                  [type]="showPassword() ? 'text' : 'password'"
+                  id="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  required
+                  placeholder="Password"
+                  [disabled]="isLoading()"
+                />
+                <button
+                  type="button"
+                  class="input-trailing"
+                  (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+                >
+                  {{ showPassword() ? '👁️' : '👁️' }}
+                </button>
+              </div>
+            </div>
+
+            <div class="form-row space-between">
+              <label class="remember-me">
+                <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+                <span>Remember me on this device</span>
+              </label>
+              <a class="forgot-link" href="#" (click)="$event.preventDefault()">Forgot password?</a>
+            </div>
+
+            <div class="button-group">
+              <button type="submit" class="btn-primary btn-login" [disabled]="isLoading()">
+                @if (isLoading()) {
+                  <span>Logging in...</span>
+                } @else {
+                  <span>Login</span>
+                }
+              </button>
+
+              <button type="button" class="btn-secondary btn-create" (click)="createNewAccount()">
+                Create New Account
+              </button>
+            </div>
+
+            <div class="divider">
+              <span>OR</span>
+            </div>
+
+            <button type="button" class="btn-outline" (click)="switchToPhoneEmailMode()">
+              Login using OTP
+            </button>
+          </form>
+        }
+
+        <a class="back-link" href="#" (click)="$event.preventDefault()">← Back to MyTaxFinder.Com</a>
+
+        <div class="login-footer">Copyright © 2026 MyTaxFinder - Best Tax services. All rights reserved.</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Account Not Found Modal -->
+  @if (showAccountNotFoundModal()) {
+    <div class="modal-overlay" (click)="closeAccountNotFoundModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="closeAccountNotFoundModal()">✕</button>
+        
+        <div class="modal-icon">
+          <div class="search-icon">🔍</div>
+        </div>
+        
+        <h2 class="modal-title">Account Not Found</h2>
+        <p class="modal-message">
+          We couldn't find an account with these details.<br>
+          Would you like to sign up?
+        </p>
+        
+        <button class="btn-modal-primary" (click)="createNewAccount()">
+          Create Account
+        </button>
+        
+        <div class="modal-footer">
+          Need help? <a href="#" class="modal-link" (click)="$event.preventDefault()">Contact Support</a>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

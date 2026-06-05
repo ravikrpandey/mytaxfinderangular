@@ -1,0 +1,102 @@
+<div class="pi-page">
+  <div class="pi-toolbar">
+    <div class="pi-toolbar-left">
+      <h2 class="pi-toolbar-title">PURCHASE INVOICE</h2>
+    </div>
+    <div class="pi-toolbar-actions">
+      <button type="button" class="btn btn-primary" routerLink="create">+ Add New</button>
+      <button type="button" class="btn btn-secondary" disabled>Edit</button>
+      <button type="button" class="btn btn-secondary" (click)="loadInvoices()">Refresh</button>
+      <button type="button" class="btn btn-secondary" disabled>Preview</button>
+      <button type="button" class="btn btn-danger" disabled>Delete</button>
+    </div>
+  </div>
+
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="pi-filters">
+    <div class="pi-filters-row">
+      <div class="field-group">
+        <label>Date From:</label>
+        <input type="date" formControlName="dateFrom" />
+      </div>
+      <div class="field-group">
+        <label>To:</label>
+        <input type="date" formControlName="dateTo" />
+      </div>
+      <button type="submit" class="btn btn-primary search-btn">Search</button>
+    </div>
+
+    <div class="pi-search-row">
+      <input
+        type="text"
+        formControlName="search"
+        placeholder="Search Purchase Invoice..."
+        class="pi-search-input"
+      />
+      <button type="button" class="btn btn-secondary" (click)="applyFilter()">Find</button>
+      <button type="button" class="btn btn-secondary" (click)="clearFilters()">Clear</button>
+    </div>
+  </form>
+
+  @if (error()) {
+    <p class="error-message">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <div class="center">
+      <span class="spinner large"></span>
+      <p>Loading…</p>
+    </div>
+  } @else {
+    <div class="table-container">
+      <table class="pi-table">
+        <thead>
+          <tr>
+            <th>Sr No</th>
+            <th>Status</th>
+            <th>Invoice No</th>
+            <th>Invoice Date</th>
+            <th>Receive No</th>
+            <th>Receive Date</th>
+            <th>Order No</th>
+            <th>Code</th>
+            <th>Supplier</th>
+            <th>Net Amount</th>
+            <th>Tax Amount</th>
+            <th>Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows; track row.id; let i = $index) {
+            <tr>
+              <td>{{ i + 1 }}</td>
+              <td>{{ (row.status || 'draft') | uppercase }}</td>
+              <td>{{ getInvoiceNumber(row) }}</td>
+              <td>{{ row.orderDate }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>{{ row.poNumber }}</td>
+              <td>-</td>
+              <td>{{ row.vendorName }}</td>
+              <td class="numeric">{{ row.subtotal }}</td>
+              <td class="numeric">{{ row.taxAmount }}</td>
+              <td class="numeric">{{ row.totalAmount }}</td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="9" class="label-cell">TOTAL</td>
+            <td class="numeric">{{ totalNetAmount }}</td>
+            <td class="numeric">{{ totalTaxAmount }}</td>
+            <td class="numeric">{{ totalAmount }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      @if (rows.length === 0) {
+        <p class="no-data">No purchase invoices found.</p>
+      }
+    </div>
+  }
+</div>
+

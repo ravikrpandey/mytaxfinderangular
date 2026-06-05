@@ -1,0 +1,485 @@
+<div class="invoice-page">
+  <div class="page-header">
+    <h1>Generate GST Invoice</h1>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="navigateToList()">Back to Invoices</button>
+      <button class="btn-secondary" (click)="navigateToWelcome()">Dashboard</button>
+    </div>
+  </div>
+
+  <main class="main-content">
+      <div class="invoice-form-card">
+        <!-- Invoice Header Section -->
+        <div class="form-section">
+          <div class="form-row three-cols">
+            <div class="form-group">
+              <label for="invoiceNumber">Invoice Number</label>
+              <input
+                type="text"
+                id="invoiceNumber"
+                [ngModel]="invoiceForm().invoiceNumber"
+                (ngModelChange)="updateField('invoiceNumber', $event)"
+                placeholder="INV-2026-001"
+                class="form-control"
+                [disabled]="viewMode()"
+                [class.input-error]="hasFieldError('invoiceNumber')"
+              />
+              @if (getFieldError('invoiceNumber')) {
+                <span class="error-text">{{ getFieldError('invoiceNumber') }}</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="invoiceDate">Invoice Date</label>
+              <input
+                type="date"
+                id="invoiceDate"
+                [ngModel]="invoiceForm().invoiceDate"
+                (ngModelChange)="updateField('invoiceDate', $event)"
+                class="form-control"
+                [disabled]="viewMode()"
+                [class.input-error]="hasFieldError('invoiceDate')"
+              />
+              @if (getFieldError('invoiceDate')) {
+                <span class="error-text">{{ getFieldError('invoiceDate') }}</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="placeOfSupply">Place of Supply</label>
+              <select
+                id="placeOfSupply"
+                [ngModel]="invoiceForm().placeOfSupply"
+                (ngModelChange)="updateField('placeOfSupply', $event); calculateTotals()"
+                class="form-control"
+                [disabled]="viewMode()"
+                [class.input-error]="hasFieldError('placeOfSupply')"
+              >
+                <option value="">Select State</option>
+                @for (state of states; track state.code) {
+                  <option [value]="state.code + ' - ' + state.name">
+                    {{ state.code }} - {{ state.name }}
+                  </option>
+                }
+              </select>
+              @if (getFieldError('placeOfSupply')) {
+                <span class="error-text">{{ getFieldError('placeOfSupply') }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row three-cols">
+            <div class="form-group">
+              <label for="customerName">Customer Name</label>
+              <input
+                type="text"
+                id="customerName"
+                [ngModel]="invoiceForm().customerName"
+                (ngModelChange)="updateField('customerName', $event)"
+                placeholder="Enter customer name"
+                class="form-control"
+                [disabled]="viewMode()"
+                [class.input-error]="hasFieldError('customerName')"
+              />
+              @if (getFieldError('customerName')) {
+                <span class="error-text">{{ getFieldError('customerName') }}</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="customerGSTIN">Customer GSTIN</label>
+              <input
+                type="text"
+                id="customerGSTIN"
+                [ngModel]="invoiceForm().customerGSTIN"
+                (ngModelChange)="updateField('customerGSTIN', $event); calculateTotals()"
+                placeholder="29AABCU9603R1ZX"
+                class="form-control"
+                maxlength="15"
+                [disabled]="viewMode()"
+                [class.input-error]="hasFieldError('customerGSTIN')"
+              />
+              @if (getFieldError('customerGSTIN')) {
+                <span class="error-text">{{ getFieldError('customerGSTIN') }}</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="customerAddress">Customer Address</label>
+              <input
+                type="text"
+                id="customerAddress"
+                [ngModel]="invoiceForm().customerAddress"
+                (ngModelChange)="updateField('customerAddress', $event)"
+                placeholder="Enter customer address"
+                class="form-control"
+                [disabled]="viewMode()"
+                [class.input-error]="hasFieldError('customerAddress')"
+              />
+              @if (getFieldError('customerAddress')) {
+                <span class="error-text">{{ getFieldError('customerAddress') }}</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice Items Section -->
+        <div class="items-section">
+          <div class="section-header">
+            <h2>Invoice Items</h2>
+            <button class="btn-add-item" (click)="addItem()" [disabled]="viewMode()">
+              + Add Item
+            </button>
+          </div>
+
+          @if (getFieldError('itemsGeneral')) {
+            <div class="error-text">{{ getFieldError('itemsGeneral') }}</div>
+          }
+
+          @if (invoiceForm().items.length === 0) {
+            <div class="no-items">
+              <p>No items added yet. Click "Add Item" to get started.</p>
+            </div>
+          } @else {
+            <div class="items-table-wrapper">
+              <table class="items-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>HSN/SAC</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>GST %</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of invoiceForm().items; track $index) {
+                    <tr>
+                      <td>
+                        <input
+                          type="text"
+                          [ngModel]="item.description"
+                          (ngModelChange)="updateItem($index, 'description', $event)"
+                          placeholder="Product/Service description"
+                          class="table-input"
+                          [disabled]="viewMode()"
+                          [class.input-error]="hasItemError($index, 'description')"
+                        />
+                        @if (getItemError($index, 'description')) {
+                          <span class="error-text">{{ getItemError($index, 'description') }}</span>
+                        }
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          [ngModel]="item.hsnCode"
+                          (ngModelChange)="updateItem($index, 'hsnCode', $event)"
+                          (keydown)="onNumericKeydown($event)"
+                          (paste)="onNumericPaste($event)"
+                          placeholder="HSN/SAC"
+                          inputmode="numeric"
+                          class="table-input"
+                          [disabled]="viewMode()"
+                          [class.input-error]="hasItemError($index, 'hsnCode')"
+                        />
+                        @if (getItemError($index, 'hsnCode')) {
+                          <span class="error-text">{{ getItemError($index, 'hsnCode') }}</span>
+                        }
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          [ngModel]="item.qty"
+                          (ngModelChange)="updateItem($index, 'qty', $event)"
+                          placeholder="0"
+                          class="table-input"
+                          min="0"
+                          [disabled]="viewMode()"
+                          [class.input-error]="hasItemError($index, 'qty')"
+                        />
+                        @if (getItemError($index, 'qty')) {
+                          <span class="error-text">{{ getItemError($index, 'qty') }}</span>
+                        }
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          [ngModel]="item.rate"
+                          (ngModelChange)="updateItem($index, 'rate', $event)"
+                          placeholder="0.00"
+                          class="table-input"
+                          step="0.01"
+                          min="0"
+                          [disabled]="viewMode()"
+                          [class.input-error]="hasItemError($index, 'rate')"
+                        />
+                        @if (getItemError($index, 'rate')) {
+                          <span class="error-text">{{ getItemError($index, 'rate') }}</span>
+                        }
+                      </td>
+                      <td>
+                        <select
+                          [ngModel]="item.gstPercentage"
+                          (ngModelChange)="updateItem($index, 'gstPercentage', $event)"
+                          class="table-select"
+                          [disabled]="viewMode()"
+                          [class.input-error]="hasItemError($index, 'gstPercentage')"
+                        >
+                          @for (rate of gstRates; track rate) {
+                            <option [value]="rate">{{ rate }}%</option>
+                          }
+                        </select>
+                        @if (getItemError($index, 'gstPercentage')) {
+                          <span class="error-text">{{ getItemError($index, 'gstPercentage') }}</span>
+                        }
+                      </td>
+                      <td class="amount-cell">
+                        ₹ {{ item.amount.toFixed(2) }}
+                      </td>
+                      <td>
+                        <button 
+                          class="btn-remove"
+                          (click)="removeItem($index)"
+                          title="Remove item"
+                          [disabled]="viewMode()"
+                        >
+                          🗑️
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+
+        <!-- Tax Summary Section -->
+        <div class="summary-section">
+          <div class="summary-grid">
+            <div class="summary-row">
+              <span class="summary-label">Taxable Amount:</span>
+              <span class="summary-value">₹ {{ taxableAmount().toFixed(2) }}</span>
+            </div>
+
+            @if (cgst() > 0) {
+              <div class="summary-row">
+                <span class="summary-label">CGST:</span>
+                <span class="summary-value">₹ {{ cgst().toFixed(2) }}</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">SGST:</span>
+                <span class="summary-value">₹ {{ sgst().toFixed(2) }}</span>
+              </div>
+            }
+
+            @if (igst() > 0) {
+              <div class="summary-row">
+                <span class="summary-label">IGST:</span>
+                <span class="summary-value">₹ {{ igst().toFixed(2) }}</span>
+              </div>
+            }
+
+            <div class="summary-row total-row">
+              <span class="summary-label">Total Amount:</span>
+              <span class="summary-value total-value">₹ {{ totalAmount().toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button class="btn-action btn-preview" (click)="preview()">
+            👁️ Preview
+          </button>
+          <button class="btn-action btn-save" (click)="saveInvoice()" [disabled]="viewMode() || isSaving()">
+            💾 Save Invoice
+          </button>
+          <button class="btn-action btn-print" (click)="print()">
+            🖨️ Print
+          </button>
+        </div>
+      </div>
+  </main>
+
+  <!-- Invoice Preview Modal -->
+  @if (showPreview()) {
+    <div class="modal-overlay" (click)="closePreview()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Invoice Preview</h2>
+          <button class="btn-close" (click)="closePreview()">✕</button>
+        </div>
+        <div class="invoice-preview" id="printable-invoice">
+          <div class="invoice-print-content">
+            <!-- Header Section -->
+            <div class="invoice-header">
+              <div class="company-section">
+                <h1 class="company-name">{{ companyDetails().name }}</h1>
+                <p class="company-detail">{{ companyDetails().address }}</p>
+                <p class="company-detail">{{ companyDetails().city }}, {{ companyDetails().state }}- {{ companyDetails().pincode }}</p>
+                <p class="company-detail">Phone: {{ companyDetails().phone }}</p>
+                <p class="company-detail">E-Mail: {{ companyDetails().email }}</p>
+                <p class="company-detail">GST No.: {{ companyDetails().gstin }}</p>
+              </div>
+              <div class="invoice-info-section">
+                <h1 class="invoice-title">INVOICE</h1>
+                <table class="invoice-info-table">
+                  <tr>
+                    <td class="label">Copy</td>
+                    <td class="value">ORIGINAL</td>
+                  </tr>
+                  <tr>
+                    <td class="label">INVOICE No.</td>
+                    <td class="value">{{ invoiceForm().invoiceNumber }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label">DATE</td>
+                    <td class="value">{{ formatDate(invoiceForm().invoiceDate) }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- Bill To / Ship To Section -->
+            <div class="billing-section">
+              <div class="billing-column">
+                <div class="section-header-blue">BILL TO:</div>
+                <div class="section-content">
+                  <p class="customer-name">{{ invoiceForm().customerName }}</p>
+                  <p class="customer-detail">{{ invoiceForm().customerAddress }}</p>
+                  <p class="customer-detail">{{ invoiceForm().placeOfSupply }}</p>
+                  <p class="customer-detail">GST No.: {{ invoiceForm().customerGSTIN || 'N/A' }}</p>
+                </div>
+              </div>
+              <div class="billing-column">
+                <div class="section-header-blue">SHIP TO:</div>
+                <div class="section-content">
+                  <p class="customer-name">{{ invoiceForm().customerName }}</p>
+                  <p class="customer-detail">{{ invoiceForm().customerAddress }}</p>
+                  <p class="customer-detail">{{ invoiceForm().placeOfSupply }}</p>
+                  <p class="customer-detail">GSTIN(URP): {{ invoiceForm().customerGSTIN || 'N/A' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Items Table -->
+            <table class="items-table-blue">
+              <thead>
+                <tr>
+                  <th class="col-sno">S.NO.</th>
+                  <th class="col-description">DESCRIPTION</th>
+                  <th class="col-hsn">HSN/SAC</th>
+                  <th class="col-qty">Quantity</th>
+                  <th class="col-rate">RATE(Rs.)</th>
+                  <th class="col-total">TOTAL(Rs.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of invoiceForm().items; track $index) {
+                  <tr>
+                    <td class="text-center">{{ $index + 1 }}</td>
+                    <td>{{ item.description }}</td>
+                    <td class="text-center">{{ item.hsnCode }}</td>
+                    <td class="text-right">{{ item.qty | number:'1.3-3' }}</td>
+                    <td class="text-right">{{ item.rate | number:'1.2-2' }}</td>
+                    <td class="text-right">{{ item.amount | number:'1.2-2' }}</td>
+                  </tr>
+                }
+                @for (emptyRow of getEmptyRows(); track $index) {
+                  <tr class="empty-row">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+
+            <!-- Summary Section -->
+            <div class="summary-layout">
+              <div class="left-section">
+                <div class="amount-words-box">
+                  <strong>Amount(In words):</strong> {{ getAmountInWords() }}
+                </div>
+                <div class="other-comments">
+                  <div class="comments-header">Other Comments or Special Instructions</div>
+                  <p>1. Goods once sold won't be taken back.</p>
+                  <p>2. No claim or breakage etc.</p>
+                  <div class="bank-details-box">
+                    <strong>BANK DETAILS:</strong> {{ companyDetails().bankName }}<br>
+                    {{ companyDetails().city }}, {{ companyDetails().state }}- {{ companyDetails().pincode }}<br>
+                    A/C No.: {{ companyDetails().accountNumber }} and<br>
+                    IFSC Code: {{ companyDetails().ifscCode }}
+                  </div>
+                </div>
+              </div>
+              <div class="right-section">
+                <table class="totals-table">
+                  <tr>
+                    <td>SUBTOTAL</td>
+                    <td class="amount">₹ {{ taxableAmount() | number:'1.2-2' }}</td>
+                  </tr>
+                  <tr>
+                    <td>FREIGHT</td>
+                    <td class="amount">₹ {{ freight() | number:'1.2-2' }}</td>
+                  </tr>
+                  <tr>
+                    <td>TAXABLE</td>
+                    <td class="amount">₹ {{ taxableAmount() | number:'1.2-2' }}</td>
+                  </tr>
+                  @if (igst() > 0) {
+                    <tr>
+                      <td>IGST@ {{ getGstRate() }}%</td>
+                      <td class="amount">₹ {{ igst() | number:'1.2-2' }}</td>
+                    </tr>
+                  }
+                  @if (cgst() > 0) {
+                    <tr>
+                      <td>CGST@ {{ getGstRate()/2 }}%</td>
+                      <td class="amount">₹ {{ cgst() | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr>
+                      <td>SGST@ {{ getGstRate()/2 }}%</td>
+                      <td class="amount">₹ {{ sgst() | number:'1.2-2' }}</td>
+                    </tr>
+                  }
+                  <tr>
+                    <td>N/G</td>
+                    <td class="amount">₹ 0.00</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td><strong>TOTAL</strong></td>
+                    <td class="amount"><strong>₹ {{ totalAmount() | number:'1.2-2' }}</strong></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="invoice-footer">
+              <div class="thank-you">Thank You For Your Business!</div>
+              <div class="signature-area">
+                <p>{{ companyDetails().name }}</p>
+                <p class="signatory-label">Authorised Signatory</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-action btn-print" (click)="printInvoice()">
+            🖨️ Print Invoice
+          </button>
+          <button class="btn-action btn-secondary" (click)="closePreview()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

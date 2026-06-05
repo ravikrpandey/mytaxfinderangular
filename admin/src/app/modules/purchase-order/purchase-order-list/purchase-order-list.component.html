@@ -1,0 +1,94 @@
+<div class="po-page">
+  <section class="po-card">
+    <div class="po-card-header">
+      <h2 class="po-card-title">PURCHASE ORDER</h2>
+      <button type="button" class="po-collapse-btn" aria-label="Collapse purchase order list">
+        <span>⌄</span>
+      </button>
+    </div>
+
+    <div class="po-toolbar">
+      <div class="po-toolbar-actions">
+        <a routerLink="/po/manual" class="btn btn-success">+ ADD NEW</a>
+        <button type="button" class="btn btn-neutral" [disabled]="!selectedOrder">EDIT</button>
+        <button type="button" class="btn btn-neutral" (click)="loadOrders()">REFRESH</button>
+        <button type="button" class="btn btn-neutral" [disabled]="!selectedOrder">PREVIEW</button>
+        <button type="button" class="btn btn-danger" [disabled]="!selectedOrder">DELETE</button>
+      </div>
+    </div>
+
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="po-filters">
+      <div class="po-filters-row">
+        <div class="field-group">
+          <label>DATE FROM:</label>
+          <input type="date" formControlName="dateFrom" />
+        </div>
+        <div class="field-group">
+          <label>TO:</label>
+          <input type="date" formControlName="dateTo" />
+        </div>
+        <button type="submit" class="btn btn-primary">SEARCH</button>
+      </div>
+
+      <div class="po-search-row">
+        <input
+          type="text"
+          formControlName="search"
+          placeholder="Search Purchase Order..."
+          class="po-search-input"
+        />
+        <button type="button" class="btn btn-neutral" (click)="applyFilter()">FIND</button>
+        <button type="button" class="btn btn-neutral" (click)="clearFilters()">CLEAR</button>
+      </div>
+    </form>
+
+    @if (error()) {
+      <p class="error-message">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <div class="center">
+        <span class="spinner large"></span>
+        <p>Loading...</p>
+      </div>
+    } @else {
+      <div class="po-grid-shell">
+        <ag-grid-angular
+          class="po-ag-grid ag-theme-balham"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="gridRows"
+          [rowSelection]="rowSelection"
+          [rowHeight]="39"
+          [headerHeight]="44"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          [suppressCellFocus]="true"
+          [suppressColumnMoveAnimation]="true"
+          [ensureDomOrder]="true"
+          (gridReady)="onGridReady($event)"
+          (selectionChanged)="onSelectionChanged($event)"
+        ></ag-grid-angular>
+      </div>
+
+      <div class="po-total-bar">
+        <div class="po-total-label">TOTAL</div>
+        <div class="po-total-values">
+          <span>{{ formatAmount(totalNetAmount) }}</span>
+          <span>{{ formatAmount(totalTaxAmount) }}</span>
+          <span>{{ formatAmount(totalAmount) }}</span>
+        </div>
+      </div>
+
+      <div class="po-footer-bar">
+        <div class="po-footer-summary">{{ footerStart }} to {{ footerEnd }} of {{ rows.length }}</div>
+        <div class="po-footer-pagination">
+          <button type="button" class="po-footer-icon" disabled>|&lt;</button>
+          <button type="button" class="po-footer-icon" disabled>&lt;</button>
+          <span>Page {{ footerTotalPages === 0 ? 0 : 1 }} of {{ footerTotalPages }}</span>
+          <button type="button" class="po-footer-icon" disabled>&gt;</button>
+          <button type="button" class="po-footer-icon" disabled>&gt;|</button>
+        </div>
+      </div>
+    }
+  </section>
+</div>

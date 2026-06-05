@@ -1,0 +1,209 @@
+<div class="dashboard-header">
+  <div>
+    <h1>Tax Services Dashboard</h1>
+    <p>Welcome back, {{ authService.currentUser()?.name }}. Here's your tax services overview.</p>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card clients">
+    <div class="stat-icon">👥</div>
+    <div>
+      <p>Total Clients</p>
+      <h3>{{ totalClients() }}</h3>
+    </div>
+  </div>
+  <div class="stat-card itr">
+    <div class="stat-icon">📋</div>
+    <div>
+      <p>Pending ITR Filings</p>
+      <h3>{{ pendingITR() }}</h3>
+    </div>
+  </div>
+  <div class="stat-card completed">
+    <div class="stat-icon">✅</div>
+    <div>
+      <p>Completed Returns</p>
+      <h3>{{ completedReturns() }}</h3>
+    </div>
+  </div>
+  <div class="stat-card gst">
+    <div class="stat-icon">🏢</div>
+    <div>
+      <p>Active GST Registrations</p>
+      <h3>{{ activeGST() }}</h3>
+    </div>
+  </div>
+  <div class="stat-card revenue">
+    <div class="stat-icon">💰</div>
+    <div>
+      <p>Total Revenue</p>
+      <h3>₹{{ totalRevenue().toLocaleString() }}</h3>
+    </div>
+  </div>
+</div>
+
+<section class="panel chart-panel">
+  <div class="panel-header">
+    <h2>Service Status Overview</h2>
+    <span class="panel-subtitle">Last 30 days</span>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Service Status</h3>
+      <div
+        class="stacked-bar"
+        role="img"
+        aria-label="Service status breakdown"
+      >
+        <span
+          class="segment completed"
+          [style.width.%]="serviceStatusSummary().completedPct"
+        ></span>
+        <span
+          class="segment in-progress"
+          [style.width.%]="serviceStatusSummary().inProgressPct"
+        ></span>
+        <span
+          class="segment pending"
+          [style.width.%]="serviceStatusSummary().pendingPct"
+        ></span>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <span class="dot completed"></span>
+          Completed {{ serviceStatusSummary().completed }}
+        </div>
+        <div class="legend-item">
+          <span class="dot in-progress"></span>
+          In Progress {{ serviceStatusSummary().inProgress }}
+        </div>
+        <div class="legend-item">
+          <span class="dot pending"></span>
+          Pending {{ serviceStatusSummary().pending }}
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Revenue by Service Type</h3>
+      <div class="bar-group">
+        <div class="bar-row">
+          <span class="label">ITR Services</span>
+          <div class="bar">
+            <span
+              class="fill itr"
+              [style.width.%]="revenueSummary().itrPct"
+            ></span>
+          </div>
+          <span class="value">₹{{ revenueSummary().itrRevenue.toLocaleString() }}</span>
+        </div>
+        <div class="bar-row">
+          <span class="label">GST Services</span>
+          <div class="bar">
+            <span
+              class="fill gst"
+              [style.width.%]="revenueSummary().gstPct"
+            ></span>
+          </div>
+          <span class="value">₹{{ revenueSummary().gstRevenue.toLocaleString() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dashboard-grid">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Recent Cases</h2>
+      <button class="link-btn" (click)="navigateToAlerts()">View All</button>
+    </div>
+    <div class="panel-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Client Name</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (filteredCases().length === 0) {
+            <tr>
+              <td colspan="5" class="empty">No cases found</td>
+            </tr>
+          } @else {
+            @for (caseItem of filteredCases(); track caseItem.id) {
+              <tr>
+                <td>
+                  <div class="cell-product">
+                    <span class="product-dot"></span>
+                    <div>
+                      <strong>{{ caseItem.clientName }}</strong>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ caseItem.serviceType }}</td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(caseItem.status)">
+                    {{ caseItem.status }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getPriorityClass(caseItem.priority)">
+                    {{ caseItem.priority }}
+                  </span>
+                </td>
+                <td>{{ caseItem.date | date: 'MMM d, yyyy' }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Recent Services</h2>
+      <button class="link-btn" (click)="navigateToTransactions()">View All</button>
+    </div>
+    <div class="panel-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Client Name</th>
+            <th>Service Type</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (filteredServices().length === 0) {
+            <tr>
+              <td colspan="5" class="empty">No services found</td>
+            </tr>
+          } @else {
+            @for (service of filteredServices(); track service.id) {
+              <tr>
+                <td>{{ service.clientName }}</td>
+                <td>{{ service.serviceType }}</td>
+                <td>₹{{ service.amount.toLocaleString() }}</td>
+                <td>
+                  <span class="pill" [class]="getStatusClass(service.status)">
+                    {{ service.status }}
+                  </span>
+                </td>
+                <td>{{ service.date | date: 'MMM d, yyyy' }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+

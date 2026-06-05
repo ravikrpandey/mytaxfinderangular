@@ -1,0 +1,100 @@
+<div class="app-layout">
+  <app-toast></app-toast>
+  
+  @if (authService.isAuthenticated()) {
+    <app-sidebar
+      [userName]="authService.currentUser()?.name || ''"
+      [isAdmin]="authService.isAdmin()"
+      [menuAccess]="authService.currentEntity()?.['role_menu_access']"
+    ></app-sidebar>
+
+    <div class="main-wrapper" (click)="closeDropdowns()">
+      <header class="app-header">
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Search clients, cases, services..."
+            [(ngModel)]="searchTerm"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="header-actions">
+          @if (authService.isAdmin()) {
+            <!-- Financial Year Dropdown -->
+            <div class="dropdown-wrapper">
+              <button
+                class="dropdown-btn"
+                (click)="showFinancialYearDropdown = !showFinancialYearDropdown; $event.stopPropagation()"
+                title="Select Financial Year"
+              >
+                📅 {{ authService.selectedFinancialYear() }}
+              </button>
+              @if (showFinancialYearDropdown) {
+                <div class="dropdown-menu" (click)="$event.stopPropagation()">
+                  @for (year of financialYears; track year) {
+                    <div
+                      class="dropdown-item"
+                      [class.active]="year === authService.selectedFinancialYear()"
+                      (click)="changeFinancialYear(year)"
+                    >
+                      {{ year }}
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Entity/Company Dropdown -->
+            <div class="dropdown-wrapper">
+              <button
+                class="dropdown-btn"
+                (click)="showEntityDropdown = !showEntityDropdown; $event.stopPropagation()"
+                title="Switch Company/Entity"
+              >
+                🏢 {{ authService.currentEntity()?.companyName || 'Select Entity' }}
+              </button>
+              @if (showEntityDropdown) {
+                <div class="dropdown-menu" (click)="$event.stopPropagation()">
+                  @if (authService.adminEntities().length > 0) {
+                    @for (entity of authService.adminEntities(); track entity.email) {
+                      <div
+                        class="dropdown-item"
+                        [class.active]="entity.email === authService.currentEntity()?.email"
+                        (click)="switchEntity(entity)"
+                      >
+                        {{ entity.companyName }}
+                        <span class="entity-email">{{ entity.email }}</span>
+                      </div>
+                    }
+                  } @else {
+                    <div class="dropdown-item disabled">No entities available</div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <button class="icon-btn" title="Notifications">🔔</button>
+          <div class="user-chip">
+            <span class="user-dot">●</span>
+            <span>
+              {{
+                authService.currentEntity()?.fullName
+                  || authService.currentUser()?.name
+                  || authService.currentUser()?.email
+                  || 'User'
+              }}
+            </span>
+          </div>
+          <button class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  } @else {
+    <router-outlet></router-outlet>
+  }
+</div>

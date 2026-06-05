@@ -1,0 +1,127 @@
+<div class="invoice-page">
+  <div class="page-header">
+    <h1>GST Invoice Management</h1>
+    <button class="btn-secondary" (click)="navigateToWelcome()">Back to Dashboard</button>
+  </div>
+
+  <main class="main-content">
+      <div class="toolbar">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search by invoice number, customer name, or GSTIN..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event); applyFilters()"
+            class="search-input"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="filter-group">
+          <select 
+            [ngModel]="filterStatus()" 
+            (ngModelChange)="filterStatus.set($event); applyFilters()"
+            class="filter-select"
+          >
+            <option value="all">All Status</option>
+            <option value="draft">Draft</option>
+            <option value="saved">Saved</option>
+            <option value="sent">Sent</option>
+          </select>
+        </div>
+
+        <div class="toolbar-right">
+          <div class="invoice-count">
+            Total Invoices: {{ filteredInvoices().length }}
+          </div>
+          <button class="btn-create" (click)="createNewInvoice()">
+            + Create Invoice
+          </button>
+        </div>
+      </div>
+
+      @if (filteredInvoices().length === 0) {
+        <div class="no-data">
+          <div class="no-data-icon">📄</div>
+          <p>No invoices found</p>
+          @if (searchTerm() || filterStatus() !== 'all') {
+            <button class="btn-link" (click)="searchTerm.set(''); filterStatus.set('all'); applyFilters()">
+              Clear filters
+            </button>
+          } @else {
+            <button class="btn-create" (click)="createNewInvoice()">
+              + Create Your First Invoice
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="invoice-grid">
+          @for (invoice of filteredInvoices(); track invoice.id) {
+            <div class="invoice-card" (dblclick)="viewInvoicePreview(invoice)">
+              <div class="card-header">
+                <div class="invoice-number">{{ invoice.invoiceNumber }}</div>
+                <span class="status-badge" [ngClass]="getStatusClass(invoice.status)">
+                  {{ invoice.status }}
+                </span>
+              </div>
+
+              <div class="card-body">
+                <div class="info-row">
+                  <span class="label">Date:</span>
+                  <span class="value">{{ invoice.invoiceDate }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Customer:</span>
+                  <span class="value">{{ invoice.customerName }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">GSTIN:</span>
+                  <span class="value">{{ invoice.customerGSTIN || 'N/A' }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Place:</span>
+                  <span class="value">{{ invoice.placeOfSupply }}</span>
+                </div>
+
+                <div class="tax-summary">
+                  @if (invoice.cgst > 0) {
+                    <div class="tax-item">
+                      <span>CGST:</span>
+                      <span>₹ {{ invoice.cgst.toFixed(2) }}</span>
+                    </div>
+                    <div class="tax-item">
+                      <span>SGST:</span>
+                      <span>₹ {{ invoice.sgst.toFixed(2) }}</span>
+                    </div>
+                  }
+                  @if (invoice.igst > 0) {
+                    <div class="tax-item">
+                      <span>IGST:</span>
+                      <span>₹ {{ invoice.igst.toFixed(2) }}</span>
+                    </div>
+                  }
+                </div>
+
+                <div class="total-amount">
+                  <span>Total Amount:</span>
+                  <span class="amount">₹ {{ invoice.totalAmount.toFixed(2) }}</span>
+                </div>
+              </div>
+
+              <div class="card-actions">
+                <button class="btn-action btn-view" (click)="viewInvoice(invoice)">
+                  👁️ View
+                </button>
+                <button class="btn-action btn-edit" (click)="editInvoice(invoice)">
+                  ✏️ Edit
+                </button>
+                <button class="btn-action btn-delete" (click)="deleteInvoice(invoice)">
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+  </main>
+</div>

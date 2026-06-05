@@ -1,0 +1,80 @@
+<div class="po-card">
+  <div class="po-card-header">
+    <h2 class="po-card-title">Upload Invoice</h2>
+    <p class="po-card-subtitle">PDF, JPG or PNG · Max {{ maxSizeMb }}MB</p>
+  </div>
+  <div class="po-card-content">
+    <form (submit)="onSubmit(); $event.preventDefault()">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        [accept]="allowedExtensions"
+        hidden
+      />
+
+      <div
+        class="dropzone"
+        [class.dropzone--active]="isDragOver"
+        (click)="fileInput.click()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (dragend)="onDragLeave($event)"
+        (drop)="onFileDrop($event)"
+      >
+        <div class="dropzone-inner">
+          <div class="dropzone-icon">⬆</div>
+          <p class="dropzone-title">
+            <span>Drag &amp; drop invoice here</span>
+            <span class="dropzone-or">or</span>
+            <button
+              type="button"
+              class="link-button"
+              (click)="$event.stopPropagation(); fileInput.click()"
+              [disabled]="uploading"
+            >
+              Browse file
+            </button>
+          </p>
+          <p class="dropzone-subtitle">PDF, JPG or PNG · Max {{ maxSizeMb }}MB</p>
+
+          @if (selectedFile) {
+            <p class="file-chip">
+              <span class="file-name">{{ selectedFile.name }}</span>
+              <button
+                type="button"
+                class="btn btn-icon"
+                (click)="$event.stopPropagation(); removeFile(); fileInput.value = ''"
+                [disabled]="uploading"
+                aria-label="Remove file"
+              >
+                ✕
+              </button>
+            </p>
+          } @else {
+            <p class="file-hint">No file selected yet.</p>
+          }
+        </div>
+      </div>
+
+      @if (error) {
+        <p class="error-message">{{ error }}</p>
+      }
+
+      <div class="actions">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!selectedFile || uploading"
+        >
+          @if (uploading) {
+            <span class="spinner"></span>
+            <span class="btn-text">Uploading…</span>
+          } @else {
+            Upload
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

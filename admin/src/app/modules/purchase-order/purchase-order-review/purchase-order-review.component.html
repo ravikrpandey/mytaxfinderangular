@@ -1,0 +1,181 @@
+@if (loading()) {
+  <div class="po-card">
+    <div class="po-card-content center">
+      <span class="spinner large"></span>
+      <p>Loading purchase order...</p>
+    </div>
+  </div>
+} @else if (error() && lineItems.length === 0) {
+  <div class="po-card">
+    <div class="po-card-content">
+      <p class="error-message">{{ error() }}</p>
+      <a routerLink="/po/list" class="btn btn-outline">Back to list</a>
+    </div>
+  </div>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="confirmPurchaseOrder()">
+    <div class="review-layout">
+      <div class="po-card vendor-card">
+        <div class="po-card-header">
+          <h2 class="po-card-title">Vendor</h2>
+          @if (invoiceId) {
+            <p class="po-card-subtitle">Invoice #{{ invoiceId }}</p>
+          }
+        </div>
+        <div class="po-card-content">
+          @if (vendor(); as v) {
+            <div class="vendor-info">
+              @if (v.name) {
+                <p class="vendor-name">{{ v.name }}</p>
+              }
+              @if (v.rawAddress || v.address) {
+                <p class="vendor-address">{{ v.rawAddress ?? v.address }}</p>
+              }
+              @if (v.phone) {
+                <p><span class="label">Phone</span> {{ v.phone }}</p>
+              }
+              @if (v.email) {
+                <p><span class="label">Email</span> {{ v.email }}</p>
+              }
+              @if (v.taxId) {
+                <p><span class="label">Tax ID</span> {{ v.taxId }}</p>
+              }
+            </div>
+          } @else {
+            <p class="muted">No vendor details</p>
+          }
+        </div>
+      </div>
+
+      <div class="po-card items-card">
+        <div class="po-card-header row">
+          <h2 class="po-card-title">Line items</h2>
+          <button type="button" class="btn btn-outline" (click)="addLine()">+ Add line</button>
+        </div>
+        <div class="po-card-content">
+          <div class="table-wrap">
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th class="num">HSN/SAC</th>
+                  <th class="num">Qty</th>
+                  <th class="num">Unit price</th>
+                  <th class="num">Total</th>
+                  <th class="action"></th>
+                </tr>
+              </thead>
+              <tbody formArrayName="lineItems">
+                @for (i of lineItemIndices; track i) {
+                  <tr [formGroupName]="i">
+                    <td>
+                      <input
+                        type="text"
+                        formControlName="description"
+                        class="form-control full-width"
+                        placeholder="Description"
+                      />
+                      @if (lineItems.at(i).get('description')?.invalid && lineItems.at(i).get('description')?.touched) {
+                        <span class="field-error">Required</span>
+                      }
+                    </td>
+                    <td class="num">
+                      <input
+                        type="text"
+                        formControlName="hsnCode"
+                        class="form-control hsn"
+                        placeholder="HSN/SAC"
+                      />
+                    </td>
+                    <td class="num">
+                      <input
+                        type="number"
+                        formControlName="quantity"
+                        class="form-control qty"
+                        min="0"
+                        step="0.001"
+                      />
+                      @if (lineItems.at(i).get('quantity')?.invalid && lineItems.at(i).get('quantity')?.touched) {
+                        <span class="field-error">Invalid</span>
+                      }
+                    </td>
+                    <td class="num">
+                      <input
+                        type="number"
+                        formControlName="unitPrice"
+                        class="form-control price"
+                        min="0"
+                        step="0.01"
+                      />
+                      @if (lineItems.at(i).get('unitPrice')?.invalid && lineItems.at(i).get('unitPrice')?.touched) {
+                        <span class="field-error">Invalid</span>
+                      }
+                    </td>
+                    <td class="num total-cell">{{ lineTotal(i) | currency:'INR' }}</td>
+                    <td class="action">
+                      <button
+                        type="button"
+                        class="btn btn-icon"
+                        (click)="removeLine(i)"
+                        [disabled]="lineItems.length <= 1"
+                        aria-label="Remove line"
+                      >
+                        ✕
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="totals">
+            <div class="totals-row">
+              <span>Subtotal</span>
+              <span>{{ subtotal() | currency:'INR' }}</span>
+            </div>
+            <div class="totals-row tax-row">
+              <label for="tax">Tax</label>
+              <input
+                id="tax"
+                type="number"
+                formControlName="tax"
+                class="form-control tax-field"
+                min="0"
+                step="0.01"
+              />
+              <span class="tax-value">{{ form.get('tax')?.value | currency:'INR' }}</span>
+            </div>
+            @if (form.get('tax')?.invalid && form.get('tax')?.touched) {
+              <span class="field-error">Invalid</span>
+            }
+            <div class="totals-row total-row">
+              <span>Total</span>
+              <span>{{ total() | currency:'INR' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="error-message">{{ error() }}</p>
+      }
+
+      <div class="actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="actionInProgress() || form.invalid"
+        >
+          @if (actionInProgress()) {
+            <span class="spinner"></span>
+            <span class="btn-text">Confirming…</span>
+          } @else {
+            Confirm Purchase Order
+          }
+        </button>
+        <a routerLink="/po/list" class="btn btn-outline">Cancel</a>
+      </div>
+    </div>
+  </form>
+}
