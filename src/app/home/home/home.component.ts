@@ -21,7 +21,7 @@ export class HomeComponent implements AfterViewInit {
   message: string = 'Form is invalid';
   expandedIndex: number | null = null;
   email: string = '';
-  currentYear: string = `${new Date().getFullYear() - 1}-${(new Date().getFullYear()).toString().slice(-2)}`; // Set to previous year for assessment year display
+  currentYear: string = `${new Date().getFullYear()}-${(new Date().getFullYear() + 1).toString().slice(-2)}`; // Set to current assessment year display
 
   faqs: Faq[] = [
     {
