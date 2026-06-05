@@ -7,7 +7,20 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:mytaxfinder": "node dist/mytaxfinder/server/server.mjs"
+    "serve:ssr:mytaxfinder": "node dist/mytaxfinder/server/server.mjs",
+
+    "admin": "cd admin && npm start",
+    "admin:install": "cd admin && npm install",
+    "admin:build": "cd admin && npm run build",
+    "admin:build:prod": "cd admin && ng build --configuration production --base-href /admin/",
+    "admin:watch": "cd admin && npm run watch",
+    "admin:test": "cd admin && npm test",
+
+    "build:prod": "ng build --configuration production",
+    "build:all": "npm run build:prod && npm run admin:build:prod",
+    "preview": "npm run build:all && node local-server.js",
+
+    "start:both": "start cmd /k \"ng serve\" && cd admin && ng serve --port 4300"
   },
   "private": true,
   "dependencies": {
