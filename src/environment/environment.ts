@@ -1,7 +1,7 @@
 
 export const environment = {
-    apiHost: 'https://api.mytaxfinder.com',
-  // apiHost: 'http://localhost:5000',
+  // apiHost: 'https://api.mytaxfinder.com',
+  apiHost: 'http://localhost:5000',
   production: false,
   firebase: {
     apiKey: "AIzaSyBMkenkMWjzUotsf-5-Jhji1ffWhG4lPpk",

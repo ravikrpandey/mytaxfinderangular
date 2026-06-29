@@ -159,7 +159,7 @@ export class ProductsComponent implements OnInit {
       sku: product.sku,
       name: product.name,
       category: product.category,
-      supplier: product.supplier,
+      supplier: product.supplier || '',
       unitPrice: product.unitPrice,
       minStockThreshold: product.minStockThreshold
     };

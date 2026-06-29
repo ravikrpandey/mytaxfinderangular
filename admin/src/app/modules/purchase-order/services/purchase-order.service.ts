@@ -14,12 +14,21 @@ export interface PurchaseOrder {
   vendorName?: string;
   vendorGSTIN?: string;
   vendorAddress?: string;
+  vendorPhone?: string;
+  contactName?: string;
+  contactPhone?: string;
+  supplierReference?: string;
   orderDate?: string;
   status?: PurchaseOrderStatus;
+  currency?: string;
+  exchangeRate?: number;
+  comments?: string;
+  notes?: string;
   totalAmount?: number;
-   subtotal?: number | string;
-   taxAmount?: number | string;
-   items?: any[];
+  subtotal?: number | string;
+  taxAmount?: number | string;
+  tax?: number | string;
+  items?: any[];
   createdAt?: string;
   updatedAt?: string;
 }

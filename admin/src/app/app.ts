@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { AuthService } from './services/auth.service';
 import { ApiService } from './services/api.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { ApiService } from './services/api.service';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnDestroy {
   protected readonly title = signal('infosys');
   protected searchTerm = '';
   protected readonly authService = inject(AuthService);
@@ -24,9 +25,14 @@ export class App {
   protected financialYears = this.authService.getFinancialYears();
   protected showEntityDropdown = false;
   protected showFinancialYearDropdown = false;
+  protected showUserDropdown = false;
+  protected currentDateTime = signal('');
+  private timerId: any;
 
   constructor() {
     this.loadAdminEntities();
+    this.updateDateTime();
+    this.timerId = setInterval(() => this.updateDateTime(), 1000);
   }
 
   /**
@@ -75,6 +81,7 @@ export class App {
   protected closeDropdowns(): void {
     this.showEntityDropdown = false;
     this.showFinancialYearDropdown = false;
+    this.showUserDropdown = false;
   }
 
   /**
@@ -84,8 +91,75 @@ export class App {
     event.stopPropagation();
   }
 
+  protected updateDateTime(): void {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = months[now.getMonth()];
+    const year = String(now.getFullYear()).slice(-2);
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    this.currentDateTime.set(`${day} ${month} ${year}, ${hours}:${minutes}:${seconds}`);
+  }
+
+  protected changePassword(): void {
+    this.showUserDropdown = false;
+    Swal.fire({
+      title: 'Change Password',
+      text: 'Enter your new password below:',
+      input: 'password',
+      inputPlaceholder: 'Enter your new password',
+      inputAttributes: {
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Change',
+      confirmButtonColor: '#0f5e9c',
+      cancelButtonColor: '#9ca3af',
+      background: '#ffffff',
+      preConfirm: (newPassword) => {
+        if (!newPassword || newPassword.trim().length < 6) {
+          Swal.showValidationMessage('Password must be at least 6 characters long');
+        }
+        return newPassword;
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const username = this.authService.currentUser()?.name || '';
+        this.apiService.updateUser(username, { password: result.value }).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Success!',
+              text: 'Password updated successfully.',
+              icon: 'success',
+              confirmButtonColor: '#0f5e9c',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Error!',
+              text: err.error?.message || 'Failed to update password',
+              icon: 'error',
+              confirmButtonColor: '#ef4444'
+            });
+          }
+        });
+      }
+    });
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
   }
 }

@@ -59,10 +59,50 @@ export interface Product {
   sku: string;
   name: string;
   category: string;
-  supplier: string;
+  subCategory?: string;
+  supplier?: string;
+  supplierName?: string;
   unitPrice: number;
   stockLevel: number;
   minStockThreshold: number;
+  // Extended fields
+  partNumber?: string;
+  currency?: string;
+  exRate?: number;
+  purchasePrice?: number;
+  additionalPer?: number;
+  landedPrice?: number;
+  salePrice?: number;
+  discount?: number;
+  netPrice?: number;
+  unit?: string;
+  size?: string;
+  finish?: string;
+  packaging?: string;
+  hsnCode?: string;
+  aisle?: string;
+  bay?: string;
+  weight?: number;
+  reOrderLevel?: number;
+  reOrderQty?: number;
+  isStockItem?: boolean;
+  balance?: number;
+  boxQty?: number;
+  barcode?: string;
+  outerBarcode?: string;
+  outerQty?: number;
+  palletBarcode?: string;
+  palletQty?: number;
+  location?: string;
+  location2?: string;
+  location3?: string;
+  location4?: string;
+  remarks?: string;
+  isActive?: boolean;
+  published?: boolean;
+  fullDescription?: string;
+  imagePath?: string;
+  images?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -70,20 +110,52 @@ export interface Product {
 export interface CreateProductRequest {
   sku: string;
   name: string;
-  category: string;
+  category?: string;
+  subCategory?: string;
   supplier?: string;
   unitPrice?: number;
   minStockThreshold?: number;
+  // Extended fields
+  partNumber?: string;
+  currency?: string;
+  exRate?: number;
+  purchasePrice?: number;
+  additionalPer?: number;
+  landedPrice?: number;
+  salePrice?: number;
+  discount?: number;
+  netPrice?: number;
+  unit?: string;
+  size?: string;
+  finish?: string;
+  packaging?: string;
+  hsnCode?: string;
+  aisle?: string;
+  bay?: string;
+  weight?: number;
+  reOrderLevel?: number;
+  reOrderQty?: number;
+  isStockItem?: boolean;
+  balance?: number;
+  boxQty?: number;
+  barcode?: string;
+  outerBarcode?: string;
+  outerQty?: number;
+  palletBarcode?: string;
+  palletQty?: number;
+  location?: string;
+  location2?: string;
+  location3?: string;
+  location4?: string;
+  remarks?: string;
+  isActive?: boolean;
+  published?: boolean;
+  fullDescription?: string;
+  imagePath?: string;
+  images?: string[];
 }
 
-export interface UpdateProductRequest {
-  sku?: string;
-  name?: string;
-  category?: string;
-  supplier?: string;
-  unitPrice?: number;
-  minStockThreshold?: number;
-}
+export type UpdateProductRequest = Partial<CreateProductRequest>;
 
 export interface UpdateStockRequest {
   quantity: number;
@@ -227,6 +299,18 @@ export class ApiService {
   }
 
   /**
+   * Get authorization headers without setting Content-Type (used for FormData uploads)
+   */
+  private getAuthHeadersWithoutContentType(): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    const headers: any = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return new HttpHeaders(headers);
+  }
+
+  /**
    * Login API call
    * @param username - User's username or email
    * @param password - User's password
@@ -326,7 +410,7 @@ export class ApiService {
     if (lowStock !== undefined) params.append('lowStock', lowStock.toString());
 
     const queryString = params.toString();
-    const url = queryString ? `${this.apiUrl}/products?${queryString}` : `${this.apiUrl}/products`;
+    const url = queryString ? `${this.apiUrl}/api/products?${queryString}` : `${this.apiUrl}/api/products`;
     
     console.log('📡 API Call: GET', url);
     
@@ -337,7 +421,7 @@ export class ApiService {
    * Get product by ID
    */
   getProductById(id: string): Observable<Product> {
-    const url = `${this.apiUrl}/products/${id}`;
+    const url = `${this.apiUrl}/api/products/${id}`;
     console.log('📡 API Call: GET', url);
     return this.http.get<Product>(url, { 
       headers: this.getAuthHeaders() 
@@ -348,7 +432,7 @@ export class ApiService {
    * Get product by SKU
    */
   getProductBySku(sku: string): Observable<Product> {
-    const url = `${this.apiUrl}/products/sku/${sku}`;
+    const url = `${this.apiUrl}/api/products/sku/${sku}`;
     console.log('📡 API Call: GET', url);
     return this.http.get<Product>(url, { 
       headers: this.getAuthHeaders() 
@@ -356,10 +440,44 @@ export class ApiService {
   }
 
   /**
+   * Upload single product image
+   */
+  uploadProductImage(file: File): Observable<{ filePath: string }> {
+    const url = `${this.apiUrl}/api/products/upload-image`;
+    const formData = new FormData();
+    formData.append('image', file);
+    console.log('📡 API Call: POST', url);
+    return this.http.post<{ filePath: string }>(url, formData, {
+      headers: this.getAuthHeadersWithoutContentType()
+    });
+  }
+
+  /**
+   * Upload multiple product images
+   */
+  uploadProductImages(files: FileList | File[]): Observable<{ filePaths: string[] }> {
+    const url = `${this.apiUrl}/api/products/upload-images`;
+    const formData = new FormData();
+    if (files instanceof FileList) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);
+      }
+    } else {
+      files.forEach(file => {
+        formData.append('images', file);
+      });
+    }
+    console.log('📡 API Call: POST', url);
+    return this.http.post<{ filePaths: string[] }>(url, formData, {
+      headers: this.getAuthHeadersWithoutContentType()
+    });
+  }
+
+  /**
    * Create product
    */
   createProduct(product: CreateProductRequest): Observable<Product> {
-    const url = `${this.apiUrl}/products`;
+    const url = `${this.apiUrl}/api/products`;
     console.log('📡 API Call: POST', url, product);
     return this.http.post<Product>(url, product, { 
       headers: this.getAuthHeaders() 
@@ -370,7 +488,7 @@ export class ApiService {
    * Update product
    */
   updateProduct(id: string, updates: UpdateProductRequest): Observable<Product> {
-    const url = `${this.apiUrl}/products/${id}`;
+    const url = `${this.apiUrl}/api/products/${id}`;
     console.log('📡 API Call: PUT', url, updates);
     return this.http.put<Product>(url, updates, { 
       headers: this.getAuthHeaders() 
@@ -381,7 +499,7 @@ export class ApiService {
    * Delete product
    */
   deleteProduct(id: string): Observable<{ message: string }> {
-    const url = `${this.apiUrl}/products/${id}`;
+    const url = `${this.apiUrl}/api/products/${id}`;
     console.log('📡 API Call: DELETE', url);
     return this.http.delete<{ message: string }>(url, { 
       headers: this.getAuthHeaders() 
@@ -392,7 +510,7 @@ export class ApiService {
    * Update stock level
    */
   updateStockLevel(id: string, stockData: UpdateStockRequest): Observable<Product> {
-    const url = `${this.apiUrl}/products/${id}/stock`;
+    const url = `${this.apiUrl}/api/products/${id}/stock`;
     console.log('📡 API Call: POST', url, stockData);
     return this.http.post<Product>(url, stockData, { 
       headers: this.getAuthHeaders() 
@@ -569,6 +687,106 @@ export class ApiService {
     const url = `${this.businessAccountsApiUrl}/check-exists?${key}=${encodeURIComponent(value)}`;
     console.log('📡 API Call: GET', url);
     return this.http.get<BusinessAccountCheckResponse>(url, { headers: this.getAuthHeaders() });
+  }
+
+  // ==================== MASTER DATA APIs ====================
+
+  /**
+   * Get master data by type ID (e.g. 2 for states, 3 for cities)
+   */
+  getMasterDataByTypeId(typeId: number): Observable<any> {
+    const url = `${this.apiUrl}/api/master-data/${typeId}`;
+    console.log('📡 API Call: GET', url);
+    return this.http.get<any>(url, { headers: this.getAuthHeaders() });
+  }
+  /**
+   * Get master data bulk by type keys (e.g. 'state,city,department,designation')
+   */
+  getMasterDataBulkByKeys(keys: string): Observable<any> {
+    const url = `${this.apiUrl}/api/master-data/bulk?keys=${encodeURIComponent(keys)}`;
+    console.log('📡 API Call: GET', url);
+    return this.http.get<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Get all master data types
+   */
+  getAllMasterData(): Observable<any> {
+    const url = `${this.apiUrl}/api/master-data`;
+    console.log('📡 API Call: GET', url);
+    return this.http.get<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Create a new master data type
+   */
+  createMasterData(payload: any): Observable<any> {
+    const url = `${this.apiUrl}/api/master-data`;
+    console.log('📡 API Call: POST', url, payload);
+    return this.http.post<any>(url, payload, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Update master data by ID
+   */
+  updateMasterData(id: number, payload: any): Observable<any> {
+    const url = `${this.apiUrl}/api/master-data/${id}`;
+    console.log('📡 API Call: PUT', url, payload);
+    return this.http.put<any>(url, payload, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Soft delete master data by ID
+   */
+  deleteMasterData(id: number): Observable<any> {
+    const url = `${this.apiUrl}/api/master-data/${id}`;
+    console.log('📡 API Call: DELETE', url);
+    return this.http.delete<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Create CRM organisation record
+   */
+  createOrganisation(payload: any): Observable<any> {
+    const url = `${this.apiUrl}/api/organisation`;
+    console.log('📡 API Call: POST', url, payload);
+    return this.http.post<any>(url, payload, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Get all CRM organisation records
+   */
+  getOrganisations(): Observable<any> {
+    const url = `${this.apiUrl}/api/organisation`;
+    console.log('📡 API Call: GET', url);
+    return this.http.get<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Get a single CRM organisation record by ID
+   */
+  getOrganisationById(id: number): Observable<any> {
+    const url = `${this.apiUrl}/api/organisation/${id}`;
+    console.log('📡 API Call: GET', url);
+    return this.http.get<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Update a CRM organisation record by ID
+   */
+  updateOrganisation(id: number, payload: any): Observable<any> {
+    const url = `${this.apiUrl}/api/organisation/${id}`;
+    console.log('📡 API Call: PUT', url, payload);
+    return this.http.put<any>(url, payload, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Delete a CRM organisation record by ID
+   */
+  deleteOrganisation(id: number): Observable<any> {
+    const url = `${this.apiUrl}/api/organisation/${id}`;
+    console.log('📡 API Call: DELETE', url);
+    return this.http.delete<any>(url, { headers: this.getAuthHeaders() });
   }
 }
 

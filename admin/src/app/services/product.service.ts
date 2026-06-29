@@ -203,7 +203,7 @@ export class ProductService {
       p.name.toLowerCase().includes(searchTerm) ||
       p.sku.toLowerCase().includes(searchTerm) ||
       p.category.toLowerCase().includes(searchTerm) ||
-      p.supplier.toLowerCase().includes(searchTerm)
+      (p.supplier || '').toLowerCase().includes(searchTerm)
     );
   }
 

@@ -9,26 +9,15 @@
   </div>
 
   <nav class="nav-links">
-    @if (canView('dashboard')) {
+    @if (canView('welcome')) {
       <a
-        [routerLink]="getMenuEntry('dashboard')?.path || '/welcome'"
+        [routerLink]="getMenuEntry('welcome')?.path || '/welcome'"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         class="nav-link"
       >
-        <span class="icon">🏠</span>
-        <span class="label">{{ getMenuEntry('dashboard')?.label || 'Dashboard' }}</span>
-      </a>
-    }
-
-    @if (canView('invoices')) {
-      <a
-        [routerLink]="getMenuEntry('invoices')?.path || '/invoices'"
-        routerLinkActive="active"
-        class="nav-link"
-      >
-        <span class="icon">🧾</span>
-        <span class="label">{{ getMenuEntry('invoices')?.label || 'Invoices' }}</span>
+        <span class="icon">📊</span>
+        <span class="label">{{ getMenuEntry('welcome')?.label || 'Dashboard' }}</span>
       </a>
     }
 
@@ -88,59 +77,158 @@
       </div>
     }
 
-    <!-- <a
-      routerLink="/income-tax"
-      routerLinkActive="active"
-      class="nav-link"
-    >
-      <span class="icon">📄</span>
-      <span class="label">Income Tax (ITR)</span>
-    </a> -->
+    @if (canView('sales')) {
+      <div class="nav-group" [class.expanded]="isGroupExpanded('sales')">
+        <a
+          [routerLink]="getMenuEntry('sales')?.path || '/sales'"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link nav-link-group"
+          (click)="toggleGroup('sales')"
+        >
+          <span class="icon">🧾</span>
+          <span class="label">{{ getMenuEntry('sales')?.label || 'Sales' }}</span>
+        </a>
 
-    @if (canView('bookkeeping')) {
+        @if (isGroupExpanded('sales')) {
+          <div class="nav-sub-links">
+            @if (getMenuEntry('sales')?.children?.['proformaInvoice']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('sales')?.children?.['proformaInvoice']?.path || '/sales/proforma-invoice'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('sales')?.children?.['proformaInvoice']?.label || 'PROFORMA INVOICE' }}
+                </span>
+              </a>
+            }
+
+            @if (getMenuEntry('sales')?.children?.['salesInvoice']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('sales')?.children?.['salesInvoice']?.path || '/sales/invoice'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('sales')?.children?.['salesInvoice']?.label || 'SALES INVOICE' }}
+                </span>
+              </a>
+            }
+
+            @if (getMenuEntry('sales')?.children?.['salesReturn']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('sales')?.children?.['salesReturn']?.path || '/sales/return'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('sales')?.children?.['salesReturn']?.label || 'SALES RETURN' }}
+                </span>
+              </a>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (canView('receipt')) {
       <a
-        [routerLink]="getMenuEntry('bookkeeping')?.path || '/bookkeeping'"
+        [routerLink]="getMenuEntry('receipt')?.path || '/receipt'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="nav-link"
       >
-        <span class="icon">📚</span>
-        <span class="label">{{ getMenuEntry('bookkeeping')?.label || 'Bookkeeping' }}</span>
+        <span class="icon">💵</span>
+        <span class="label">{{ getMenuEntry('receipt')?.label || 'Receipt' }}</span>
       </a>
     }
 
-    @if (canView('reports')) {
-      <a
-        [routerLink]="getMenuEntry('reports')?.path || '/reports'"
-        routerLinkActive="active"
-        class="nav-link"
-      >
-        <span class="icon">📊</span>
-        <span class="label">{{ getMenuEntry('reports')?.label || 'Reports' }}</span>
-      </a>
+    @if (canView('stock')) {
+      <div class="nav-group" [class.expanded]="isGroupExpanded('stock')">
+        <a
+          [routerLink]="getMenuEntry('stock')?.path || '/stock/products'"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link nav-link-group"
+          (click)="toggleGroup('stock')"
+        >
+          <span class="icon">📊</span>
+          <span class="label">{{ getMenuEntry('stock')?.label || 'Stock' }}</span>
+        </a>
+
+        @if (isGroupExpanded('stock')) {
+          <div class="nav-sub-links">
+            @if (getMenuEntry('stock')?.children?.['products']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('stock')?.children?.['products']?.path || '/stock/products'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('stock')?.children?.['products']?.label || 'PRODUCTS' }}
+                </span>
+              </a>
+            }
+
+            @if (getMenuEntry('stock')?.children?.['stockTransactions']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('stock')?.children?.['stockTransactions']?.path || '/stock/transactions'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('stock')?.children?.['stockTransactions']?.label || 'STOCK TRANSACTIONS' }}
+                </span>
+              </a>
+            }
+          </div>
+        }
+      </div>
     }
 
-    @if (canView('gstCompliance')) {
-      <a
-        [routerLink]="getMenuEntry('gstCompliance')?.path || '/gst-compliance'"
-        routerLinkActive="active"
-        class="nav-link"
-      >
-        <span class="icon">📋</span>
-        <span class="label">{{ getMenuEntry('gstCompliance')?.label || 'GST Compliance' }}</span>
-      </a>
-    }
+    @if (canView('crm')) {
+      <div class="nav-group" [class.expanded]="isGroupExpanded('crm')">
+        <a
+          [routerLink]="getMenuEntry('crm')?.path || '/crm/organisation'"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link nav-link-group"
+          (click)="toggleGroup('crm')"
+        >
+          <span class="icon">👥</span>
+          <span class="label">{{ getMenuEntry('crm')?.label || 'CRM' }}</span>
+        </a>
 
-    @if (isAdmin && canView('clientManagement')) {
-      <a
-        [routerLink]="getMenuEntry('clientManagement')?.path || '/user-management'"
-        routerLinkActive="active"
-        class="nav-link"
-      >
-        <span class="icon">👥</span>
-        <span class="label">
-          {{ getMenuEntry('clientManagement')?.label || 'Client Management' }}
-        </span>
-      </a>
+        @if (isGroupExpanded('crm')) {
+          <div class="nav-sub-links">
+            @if (getMenuEntry('crm')?.children?.['organisation']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('crm')?.children?.['organisation']?.path || '/crm/organisation'"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('crm')?.children?.['organisation']?.label || 'ORGANISATION' }}
+                </span>
+              </a>
+            }
+
+            @if (getMenuEntry('crm')?.children?.['masterData']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('crm')?.children?.['masterData']?.path || '/crm/master-data'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('crm')?.children?.['masterData']?.label || 'MASTER DATA' }}
+                </span>
+              </a>
+            }
+          </div>
+        }
+      </div>
     }
   </nav>
 

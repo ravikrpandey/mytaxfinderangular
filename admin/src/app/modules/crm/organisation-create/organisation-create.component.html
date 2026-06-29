@@ -1,0 +1,412 @@
+<div class="org-create-page">
+  <section class="org-create-card">
+    <div class="org-create-header">
+      <h2>{{ isPreviewMode ? 'VIEW ORGANISATION' : (isEditMode ? 'EDIT ORGANISATION' : 'CREATE ORGANISATION') }}</h2>
+      <button type="button" class="btn btn-neutral" (click)="backToListing()">Back to List</button>
+    </div>
+
+    <form class="org-create-form" #orgForm="ngForm" (ngSubmit)="save(orgForm)">
+      <fieldset [disabled]="isPreviewMode" style="border: none; padding: 0; margin: 0; display: contents;">
+      <div class="field-grid">
+        <label class="full-width customer-types-group">
+          <span>Customer Type <span class="required-star">*</span></span>
+          <div class="customer-type-options">
+            @for (type of customerTypeOptions; track type.id) {
+              <label class="customer-type-option">
+                <input
+                  type="checkbox"
+                  [checked]="isCustomerTypeSelected(type.id)"
+                  (change)="toggleCustomerType(type.id, $any($event.target).checked)"
+                />
+                <span>{{ type.list_name }}</span>
+              </label>
+            }
+          </div>
+          @if (formSubmitted && selectedCustomerTypeIds.length === 0) {
+            <span class="error-msg">Please select at least one Customer Type.</span>
+          }
+        </label>
+
+        <label>
+          <span>Code <span class="required-star">*</span></span>
+          <input
+            type="text"
+            name="code"
+            [(ngModel)]="model.code"
+            placeholder="Enter code"
+            required
+            #codeInput="ngModel"
+            [class.invalid-submit]="formSubmitted && codeInput.invalid"
+          />
+          @if (codeInput.invalid && (codeInput.touched || formSubmitted)) {
+            <span class="error-msg">Code is required.</span>
+          }
+        </label>
+
+        <label>
+          <span>Name <span class="required-star">*</span></span>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="model.name"
+            placeholder="Enter organisation name"
+            required
+            #nameInput="ngModel"
+            [class.invalid-submit]="formSubmitted && nameInput.invalid"
+          />
+          @if (nameInput.invalid && (nameInput.touched || formSubmitted)) {
+            <span class="error-msg">Name is required.</span>
+          }
+        </label>
+
+        <label>
+          <span>Tax No <span class="required-star">*</span></span>
+          <input
+            type="text"
+            name="taxNo"
+            [(ngModel)]="model.taxNo"
+            placeholder="Enter tax no"
+            required
+            #taxInput="ngModel"
+            [class.invalid-submit]="formSubmitted && taxInput.invalid"
+          />
+          @if (taxInput.invalid && (taxInput.touched || formSubmitted)) {
+            <span class="error-msg">Tax No is required.</span>
+          }
+        </label>
+
+        <label>
+          <span>Phone <span class="required-star">*</span></span>
+          <input
+            type="text"
+            name="phone"
+            [(ngModel)]="model.phone"
+            placeholder="Enter phone"
+            required
+            pattern="^[0-9]+$"
+            #phoneInput="ngModel"
+            [class.invalid-submit]="formSubmitted && phoneInput.invalid"
+          />
+          @if (phoneInput.invalid && (phoneInput.touched || formSubmitted)) {
+            <span class="error-msg">
+              {{ phoneInput.errors?.['required'] ? 'Phone is required.' : 'Only digits are allowed.' }}
+            </span>
+          }
+        </label>
+
+        <label>
+          <span>Email <span class="required-star">*</span></span>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="model.email"
+            placeholder="Enter email"
+            required
+            email
+            #emailInput="ngModel"
+            [class.invalid-submit]="formSubmitted && emailInput.invalid"
+          />
+          @if (emailInput.invalid && (emailInput.touched || formSubmitted)) {
+            <span class="error-msg">Valid email address is required.</span>
+          }
+        </label>
+
+        <label>
+          <span>Website</span>
+          <input
+            type="text"
+            name="website"
+            [(ngModel)]="model.website"
+            placeholder="Enter website"
+          />
+        </label>
+
+        <label>
+          <span>Balance <span class="required-star">*</span></span>
+          <input
+            type="number"
+            name="balance"
+            [(ngModel)]="model.balance"
+            placeholder="Enter opening balance"
+            required
+            min="0"
+            #balanceInput="ngModel"
+            [class.invalid-submit]="formSubmitted && balanceInput.invalid"
+          />
+          @if (balanceInput.invalid && (balanceInput.touched || formSubmitted)) {
+            <span class="error-msg">Opening balance (>= 0) is required.</span>
+          }
+        </label>
+
+        <label>
+          <span>Account Open Date <span class="required-star">*</span></span>
+          <input
+            type="date"
+            name="accountOpenDate"
+            [(ngModel)]="model.accountOpenDate"
+            required
+            #dateInput="ngModel"
+            [class.invalid-submit]="formSubmitted && dateInput.invalid"
+          />
+          @if (dateInput.invalid && (dateInput.touched || formSubmitted)) {
+            <span class="error-msg">Account Open Date is required.</span>
+          }
+        </label>
+
+        <label class="full-width">
+          <span>Remarks</span>
+          <textarea
+            name="remarks"
+            [(ngModel)]="model.remarks"
+            rows="3"
+            placeholder="Enter remarks"
+          ></textarea>
+        </label>
+      </div>
+
+      <section class="repeat-section">
+        <div class="repeat-header">
+          <h3>Contacts</h3>
+          <button type="button" class="btn btn-neutral" (click)="addContact()">+ Add Contact</button>
+        </div>
+
+        @for (contact of contacts; track $index; let i = $index) {
+          <div class="repeat-grid">
+            <label>
+              <span>Contact Name <span class="required-star">*</span></span>
+              <input type="text" [name]="'contact_name_' + i" [(ngModel)]="contact.contact_name" />
+            </label>
+            <label>
+              <span>Department</span>
+              <select [name]="'dept_id_' + i" [(ngModel)]="contact.dept_id">
+                <option value="">SELECT DEPARTMENT</option>
+                @for (option of departmentOptions; track option.id) {
+                  <option [value]="option.id">{{ option.label }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              <span>Designation</span>
+              <select [name]="'designation_id_' + i" [(ngModel)]="contact.designation_id">
+                <option value="">SELECT DESIGNATION</option>
+                @for (option of designationOptions; track option.id) {
+                  <option [value]="option.id">{{ option.label }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              <span>Contact Email</span>
+              <input type="email" [name]="'contact_email_' + i" [(ngModel)]="contact.contact_email" />
+            </label>
+            <label>
+              <span>Telephone No</span>
+              <input type="text" [name]="'telephone_no_' + i" [(ngModel)]="contact.telephone_no" />
+            </label>
+            <label>
+              <span>Mobile No</span>
+              <input type="text" [name]="'mobile_no_' + i" [(ngModel)]="contact.mobile_no" />
+            </label>
+            <div class="row-actions">
+              <button type="button" class="btn btn-danger" (click)="removeContact(i)">Remove</button>
+            </div>
+          </div>
+        }
+      </section>
+
+      <section class="repeat-section">
+        <div class="repeat-header">
+          <h3>Addresses</h3>
+          <button type="button" class="btn btn-neutral" (click)="addAddress()">+ Add Address</button>
+        </div>
+
+        @for (address of addresses; track $index; let i = $index) {
+          <div class="repeat-grid">
+            <label>
+              <span>Address Type <span class="required-star">*</span></span>
+              <select [name]="'address_type_' + i" [(ngModel)]="address.address_type">
+                <option value="">SELECT ADDRESS TYPE</option>
+                @for (type of addressTypeOptions; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              <span>Address Name <span class="required-star">*</span></span>
+              <input type="text" [name]="'address_name_' + i" [(ngModel)]="address.address_name" />
+            </label>
+            <label class="full-width">
+              <span>Address <span class="required-star">*</span></span>
+              <input type="text" [name]="'address_' + i" [(ngModel)]="address.address" />
+            </label>
+            <label>
+              <span>City <span class="required-star">*</span></span>
+              <select [name]="'city_id_' + i" [(ngModel)]="address.city_id">
+                <option value="">SELECT CITY</option>
+                @for (option of cityOptions; track option.id) {
+                  <option [value]="option.id">{{ option.label }}</option>
+                }
+              </select>
+            </label>
+
+            <label>
+              <span>Postal Code <span class="required-star">*</span></span>
+              <input
+                type="text"
+                [name]="'postal_code_' + i"
+                [(ngModel)]="address.postal_code"
+                required
+                pattern="^[0-9]+$"
+                #postalInput="ngModel"
+                [class.invalid-submit]="formSubmitted && postalInput.invalid"
+              />
+              @if (postalInput.invalid && (postalInput.touched || formSubmitted)) {
+                <span class="error-msg">
+                  {{ postalInput.errors?.['required'] ? 'Postal Code is required.' : 'Only digits are allowed.' }}
+                </span>
+              }
+            </label>
+
+            <label>
+              <span>Contact Person</span>
+              <input type="text" [name]="'contact_person_' + i" [(ngModel)]="address.contact_person" />
+            </label>
+            <label>
+              <span>Address Email</span>
+              <input type="email" [name]="'address_email_' + i" [(ngModel)]="address.address_email" />
+            </label>
+            <label>
+              <span>Address Phone</span>
+              <input type="text" [name]="'address_phone_' + i" [(ngModel)]="address.address_phone" />
+            </label>
+            <label>
+              <span>Address Mobile</span>
+              <input type="text" [name]="'address_mobile_' + i" [(ngModel)]="address.address_mobile" />
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" [name]="'is_default_' + i" [(ngModel)]="address.is_default" />
+              <span>Is Default</span>
+            </label>
+            <label class="full-width">
+              <span>Remarks</span>
+              <textarea [name]="'_remarks_' + i" rows="2" [(ngModel)]="address._remarks"></textarea>
+            </label>
+            <div class="row-actions">
+              <button type="button" class="btn btn-danger" (click)="removeAddress(i)">Remove</button>
+            </div>
+          </div>
+        }
+      </section>
+
+      <section class="repeat-section">
+        <div class="repeat-header">
+          <h3>Accounts</h3>
+          <button type="button" class="btn btn-neutral" (click)="addAccount()">+ Add Account</button>
+        </div>
+
+        @for (account of accounts; track $index; let i = $index) {
+          <div class="repeat-grid">
+            <label>
+              <span>Nominal Code <span class="required-star">*</span></span>
+              <input type="text" [name]="'nominal_code_' + i" [(ngModel)]="account.nominal_code" />
+            </label>
+            <label>
+              <span>Tax Code <span class="required-star">*</span></span>
+              <select [name]="'tax_code_' + i" [(ngModel)]="account.tax_code">
+                <option value="">SELECT TAX CODE</option>
+                @for (option of taxCodeOptions; track option.id) {
+                  <option [value]="option.code">{{ option.name }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              <span>Currency <span class="required-star">*</span></span>
+              <select [name]="'currency_id_' + i" [(ngModel)]="account.currency_id">
+                <option value="">SELECT CURRENCY</option>
+                @for (option of currencyOptions; track option.id) {
+                  <option [value]="option.id">{{ option.name }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              <span>Price List <span class="required-star">*</span></span>
+              <select [name]="'price_list_' + i" [(ngModel)]="account.price_list">
+                <option value="">SELECT PRICE LIST</option>
+                @for (option of priceListOptions; track option.id) {
+                  <option [value]="option.name">{{ option.name }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              <span>Credit Limit</span>
+              <input type="number" [name]="'credit_limit_' + i" [(ngModel)]="account.credit_limit" />
+            </label>
+            <label>
+              <span>Settlement Due Days</span>
+              <input
+                type="number"
+                [name]="'settlement_due_days_' + i"
+                [(ngModel)]="account.settlement_due_days"
+              />
+            </label>
+            <label>
+              <span>Settlement Discount Percent</span>
+              <input
+                type="number"
+                [name]="'settlement_discount_percent_' + i"
+                [(ngModel)]="account.settlement_discount_percent"
+              />
+            </label>
+            <label>
+              <span>Payment Due</span>
+              <input type="number" [name]="'payment_due_' + i" [(ngModel)]="account.payment_due" />
+            </label>
+            <label>
+              <span>Rebate Duration</span>
+              <input type="number" [name]="'rebate_duration_' + i" [(ngModel)]="account.rebate_duration" />
+            </label>
+            <label class="checkbox-inline">
+              <input
+                type="checkbox"
+                [name]="'is_account_hold_' + i"
+                [(ngModel)]="account.is_account_hold"
+              />
+              <span>Is Account Hold</span>
+            </label>
+            <label>
+              <span>Buying Group</span>
+              <input type="text" [name]="'buying_group_' + i" [(ngModel)]="account.buying_group" />
+            </label>
+            <label>
+              <span>Activity Description</span>
+              <input
+                type="text"
+                [name]="'activity_description_' + i"
+                [(ngModel)]="account.activity_description"
+              />
+            </label>
+            <label>
+              <span>From Month</span>
+              <input type="number" [name]="'from_month_' + i" [(ngModel)]="account.from_month" />
+            </label>
+            <label>
+              <span>To Month</span>
+              <input type="number" [name]="'to_month_' + i" [(ngModel)]="account.to_month" />
+            </label>
+            <div class="row-actions">
+              <button type="button" class="btn btn-danger" (click)="removeAccount(i)">Remove</button>
+            </div>
+          </div>
+        }
+      </section>
+
+      </fieldset>
+
+      <div class="form-actions">
+        @if (!isPreviewMode) {
+          <button type="submit" class="btn btn-primary">Save</button>
+        }
+        <button type="button" class="btn btn-neutral" (click)="backToListing()">{{ isPreviewMode ? 'Back' : 'Cancel' }}</button>
+      </div>
+    </form>
+  </section>
+</div>

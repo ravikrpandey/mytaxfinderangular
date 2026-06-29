@@ -1,0 +1,280 @@
+<section class="erp-page">
+  <div class="erp-title-bar">
+    <h2 class="erp-title-text">
+      @if (isPreviewMode()) {
+      PREVIEW STOCK TRANSACTION: {{ stkForm.get('stockNo')?.value }}
+      } @else if (isEditMode()) {
+      EDIT STOCK TRANSACTION: {{ stkForm.get('stockNo')?.value }}
+      } @else {
+      CREATE STOCK TRANSACTION
+      }
+    </h2>
+  </div>
+
+  @if (loading()) {
+  <div class="erp-loading-wrap">
+    <span class="spinner large"></span>
+    <p>Loading Stock Transaction details...</p>
+  </div>
+  }
+
+  <form [formGroup]="stkForm" (ngSubmit)="onSubmit()" [class.hidden]="loading()">
+    <div class="erp-shell">
+      
+      <!-- Top Form Panel -->
+      <div class="erp-panel form-panel">
+        <div class="form-grid">
+          
+          <!-- Column 1 -->
+          <div class="form-col">
+            <div class="erp-field-row">
+              <label class="erp-label required">STOCK TYPE :</label>
+              <select class="erp-select" formControlName="stockType" [attr.disabled]="(isPreviewMode() || isEditMode()) ? true : null"
+                [class.invalid]="stkForm.get('stockType')?.touched && stkForm.get('stockType')?.invalid">
+                <option value="STOCK OUT">STOCK OUT</option>
+                <option value="STOCK IN">STOCK IN</option>
+                <option value="STOCK TAKE">STOCK TAKE</option>
+              </select>
+            </div>
+            
+            <div class="erp-field-row">
+              <label class="erp-label required">REFERENCE :</label>
+              <input type="text" class="erp-input" formControlName="reference" [readonly]="isPreviewMode()"
+                [class.invalid]="stkForm.get('reference')?.touched && stkForm.get('reference')?.invalid" />
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="form-col">
+            <div class="erp-field-row">
+              <label class="erp-label required">TRANSACTION BY :</label>
+              <input type="text" class="erp-input" formControlName="transactionBy" [readonly]="!isEditMode()"
+                [class.invalid]="stkForm.get('transactionBy')?.touched && stkForm.get('transactionBy')?.invalid" />
+            </div>
+
+            <div class="erp-field-row">
+              <label class="erp-label">REFERENCE TYPE :</label>
+              <input type="text" class="erp-input" formControlName="referenceType" [readonly]="isPreviewMode()" />
+            </div>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="form-col">
+            <div class="erp-field-row">
+              <label class="erp-label required">DATE :</label>
+              <input type="date" class="erp-input" formControlName="date" [readonly]="isPreviewMode()"
+                [class.invalid]="stkForm.get('date')?.touched && stkForm.get('date')?.invalid" />
+            </div>
+
+            <div class="erp-field-row">
+              <label class="erp-label required">NUMBER :</label>
+              <input type="text" class="erp-input" formControlName="stockNo" readonly />
+            </div>
+
+            <div class="erp-field-row">
+              <label class="erp-label required">STATUS :</label>
+              <select class="erp-select" formControlName="status" [attr.disabled]="isPreviewMode() ? true : null"
+                [class.invalid]="stkForm.get('status')?.touched && stkForm.get('status')?.invalid">
+                <option value="DRAFT">DRAFT</option>
+                <option value="CONFIRM">CONFIRM</option>
+                <option value="CANCELLED" [disabled]="!isEditMode()">CANCELLED</option>
+              </select>
+            </div>
+          </div>
+          
+        </div>
+
+        <!-- Comments textarea spanning the entire bottom of the panel -->
+        <div class="erp-field-row comments-row">
+          <label class="erp-label">COMMENTS :</label>
+          <div class="erp-textarea-wrap">
+            <textarea class="erp-textarea yellowish" formControlName="comments" [readonly]="isPreviewMode()" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scanning Row -->
+      <div class="scanning-row">
+        <div class="scanning-left">
+          <label class="scan-checkbox-label">
+            <input type="checkbox" [checked]="isScanningEnabled()" (change)="toggleScanning()" [disabled]="isPreviewMode()" />
+            SCANNING?
+          </label>
+          <div class="scan-input-wrap" [class.disabled]="!isScanningEnabled() || isPreviewMode()">
+            <label class="erp-label inline">BARCODE :</label>
+            <input type="text" class="erp-input inline scan-input" [value]="barcodeScanValue()"
+              (input)="barcodeScanValue.set($any($event.target).value)" (keydown)="onBarcodeScan($event)"
+              [disabled]="!isScanningEnabled() || isPreviewMode()" placeholder="Scan/Enter Barcode..." />
+          </div>
+        </div>
+        <div class="scanning-right">
+          <button type="button" class="erp-import-btn" [disabled]="isPreviewMode()">IMPORT</button>
+        </div>
+      </div>
+
+      <!-- Line Items Grid Card -->
+      <div class="erp-grid-card">
+        <div class="product-picker-container" [class.picker-open]="productPickerOpen()">
+          <table class="erp-items-table">
+            <thead>
+              <tr>
+                <th style="width: 140px;">PRODUCT CODE</th>
+                <th>PRODUCT DESCRIPTION</th>
+                <th style="width: 80px;">SIZE</th>
+                <th style="width: 80px;">FINISH</th>
+                <th style="width: 80px;">PACKAGING</th>
+                <th style="width: 90px;" class="num">BALANCE</th>
+                <th style="width: 90px;" class="num">STOCK QTY</th>
+                <th style="width: 100px;" class="num">COST PRICE</th>
+                <th style="width: 100px;" class="num">SALE PRICE</th>
+                <th>COMMENTS</th>
+                <th style="width: 40px;"></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="lineItems">
+              @for (index of lineItemIndices; track index) {
+              <tr [formGroupName]="index">
+                
+                <!-- Product Code (Click to picker) -->
+                <td class="relative-cell">
+                  <input type="text" formControlName="productCode" class="erp-grid-input code-picker"
+                    (click)="openProductPicker(index)" readonly placeholder="Select..." />
+
+                  <!-- Product Picker Popover Panel -->
+                  @if (productPickerOpen() && productPickerRowIndex() === index) {
+                  <div class="product-picker-panel">
+                    <div class="pp-header">
+                      <input type="text" class="pp-search" placeholder="Find" [value]="productSearch()"
+                        (input)="productSearch.set($any($event.target).value)" autofocus />
+                      <button type="button" class="pp-close-btn" (click)="closeProductPicker()" title="Close">&#10005;</button>
+                    </div>
+                    <div class="pp-table-wrap">
+                      <table class="pp-table">
+                        <thead>
+                          <tr>
+                            <th>PRODUCT CODE</th>
+                            <th>NAME</th>
+                            <th>SIZE</th>
+                            <th>FINISH</th>
+                            <th>PACKAGING</th>
+                            <th class="num">COST PRICE</th>
+                            <th class="num">STOCK</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @if (filteredProducts().length === 0) {
+                          <tr>
+                            <td colspan="7" class="pp-empty">No products found</td>
+                          </tr>
+                          }
+                          @for (p of filteredProducts(); track p.id) {
+                          <tr class="pp-row" (click)="selectProduct(p)">
+                            <td class="pp-code">{{ p.sku }}</td>
+                            <td class="pp-name">{{ p.name }}</td>
+                            <td>{{ p.size || '-' }}</td>
+                            <td>{{ p.finish || '-' }}</td>
+                            <td>{{ p.packaging || '-' }}</td>
+                            <td class="num">{{ (p.purchasePrice || 0) | number:'1.2-2' }}</td>
+                            <td class="num">{{ p.stockLevel }}</td>
+                          </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  }
+                </td>
+
+                <!-- Description -->
+                <td>
+                  <input type="text" formControlName="description" class="erp-grid-input" readonly />
+                </td>
+
+                <!-- Size -->
+                <td>
+                  <input type="text" formControlName="size" class="erp-grid-input" readonly />
+                </td>
+
+                <!-- Finish -->
+                <td>
+                  <input type="text" formControlName="finish" class="erp-grid-input" readonly />
+                </td>
+
+                <!-- Packaging -->
+                <td>
+                  <input type="text" formControlName="packaging" class="erp-grid-input" readonly />
+                </td>
+
+                <!-- Balance -->
+                <td class="num">
+                  <input type="number" formControlName="balance" class="erp-grid-input num readonly-total" readonly />
+                </td>
+
+                <!-- Stock Qty to adjust -->
+                <td class="num">
+                  <input type="number" formControlName="stockQty" class="erp-grid-input num"
+                    [class.invalid]="lineItems.at(index).get('stockQty')?.touched && lineItems.at(index).get('stockQty')?.invalid"
+                    [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Cost Price -->
+                <td class="num">
+                  <input type="number" formControlName="costPrice" class="erp-grid-input num" [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Sale Price -->
+                <td class="num">
+                  <input type="number" formControlName="salePrice" class="erp-grid-input num" [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Line Item Comment -->
+                <td>
+                  <input type="text" formControlName="comments" class="erp-grid-input" [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Delete row action button -->
+                <td class="action-cell">
+                  @if (!isPreviewMode()) {
+                  <button type="button" class="erp-row-delete-btn" (click)="removeLine(index)"
+                    title="Remove row">&times;</button>
+                  }
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        @if (!isPreviewMode()) {
+        <button type="button" class="erp-add-row-link" (click)="addLine()">Click here to add a new row</button>
+        }
+      </div>
+
+      <!-- Total Rows Indicator -->
+      <div class="total-rows-bar">
+        <span>| &laquo; &laquo; Record 1 of 1 &raquo; &raquo; |</span>
+        <span class="total-qty-badge">{{ totalQty() }}</span>
+      </div>
+
+      @if (error()) {
+      <p class="error-message">{{ error() }}</p>
+      }
+    </div>
+
+    <!-- Bottom Footer Bar -->
+    <div class="erp-footer-actions">
+      <div class="left-actions">
+        <button type="submit" class="erp-footer-btn primary"
+          [disabled]="actionInProgress() || stkForm.invalid || isPreviewMode()">
+          @if (actionInProgress()) {
+          Saving...
+          } @else {
+          SAVE
+          }
+        </button>
+        <button type="button" class="erp-footer-btn secondary" (click)="exportCSV()" [disabled]="!isEditMode() && !isPreviewMode()">EXPORT</button>
+      </div>
+      <a routerLink="/stock/transactions" class="erp-footer-btn close-btn">CLOSE</a>
+    </div>
+  </form>
+</section>

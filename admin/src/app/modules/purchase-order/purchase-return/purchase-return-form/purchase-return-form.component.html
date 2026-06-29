@@ -1,0 +1,316 @@
+<section class="erp-page">
+  <div class="erp-title-bar">
+    <h2 class="erp-title-text">
+      @if (isPreviewMode()) {
+      PREVIEW PURCHASE RETURN: {{ prForm.get('returnNo')?.value }}
+      } @else if (isEditMode()) {
+      EDIT PURCHASE RETURN: {{ prForm.get('returnNo')?.value }}
+      } @else {
+      CREATE PURCHASE RETURN
+      }
+    </h2>
+  </div>
+
+  @if (loading()) {
+  <div class="erp-loading-wrap">
+    <span class="spinner large"></span>
+    <p>Loading Purchase Return details...</p>
+  </div>
+  }
+
+  <form [formGroup]="prForm" (ngSubmit)="onSubmit()" [class.hidden]="loading()">
+    <div class="erp-shell">
+      <div class="erp-details-grid">
+        <!-- Supplier Information Panel -->
+        <div class="erp-panel supplier-panel">
+          <div class="erp-field-row">
+            <label class="erp-label required">SUPPLIER:</label>
+            <div class="erp-input-with-action">
+              <select class="erp-select" [value]="selectedSupplierId()" (change)="onSupplierChange($event)"
+                [attr.disabled]="isPreviewMode() ? true : null"
+                [class.invalid]="prForm.get('vendorName')?.touched && prForm.get('vendorName')?.invalid">
+                <option value="">Select Supplier</option>
+                @for (s of suppliers(); track s.id) {
+                <option [value]="s.id">{{ s.name }}</option>
+                }
+              </select>
+              <button type="button" class="erp-action-btn" [disabled]="isPreviewMode()">ADD</button>
+            </div>
+          </div>
+
+          <div class="erp-field-row split-fields">
+            <div class="field-half">
+              <label class="erp-label">CONTACT:</label>
+              <select class="erp-select" [value]="selectedContactName()" (change)="onContactChange($event)"
+                [attr.disabled]="isPreviewMode() ? true : null">
+                <option value="">Select Contact</option>
+                @for (c of selectedSupplierContacts(); track c.id) {
+                <option [value]="c.first_name + ' ' + (c.last_name || '')">{{ c.first_name }} {{ c.last_name }}</option>
+                }
+              </select>
+            </div>
+            <div class="field-half">
+              <label class="erp-label">PHONE:</label>
+              <input type="text" class="erp-input" formControlName="contactPhone" [readonly]="isPreviewMode()" />
+            </div>
+          </div>
+
+          <div class="erp-field-row">
+            <label class="erp-label required">ADDRESS:</label>
+            <div class="erp-input-with-action">
+              <select class="erp-select" [value]="selectedAddressName()" (change)="onAddressChange($event)"
+                [attr.disabled]="isPreviewMode() ? true : null">
+                <option value="">Select Address</option>
+                @for (a of selectedSupplierAddresses(); track a.id) {
+                <option [value]="a.address_name">{{ a.address_name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="erp-field-row">
+            <div class="erp-textarea-wrap">
+              <textarea class="erp-textarea" formControlName="vendorAddress" [readonly]="isPreviewMode()"
+                [class.invalid]="prForm.get('vendorAddress')?.touched && prForm.get('vendorAddress')?.invalid"
+                rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="erp-field-row">
+            <label class="erp-label">PHONE:</label>
+            <input type="text" class="erp-input" formControlName="vendorPhone" [readonly]="isPreviewMode()" />
+          </div>
+        </div>
+
+        <!-- Return Details Panel -->
+        <div class="erp-panel return-panel">
+          <div class="erp-field-row">
+            <label class="erp-label required">RETURN DATE:</label>
+            <input type="date" class="erp-input" formControlName="returnDate" [readonly]="isPreviewMode()"
+              [class.invalid]="prForm.get('returnDate')?.touched && prForm.get('returnDate')?.invalid" />
+          </div>
+
+          <div class="erp-field-row">
+            <label class="erp-label required">RETURN NO:</label>
+            <input type="text" class="erp-input" formControlName="returnNo" [readonly]="isPreviewMode()"
+              [class.invalid]="prForm.get('returnNo')?.touched && prForm.get('returnNo')?.invalid" />
+          </div>
+
+          <div class="erp-field-row">
+            <label class="erp-label">SUPPLIER REFERENCE:</label>
+            <input type="text" class="erp-input" formControlName="supplierReference" [readonly]="isPreviewMode()" />
+          </div>
+
+          <div class="erp-field-row">
+            <label class="erp-label required">PURCHASE INVOICE:</label>
+            <select class="erp-select" formControlName="purchaseInvoice" [attr.disabled]="isPreviewMode() ? true : null"
+              [class.invalid]="prForm.get('purchaseInvoice')?.touched && prForm.get('purchaseInvoice')?.invalid">
+              <option value="">Select Invoice</option>
+              @for (pi of purchaseInvoices(); track pi.id) {
+              <option [value]="pi.invoiceNo">{{ pi.invoiceNo }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Items Section -->
+      <div class="erp-grid-card">
+        <div class="product-picker-container">
+          <table class="erp-items-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;"></th>
+                <th style="width: 140px;">PRODUCT CODE</th>
+                <th>PRODUCT DESCRIPTION</th>
+                <th style="width: 80px;">SIZE</th>
+                <th style="width: 80px;">FINISH</th>
+                <th style="width: 80px;">PACKAGING</th>
+                <th style="width: 90px;" class="num">INVOICE QTY</th>
+                <th style="width: 90px;" class="num">QTY</th>
+                <th style="width: 90px;" class="num">PRICE</th>
+                <th style="width: 90px;" class="num">DISCOUNT</th>
+                <th style="width: 90px;" class="num">NET PRICE</th>
+                <th style="width: 110px;" class="num">TOTAL PRICE</th>
+                <th style="width: 150px;">COMMENT</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="lineItems">
+              @for (index of lineItemIndices; track index) {
+              <tr [formGroupName]="index">
+                <!-- Delete row action button -->
+                <td class="action-cell">
+                  @if (!isPreviewMode()) {
+                  <button type="button" class="erp-row-delete-btn" (click)="removeLine(index)"
+                    title="Remove row">&times;</button>
+                  }
+                </td>
+
+                <!-- Product Code (Click to picker) -->
+                <td>
+                  <input type="text" formControlName="productCode" class="erp-grid-input code-picker"
+                    (click)="openProductPicker(index)" readonly placeholder="Select" />
+                </td>
+
+                <!-- Description -->
+                <td>
+                  <input type="text" formControlName="description" class="erp-grid-input"
+                    [class.invalid]="lineItems.at(index).get('description')?.touched && lineItems.at(index).get('description')?.invalid"
+                    [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Size -->
+                <td>
+                  <input type="text" formControlName="size" class="erp-grid-input" [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Finish -->
+                <td>
+                  <input type="text" formControlName="finish" class="erp-grid-input" [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Packaging -->
+                <td>
+                  <input type="text" formControlName="packaging" class="erp-grid-input" [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Invoice Qty -->
+                <td class="num">
+                  <input type="number" formControlName="invoiceQty" class="erp-grid-input num"
+                    [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Return Qty -->
+                <td class="num">
+                  <input type="number" formControlName="qty" class="erp-grid-input num"
+                    [class.invalid]="lineItems.at(index).get('qty')?.touched && lineItems.at(index).get('qty')?.invalid"
+                    [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Rate / Price -->
+                <td class="num">
+                  <input type="number" formControlName="rate" class="erp-grid-input num"
+                    [class.invalid]="lineItems.at(index).get('rate')?.touched && lineItems.at(index).get('rate')?.invalid"
+                    [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Discount -->
+                <td class="num">
+                  <input type="number" formControlName="discount" class="erp-grid-input num"
+                    [readonly]="isPreviewMode()" />
+                </td>
+
+                <!-- Net Price -->
+                <td class="num">
+                  <input type="number" formControlName="netPrice" class="erp-grid-input num readonly-total" readonly />
+                </td>
+
+                <!-- Total Price -->
+                <td class="num">
+                  <input type="number" formControlName="totalPrice" class="erp-grid-input num readonly-total"
+                    readonly />
+                </td>
+
+                <!-- Comment -->
+                <td>
+                  <input type="text" formControlName="comment" class="erp-grid-input" [readonly]="isPreviewMode()" />
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+
+          <!-- Product Picker Popover Panel -->
+          @if (productPickerOpen()) {
+          <div class="product-picker-panel">
+            <div class="pp-header">
+              <input type="text" class="pp-search" placeholder="Find" [value]="productSearch()"
+                (input)="productSearch.set($any($event.target).value)" autofocus />
+              <button type="button" class="pp-close-btn" (click)="closeProductPicker()" title="Close">&#10005;</button>
+            </div>
+            <div class="pp-table-wrap">
+              <table class="pp-table">
+                <thead>
+                  <tr>
+                    <th>PRODUCT CODE</th>
+                    <th>NAME</th>
+                    <th>SIZE</th>
+                    <th>FINISH</th>
+                    <th>PACKAGING</th>
+                    <th class="num">PURCHASE PRICE</th>
+                    <th class="num">STOCK</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (filteredProducts().length === 0) {
+                  <tr>
+                    <td colspan="7" class="pp-empty">No products found</td>
+                  </tr>
+                  }
+                  @for (p of filteredProducts(); track p.id) {
+                  <tr class="pp-row" (click)="selectProduct(p)">
+                    <td class="pp-code">{{ p.sku }}</td>
+                    <td class="pp-name">{{ p.name }}</td>
+                    <td>{{ p.size || '-' }}</td>
+                    <td>{{ p.finish || '-' }}</td>
+                    <td>{{ p.packaging || '-' }}</td>
+                    <td class="num">{{ (p.purchasePrice || 0) | number:'1.2-2' }}</td>
+                    <td class="num">{{ p.stockLevel }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+          }
+        </div>
+
+        @if (!isPreviewMode()) {
+        <button type="button" class="erp-add-row-link" (click)="addLine()">Click here to add a new row</button>
+        }
+      </div>
+
+      <!-- Bottom Summary Bar -->
+      <div class="erp-summary-bar">
+        <div class="erp-comments-section">
+          <button type="button" class="erp-comments-btn">Comments:</button>
+          <input type="text" formControlName="comments" placeholder="Add comments/notes..." class="erp-comments-input"
+            [readonly]="isPreviewMode()" />
+        </div>
+
+        <div class="erp-summary-item">
+          <span>NET AMOUNT:</span>
+          <strong>{{ subtotal() | number:'1.2-2' }}</strong>
+        </div>
+
+        <div class="erp-summary-item tax-box">
+          <span>TAX:</span>
+          <input type="number" step="0.01" min="0" formControlName="tax" class="erp-summary-input"
+            [readonly]="isPreviewMode()" />
+        </div>
+
+        <div class="erp-summary-item">
+          <span>TOTAL AMOUNT:</span>
+          <strong>{{ total() | number:'1.2-2' }}</strong>
+        </div>
+      </div>
+
+      @if (error()) {
+      <p class="error-message">{{ error() }}</p>
+      }
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="erp-footer-actions">
+      <button type="submit" class="erp-footer-btn primary"
+        [disabled]="actionInProgress() || prForm.invalid || isPreviewMode()">
+        @if (actionInProgress()) {
+        Saving...
+        } @else {
+        SAVE
+        }
+      </button>
+      <a routerLink="/po/return" class="erp-footer-btn close-btn">CLOSE</a>
+    </div>
+  </form>
+</section>

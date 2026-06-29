@@ -1,5 +1,23 @@
 <section class="erp-page">
-  <div class="erp-title-bar">PURCHASE ORDER</div>
+  <div class="erp-title-bar">
+    @if (isPreviewMode()) {
+      PURCHASE ORDER PREVIEW
+    } @else if (isEditMode()) {
+      EDIT PURCHASE ORDER
+    } @else {
+      PURCHASE ORDER
+    }
+  </div>
+
+  @if (!isEditMode() && !isPreviewMode()) {
+    <div class="po-mode-switch" role="tablist" aria-label="Purchase order entry mode">
+      <a routerLink="/po/manual" routerLinkActive="active" class="po-mode-btn"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Manual Entry
+      </a>
+      <a routerLink="/po/upload" routerLinkActive="active" class="po-mode-btn">Upload Invoice</a>
+    </div>
+  }
 
   <form [formGroup]="poForm" (ngSubmit)="submit()" class="erp-card">
     <div class="erp-shell">
@@ -7,19 +25,23 @@
         <div class="erp-panel erp-panel-left">
           <div class="erp-field-row">
             <label class="erp-label">SUPPLIER: <span>*</span></label>
-            <div class="erp-inline-control">
-              <input class="erp-input" type="text" formControlName="vendorName" />
-              <button type="button" class="erp-mini-btn">ADD</button>
-            </div>
+            <select class="erp-input" [value]="selectedSupplierId()" (change)="onSupplierChange($event)">
+              <option value="">SELECT SUPPLIER</option>
+              @for (s of suppliers(); track s.id) {
+              <option [value]="s.id">{{ s.name }} ({{ s.code }})</option>
+              }
+            </select>
           </div>
 
           <div class="erp-field-row split-row">
             <div class="erp-sub-row grow">
               <label class="erp-label">CONTACT: <span>*</span></label>
-              <div class="erp-inline-control compact">
-                <input class="erp-input" type="text" formControlName="contactName" />
-                <button type="button" class="erp-mini-btn">ADD</button>
-              </div>
+              <select class="erp-input" [value]="selectedContactName()" (change)="onContactChange($event)">
+                <option value="">SELECT CONTACT</option>
+                @for (c of selectedSupplierContacts(); track c.contact_name) {
+                <option [value]="c.contact_name">{{ c.contact_name }}</option>
+                }
+              </select>
             </div>
             <div class="erp-sub-row phone-row">
               <label class="erp-label muted">PHONE:</label>
@@ -29,76 +51,95 @@
 
           <div class="erp-field-row">
             <label class="erp-label">ADDRESS: <span>*</span></label>
-            <div class="erp-inline-control">
-              <input class="erp-input" type="text" formControlName="vendorAddress" />
-              <button type="button" class="erp-mini-btn">ADD</button>
-            </div>
+            <select class="erp-input" [value]="selectedAddressName()" (change)="onAddressChange($event)">
+              <option value="">SELECT ADDRESS</option>
+              @for (a of selectedSupplierAddresses(); track a.address_name) {
+              <option [value]="a.address_name">{{ a.address_name }} ({{ a.address_type }})</option>
+              }
+            </select>
           </div>
 
           <div class="erp-field-row align-top">
             <label class="erp-label placeholder-label"></label>
-            <textarea class="erp-input erp-textarea" rows="5" formControlName="vendorAddress"></textarea>
+            <textarea class="erp-input erp-textarea" rows="3" formControlName="vendorAddress"
+              placeholder="Address Details"></textarea>
           </div>
 
-          <div class="erp-field-row">
-            <label class="erp-label muted">PHONE:</label>
-            <input class="erp-input" type="text" formControlName="vendorPhone" />
+          <div class="split-row-equal">
+            <div class="erp-field-row no-margin">
+              <label class="erp-label muted">PHONE:</label>
+              <input class="erp-input" type="text" formControlName="vendorPhone" />
+            </div>
+            <div class="erp-field-row no-margin">
+              <label class="erp-label muted second-col-label">GSTIN:</label>
+              <div>
+                <input class="erp-input" type="text" formControlName="vendorGSTIN" placeholder="GSTIN (optional)" />
+                @if (poForm.get('vendorGSTIN')?.invalid && poForm.get('vendorGSTIN')?.touched) {
+                <span class="field-error">Invalid GSTIN format</span>
+                }
+              </div>
+            </div>
           </div>
 
           @if (poForm.get('vendorName')?.invalid && poForm.get('vendorName')?.touched) {
-            <p class="field-error inline-error">Supplier is required.</p>
+          <p class="field-error inline-error">Supplier is required.</p>
           }
         </div>
 
         <div class="erp-panel erp-panel-right">
-          <div class="erp-field-row right-row">
-            <label class="erp-label">ORDER DATE: <span>*</span></label>
-            <input class="erp-input" type="date" formControlName="orderDate" />
+          <div class="split-row-equal">
+            <div class="erp-field-row no-margin">
+              <label class="erp-label">ORDER DATE: <span>*</span></label>
+              <input class="erp-input" type="date" formControlName="orderDate" />
+            </div>
+            <div class="erp-field-row no-margin">
+              <label class="erp-label second-col-label">ORDER NO: <span>*</span></label>
+              <input class="erp-input" type="text" formControlName="orderNumber" />
+            </div>
           </div>
 
-          <div class="erp-field-row right-row">
-            <label class="erp-label">ORDER NO: <span>*</span></label>
-            <input class="erp-input" type="text" formControlName="orderNumber" />
-          </div>
-
-          <div class="erp-field-row right-row">
-            <label class="erp-label">SUPPLIER REFERENCE:</label>
-            <input class="erp-input" type="text" formControlName="supplierReference" />
-          </div>
-
-          <div class="erp-field-row right-row">
-            <label class="erp-label">STATUS:</label>
-            <select class="erp-input" formControlName="status">
-              @for (status of statusOptions; track status) {
+          <div class="split-row-equal">
+            <div class="erp-field-row no-margin">
+              <label class="erp-label">SUPPLIER REF:</label>
+              <input class="erp-input" type="text" formControlName="supplierReference" />
+            </div>
+            <div class="erp-field-row no-margin">
+              <label class="erp-label second-col-label">STATUS:</label>
+              <select class="erp-input" formControlName="status">
+                @for (status of statusOptions; track status) {
                 <option [value]="status">{{ status | uppercase }}</option>
-              }
-            </select>
+                }
+              </select>
+            </div>
           </div>
 
-          <div class="erp-field-row right-row">
-            <label class="erp-label">CURRENCY: <span>*</span></label>
-            <select class="erp-input" formControlName="currency">
-              @for (currency of currencyOptions; track currency) {
+          <div class="split-row-equal">
+            <div class="erp-field-row no-margin">
+              <label class="erp-label">CURRENCY: <span>*</span></label>
+              <select class="erp-input" formControlName="currency">
+                @for (currency of currencyOptions; track currency) {
                 <option [value]="currency">{{ currency }}</option>
-              }
-            </select>
-          </div>
-
-          <div class="erp-field-row right-row">
-            <label class="erp-label">EXCHANGE RATE: <span>*</span></label>
-            <input class="erp-input" type="number" step="0.00001" formControlName="exchangeRate" />
+                }
+              </select>
+            </div>
+            <div class="erp-field-row no-margin">
+              <label class="erp-label second-col-label">EXCH RATE: <span>*</span></label>
+              <input class="erp-input" type="number" step="0.00001" formControlName="exchangeRate" />
+            </div>
           </div>
         </div>
       </div>
 
       <div class="erp-grid-card">
-        <div class="table-wrap">
-          <table class="items-table erp-items-table">
+        <div class="product-picker-container">
+          <div class="table-wrap">
+            <table class="items-table erp-items-table">
             <thead>
               <tr>
                 <th class="row-marker"></th>
                 <th>PRODUCT CODE</th>
                 <th>DESCRIPTION</th>
+                <th>HSN CODE</th>
                 <th>PART NUMBER</th>
                 <th>SIZE</th>
                 <th>FINISH</th>
@@ -107,47 +148,110 @@
                 <th>QTY</th>
                 <th>RATE</th>
                 <th>AMOUNT</th>
-                <th class="action"></th>
+                @if (!isPreviewMode()) {
+                  <th class="action"></th>
+                }
               </tr>
             </thead>
             <tbody formArrayName="lineItems">
-              @for (i of lineItemIndices; track i) {
-                <tr [formGroupName]="i">
-                  <td class="row-marker">▶</td>
-                  <td><input type="text" formControlName="productCode" class="erp-grid-input" /></td>
-                  <td>
-                    <input type="text" formControlName="description" class="erp-grid-input wide" />
-                    @if (lineItems.at(i).get('description')?.invalid && lineItems.at(i).get('description')?.touched) {
-                      <span class="field-error">Required</span>
-                    }
-                  </td>
-                  <td><input type="text" formControlName="partNumber" class="erp-grid-input" /></td>
-                  <td><input type="text" formControlName="size" class="erp-grid-input small" /></td>
-                  <td><input type="text" formControlName="finish" class="erp-grid-input" /></td>
-                  <td><input type="text" formControlName="packaging" class="erp-grid-input small" /></td>
-                  <td><input type="number" formControlName="boxQty" class="erp-grid-input qty" min="0" /></td>
-                  <td><input type="number" formControlName="quantity" class="erp-grid-input qty" min="0" step="0.001" /></td>
-                  <td><input type="number" formControlName="unitPrice" class="erp-grid-input qty" min="0" step="0.01" /></td>
-                  <td class="amount-cell">{{ lineTotal(i) | number:'1.2-2' }}</td>
+              @for (itemForm of lineItems.controls; track itemForm; let i = $index) {
+              <tr [formGroupName]="i">
+                <td class="row-marker">
+                  <button type="button" class="row-arrow-btn"
+                    [class.active]="productPickerOpen() && productPickerRowIndex() === i"
+                    (click)="openProductPicker(i)"
+                    [title]="isPreviewMode() ? '' : 'Pick product'"
+                    [disabled]="isPreviewMode()">&#9654;</button>
+                </td>
+                <td><input type="text" formControlName="productCode" class="erp-grid-input" /></td>
+                <td>
+                  <input type="text" formControlName="description" class="erp-grid-input wide"
+                    [class.invalid]="lineItems.at(i).get('description')?.invalid && lineItems.at(i).get('description')?.touched" />
+                </td>
+                <td>
+                  <input type="text" formControlName="hsnCode" class="erp-grid-input small" placeholder="HSN"
+                    [class.invalid]="lineItems.at(i).get('hsnCode')?.invalid && lineItems.at(i).get('hsnCode')?.touched" />
+                </td>
+                <td><input type="text" formControlName="partNumber" class="erp-grid-input" /></td>
+                <td><input type="text" formControlName="size" class="erp-grid-input small" /></td>
+                <td><input type="text" formControlName="finish" class="erp-grid-input" /></td>
+                <td><input type="text" formControlName="packaging" class="erp-grid-input small" /></td>
+                <td><input type="number" formControlName="boxQty" class="erp-grid-input qty" min="0" /></td>
+                <td><input type="number" formControlName="quantity" class="erp-grid-input qty" min="0" step="0.001" />
+                </td>
+                <td><input type="number" formControlName="unitPrice" class="erp-grid-input qty" min="0" step="0.01" />
+                </td>
+                <td class="amount-cell">{{ lineTotal(i) | number:'1.2-2' }}</td>
+                @if (!isPreviewMode()) {
                   <td class="action">
-                    <button
-                      type="button"
-                      class="erp-remove-btn"
-                      (click)="removeLine(i)"
-                      [disabled]="lineItems.length <= 1"
-                      aria-label="Remove row"
-                    >
+                    <button type="button" class="erp-remove-btn" (click)="removeLine(i)"
+                      [disabled]="lineItems.length <= 1" aria-label="Remove row">
                       ✕
                     </button>
                   </td>
-                </tr>
+                }
+              </tr>
               }
             </tbody>
           </table>
         </div>
 
-        <button type="button" class="erp-add-row-link" (click)="addLine()">Click here to add a new row</button>
+        <!-- Product Picker Panel -->
+        @if (productPickerOpen()) {
+        <div class="product-picker-panel">
+          <div class="pp-header">
+            <input
+              type="text"
+              class="pp-search"
+              placeholder="Find"
+              [value]="productSearch()"
+              (input)="productSearch.set($any($event.target).value)"
+              autofocus />
+            <button type="button" class="pp-close-btn" (click)="closeProductPicker()" title="Close">&#10005;</button>
+          </div>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <thead>
+                <tr>
+                  <th>PRODUCT CODE</th>
+                  <th>NAME</th>
+                  <th>SIZE</th>
+                  <th>FINISH</th>
+                  <th>PACKAGING</th>
+                  <th class="num">PURCHASE PRICE</th>
+                  <th class="num">STOCK</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (filteredProducts().length === 0) {
+                <tr>
+                  <td colspan="7" class="pp-empty">No products found</td>
+                </tr>
+                }
+                @for (p of filteredProducts(); track p.id) {
+                <tr class="pp-row" (click)="selectProduct(p)">
+                  <td class="pp-code">{{ p.sku }}</td>
+                  <td class="pp-name">{{ p.name }}</td>
+                  <td>{{ p.size || '-' }}</td>
+                  <td>{{ p.finish || '-' }}</td>
+                  <td>{{ p.packaging || '-' }}</td>
+                  <td class="num">{{ (p.purchasePrice || 0) | number:'1.2-2' }}</td>
+                  <td class="num">{{ p.stockLevel }}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+        }
       </div>
+      <!-- end .product-picker-container -->
+
+        @if (!isPreviewMode()) {
+          <button type="button" class="erp-add-row-link" (click)="addLine()">Click here to add a new row</button>
+        }
+      </div>
+      <!-- end .erp-grid-card -->
 
       <div class="erp-summary-bar">
         <button type="button" class="erp-comments-btn">Comments:</button>
@@ -170,16 +274,16 @@
       </div>
 
       @if (error()) {
-        <p class="error-message">{{ error() }}</p>
+      <p class="error-message">{{ error() }}</p>
       }
     </div>
 
     <div class="erp-footer-actions">
-      <button type="submit" class="erp-footer-btn primary" [disabled]="actionInProgress() || poForm.invalid">
+      <button type="submit" class="erp-footer-btn primary" [disabled]="actionInProgress() || poForm.invalid || isPreviewMode()">
         @if (actionInProgress()) {
-          Saving...
+        Saving...
         } @else {
-          SAVE
+        SAVE
         }
       </button>
       <button type="button" class="erp-footer-btn" disabled>SUMMARY</button>
@@ -189,4 +293,3 @@
     </div>
   </form>
 </section>
-

@@ -1,13 +1,13 @@
 import { Component, Input, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme.service';
 import { RoleMenuAccess, RoleMenuAccessEntry } from '../../services/api.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -57,7 +57,25 @@ export class SidebarComponent {
   }
 
   getMenuEntry(key: string): RoleMenuAccessEntry | undefined {
-    return this.menuAccess ? this.menuAccess[key] : undefined;
+    if (!this.menuAccess) return undefined;
+    const entry = this.menuAccess[key];
+    if (entry) {
+      const clone = JSON.parse(JSON.stringify(entry)) as RoleMenuAccessEntry;
+      if (clone.path === '/products') clone.path = '/stock/products';
+      if (clone.children) {
+        for (const childKey of Object.keys(clone.children)) {
+          const child = clone.children[childKey];
+          if (child.path === '/products') {
+            child.path = '/stock/products';
+          }
+          if (child.path === '/stock-transactions') {
+            child.path = '/stock/transactions';
+          }
+        }
+      }
+      return clone;
+    }
+    return undefined;
   }
 
   canView(key: string): boolean {

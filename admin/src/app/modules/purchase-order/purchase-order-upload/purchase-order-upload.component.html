@@ -1,4 +1,11 @@
 <div class="po-card">
+  <div class="po-mode-switch" role="tablist" aria-label="Purchase order entry mode">
+    <a routerLink="/po/manual" routerLinkActive="active" class="po-mode-btn">Manual Entry</a>
+    <a routerLink="/po/upload" routerLinkActive="active" class="po-mode-btn" [routerLinkActiveOptions]="{ exact: true }">
+      Upload Invoice
+    </a>
+  </div>
+
   <div class="po-card-header">
     <h2 class="po-card-title">Upload Invoice</h2>
     <p class="po-card-subtitle">PDF, JPG or PNG · Max {{ maxSizeMb }}MB</p>

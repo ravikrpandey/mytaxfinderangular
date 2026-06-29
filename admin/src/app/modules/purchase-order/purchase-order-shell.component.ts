@@ -11,6 +11,14 @@ import { CommonModule } from '@angular/common';
   `,
   styles: [
     `
+      :host {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
       .po-shell {
         padding: 1.5rem 2rem;
         background: #f3f4f6;

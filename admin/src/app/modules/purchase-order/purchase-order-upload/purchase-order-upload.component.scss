@@ -7,6 +7,41 @@
   overflow: hidden;
 }
 
+.po-mode-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1rem 1.25rem 0;
+  padding: 6px;
+  border: 1px solid #c9d7e4;
+  background: #f4f8fc;
+}
+
+.po-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 14px;
+  text-decoration: none;
+  color: #2d4e72;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.po-mode-btn:hover {
+  border-color: #98b3cc;
+  background: #ffffff;
+}
+
+.po-mode-btn.active {
+  color: #ffffff;
+  border-color: #2a5d98;
+  background: linear-gradient(180deg, #3e75b2 0%, #2a5d98 100%);
+}
+
 .po-card-header {
   padding: 1rem 1.25rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);

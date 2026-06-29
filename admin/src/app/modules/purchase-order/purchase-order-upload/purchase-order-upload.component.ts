@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { PurchaseOrderService } from '../services/purchase-order.service';
 
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
@@ -10,7 +10,7 @@ const ALLOWED_EXTENSIONS = '.pdf,.jpg,.jpeg,.png';
 @Component({
   selector: 'app-purchase-order-upload',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './purchase-order-upload.component.html',
   styleUrl: './purchase-order-upload.component.scss'
 })

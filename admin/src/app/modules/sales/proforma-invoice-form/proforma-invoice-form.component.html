@@ -1,0 +1,268 @@
+<div class="pif-page">
+  <div class="pif-card">
+    <!-- Header -->
+    <div class="pif-card-header">
+      <h2 class="pif-card-title">PROFORMA INVOICE</h2>
+      <button type="button" class="pif-back-btn" (click)="onClose()" title="Back to list">&#8592;</button>
+    </div>
+
+    @if (loading()) {
+      <div class="pif-center">
+        <span class="spinner"></span>
+        <p>Loading...</p>
+      </div>
+    } @else {
+      <form [formGroup]="piForm" (ngSubmit)="onSave()" autocomplete="off">
+        <!-- TOP SECTION: Customer/Contact fields + Invoice meta -->
+        <div class="pif-top-section">
+          <!-- LEFT -->
+          <div class="pif-top-left">
+            <!-- CUSTOMER ROW -->
+            <div class="pif-field-row">
+              <label class="pif-field-label required">CUSTOMER:</label>
+              <div class="pif-field-control stretch">
+                <select class="pif-select" [disabled]="isPreviewMode()"
+                  (change)="onCustomerChange($event)">
+                  <option value="">-- Select Customer --</option>
+                  @for (c of customers(); track c.id) {
+                    <option [value]="c.id" [selected]="selectedCustomerId() == c.id">{{ c.name }}</option>
+                  }
+                </select>
+              </div>
+              @if (!isPreviewMode()) {
+                <button type="button" class="btn btn-blue-sm">ADD</button>
+              }
+            </div>
+
+            <!-- CONTACT ROW -->
+            <div class="pif-field-row">
+              <label class="pif-field-label required">CONTACT:</label>
+              <div class="pif-field-control medium">
+                <select class="pif-select" [disabled]="isPreviewMode()"
+                  (change)="onContactChange($event)">
+                  <option value="">Select Contact</option>
+                  @for (c of selectedCustomerContacts(); track c.id) {
+                    <option [value]="c.first_name + ' ' + (c.last_name || '')" [selected]="selectedContactName() === (c.first_name + ' ' + (c.last_name || ''))">{{ c.first_name }} {{ c.last_name }}</option>
+                  }
+                </select>
+              </div>
+              @if (!isPreviewMode()) {
+                <button type="button" class="btn btn-blue-sm">ADD</button>
+              }
+              <label class="pif-field-label">PHONE:</label>
+              <div class="pif-field-control medium">
+                <input type="text" class="pif-input" formControlName="contactPhone" [readonly]="isPreviewMode()" />
+              </div>
+            </div>
+
+            <!-- BILLING ADDRESS ROW -->
+            <div class="pif-field-row">
+              <label class="pif-field-label required">ADDRESS:</label>
+              <div class="pif-field-control medium">
+                <select class="pif-select" [disabled]="isPreviewMode()"
+                  (change)="onBillingAddressChange($event)">
+                  <option value="">Select Address</option>
+                  @for (a of selectedCustomerAddresses(); track a.id) {
+                    <option [value]="a.address_name" [selected]="selectedBillingAddressName() === a.address_name">{{ a.address_name }}</option>
+                  }
+                </select>
+              </div>
+              @if (!isPreviewMode()) {
+                <button type="button" class="btn btn-blue-sm">ADD</button>
+              }
+              <label class="pif-field-label">DELIVERY ADDRESS:</label>
+              <div class="pif-field-control medium">
+                <select class="pif-select" [disabled]="isPreviewMode()"
+                  (change)="onDeliveryAddressChange($event)">
+                  <option value="">Select Delivery Address</option>
+                  @for (a of selectedCustomerAddresses(); track a.id) {
+                    <option [value]="a.address_name" [selected]="selectedDeliveryAddressName() === a.address_name">{{ a.address_name }}</option>
+                  }
+                </select>
+              </div>
+              @if (!isPreviewMode()) {
+                <button type="button" class="btn btn-blue-sm">ADD</button>
+              }
+            </div>
+
+            <!-- ADDRESS TEXTAREAS -->
+            <div class="pif-field-row pif-textarea-row">
+              <textarea class="pif-textarea" formControlName="billingAddress" [readonly]="isPreviewMode()" rows="3" placeholder="Billing address..."></textarea>
+              <textarea class="pif-textarea" formControlName="deliveryAddress" [readonly]="isPreviewMode()" rows="3" placeholder="Delivery address..."></textarea>
+            </div>
+
+            <!-- PHONE 2 & 3 -->
+            <div class="pif-field-row">
+              <label class="pif-field-label">PHONE 2:</label>
+              <div class="pif-field-control medium">
+                <input type="text" class="pif-input" formControlName="phone2" [readonly]="isPreviewMode()" />
+              </div>
+              <label class="pif-field-label">PHONE 3:</label>
+              <div class="pif-field-control medium">
+                <input type="text" class="pif-input" formControlName="phone3" [readonly]="isPreviewMode()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="pif-top-right">
+            <div class="pif-meta-grid">
+              <label class="pif-meta-label required">INVOICE DATE:</label>
+              <input type="date" class="pif-input pif-date-highlight" formControlName="invoiceDate" [readonly]="isPreviewMode()" />
+
+              <label class="pif-meta-label required">INVOICE NO:</label>
+              <input type="text" class="pif-input" formControlName="invoiceNo" [readonly]="isPreviewMode()" />
+
+              <label class="pif-meta-label">CUSTOMER ORDER:</label>
+              <input type="text" class="pif-input" formControlName="customerOrder" [readonly]="isPreviewMode()" />
+
+              <label class="pif-meta-label">DUE DATE:</label>
+              <input type="date" class="pif-input" formControlName="dueDate" [readonly]="isPreviewMode()" />
+
+              <label class="pif-meta-label required">STATUS:</label>
+              <select class="pif-select" formControlName="status" [disabled]="isPreviewMode()">
+                @for (s of statusOptions; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+
+              <label class="pif-meta-label required">INVOICE TYPE:</label>
+              <select class="pif-select" formControlName="invoiceType" [disabled]="isPreviewMode()">
+                @for (t of typeOptions; track t) {
+                  <option [value]="t">{{ t }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- LINE ITEMS TABLE -->
+        <div class="pif-table-section">
+          <table class="pif-table">
+            <thead>
+              <tr>
+                <th class="pif-th col-code">PRODUCT CODE</th>
+                <th class="pif-th col-desc">PRODUCT DESCRIPTION</th>
+                <th class="pif-th col-sm">SIZE</th>
+                <th class="pif-th col-sm">FINISH</th>
+                <th class="pif-th col-sm">PACKAGING</th>
+                <th class="pif-th col-num">BOX QTY</th>
+                <th class="pif-th col-num">OUTER QTY</th>
+                <th class="pif-th col-num">PALLET QTY</th>
+                <th class="pif-th col-num">WEIGHT</th>
+                <th class="pif-th col-num">QTY</th>
+                <th class="pif-th col-num">SALE PRICE</th>
+                <th class="pif-th col-num">TOTAL</th>
+                @if (!isPreviewMode()) { <th class="pif-th col-act"></th> }
+              </tr>
+            </thead>
+            <tbody formArrayName="lineItems">
+              @for (idx of lineItemIndices; track idx) {
+                <tr class="pif-tr" [formGroupName]="idx">
+                  <td class="pif-td">
+                    <input type="text" class="pif-cell-input picker-trigger" formControlName="productCode"
+                      [readonly]="isPreviewMode()" (focus)="openProductPicker(idx)"
+                      placeholder="Code..." />
+                  </td>
+                  <td class="pif-td">
+                    <input type="text" class="pif-cell-input" formControlName="description"
+                      [readonly]="isPreviewMode()" placeholder="Description..." />
+                  </td>
+                  <td class="pif-td"><input type="text" class="pif-cell-input" formControlName="size" [readonly]="isPreviewMode()" /></td>
+                  <td class="pif-td"><input type="text" class="pif-cell-input" formControlName="finish" [readonly]="isPreviewMode()" /></td>
+                  <td class="pif-td"><input type="text" class="pif-cell-input" formControlName="packaging" [readonly]="isPreviewMode()" /></td>
+                  <td class="pif-td"><input type="number" class="pif-cell-input right" formControlName="boxQty" [readonly]="isPreviewMode()" min="0" /></td>
+                  <td class="pif-td"><input type="number" class="pif-cell-input right" formControlName="outerQty" [readonly]="isPreviewMode()" min="0" /></td>
+                  <td class="pif-td"><input type="number" class="pif-cell-input right" formControlName="palletQty" [readonly]="isPreviewMode()" min="0" /></td>
+                  <td class="pif-td"><input type="number" class="pif-cell-input right" formControlName="weight" [readonly]="isPreviewMode()" min="0" /></td>
+                  <td class="pif-td"><input type="number" class="pif-cell-input right" formControlName="qty" [readonly]="isPreviewMode()" min="0" /></td>
+                  <td class="pif-td"><input type="number" class="pif-cell-input right" formControlName="salePrice" [readonly]="isPreviewMode()" min="0" /></td>
+                  <td class="pif-td right-align">{{ (lineItemsValue()[idx]?.qty * lineItemsValue()[idx]?.salePrice || 0).toFixed(2) }}</td>
+                  @if (!isPreviewMode()) {
+                    <td class="pif-td">
+                      <button type="button" class="btn-row-remove" (click)="removeLine(idx)" title="Remove row">✕</button>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (!isPreviewMode()) {
+            <div class="pif-add-row-link" (click)="addLine()">
+              <span class="pif-add-icon">+</span> Click here to add a new row
+            </div>
+          }
+        </div>
+
+        <!-- RECORD COUNT -->
+        <div class="pif-record-bar">Record {{ lineItems.length > 0 ? '1' : '0' }} of {{ lineItems.length }}</div>
+
+        <!-- SUMMARY FOOTER -->
+        <div class="pif-summary-bar">
+          <div class="pif-summary-item">
+            <label>NET AMOUNT:</label>
+            <input type="text" class="pif-summary-input" [value]="netAmount().toFixed(2)" readonly />
+          </div>
+          <div class="pif-summary-item">
+            <label>Delivery Charge:</label>
+            <input type="number" class="pif-summary-input" formControlName="deliveryCharge" [readonly]="isPreviewMode()" min="0" />
+          </div>
+          <div class="pif-summary-item">
+            <label>TAX:</label>
+            <input type="number" class="pif-summary-input" formControlName="tax" [readonly]="isPreviewMode()" min="0" />
+          </div>
+          <div class="pif-summary-item pif-total">
+            <label class="pif-total-label">TOTAL AMOUNT:</label>
+            <span class="pif-total-value">{{ totalAmount().toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="pif-action-bar">
+          <div class="pif-action-left">
+            @if (!isPreviewMode()) {
+              <button type="submit" class="btn btn-save-act" [disabled]="actionInProgress()">
+                {{ actionInProgress() ? 'SAVING...' : 'SAVE' }}
+              </button>
+              <button type="button" class="btn btn-action">EMAIL</button>
+            }
+            <button type="button" class="btn btn-action" (click)="onClose()">PREVIEW</button>
+            <button type="button" class="btn btn-action">DELIVERY NOTE</button>
+            <button type="button" class="btn btn-action">PROFORMA INVOICE</button>
+          </div>
+          <div class="pif-action-right">
+            <button type="button" class="btn btn-close" (click)="onClose()">CLOSE</button>
+          </div>
+        </div>
+      </form>
+    }
+
+    <!-- PRODUCT PICKER MODAL -->
+    @if (productPickerOpen()) {
+      <div class="pif-picker-backdrop" (click)="closeProductPicker()">
+        <div class="pif-picker-panel" (click)="$event.stopPropagation()">
+          <div class="pif-picker-header">
+            <span>Select Product</span>
+            <button type="button" class="pif-picker-close" (click)="closeProductPicker()">✕</button>
+          </div>
+          <div class="pif-picker-search">
+            <input type="text" class="pif-input" placeholder="Search by code, name, category..."
+              [value]="productSearch()" (input)="productSearch.set($any($event.target).value)" autofocus />
+          </div>
+          <div class="pif-picker-list">
+            @for (p of filteredProducts(); track p.id) {
+              <div class="pif-picker-row" (click)="selectProduct(p)">
+                <span class="pif-picker-sku">{{ p.sku }}</span>
+                <span class="pif-picker-name">{{ p.name }}</span>
+                <span class="pif-picker-price">{{ (p.salePrice || p.unitPrice || 0).toFixed(2) }}</span>
+              </div>
+            } @empty {
+              <div class="pif-picker-empty">No products found</div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

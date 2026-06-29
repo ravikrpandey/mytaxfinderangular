@@ -27,8 +27,8 @@ export const routes: Routes = [
   },
   {
     path: 'products',
-    loadComponent: () => import('./components/products/products.component').then(m => m.ProductsComponent),
-    canActivate: [authGuard]
+    redirectTo: 'stock/products',
+    pathMatch: 'full'
   },
   {
     path: 'transactions',
@@ -67,7 +67,43 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'crm/organisation',
+    loadComponent: () => import('./modules/crm/organisation-listing/organisation-listing.component').then(m => m.OrganisationListingComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'crm/organisation/create',
+    loadComponent: () => import('./modules/crm/organisation-create/organisation-create.component').then(m => m.OrganisationCreateComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'crm/organisation/edit/:id',
+    loadComponent: () => import('./modules/crm/organisation-create/organisation-create.component').then(m => m.OrganisationCreateComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'crm/organisation/preview/:id',
+    loadComponent: () => import('./modules/crm/organisation-create/organisation-create.component').then(m => m.OrganisationCreateComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'crm/master-data',
+    loadComponent: () => import('./modules/crm/master-data-admin/master-data-admin.component').then(m => m.MasterDataAdminComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'stock',
+    loadChildren: () => import('./modules/stock/stock.routes').then(m => m.stockRoutes),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'sales',
+    loadChildren: () => import('./modules/sales/sales.routes').then(m => m.salesRoutes),
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
     redirectTo: 'login'
   }
 ];
+
