@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { ApiService, Product } from '../../../services/api.service';
 import { ToastService } from '../../../services/toast.service';
+import { environment } from '../../../../environments/environment';
 
 interface MasterItem { id: number; name: string; code?: string; }
 
@@ -366,7 +367,7 @@ export class ProductCreateComponent implements OnInit {
   getFullImagePath(relativePath: string): string {
     if (!relativePath) return '';
     if (relativePath.startsWith('http')) return relativePath;
-    return `http://localhost:5000${relativePath}`;
+    return `${environment.apiUrl}${relativePath}`;
   }
 
   // Handle single image upload for Details tab

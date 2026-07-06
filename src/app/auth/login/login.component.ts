@@ -15,10 +15,10 @@ export class LoginComponent {
   loginForm: FormGroup;
   otpForm: FormGroup;
   otpSent = false;
-  
 
-  constructor(private fb: FormBuilder, 
-    private commonService: CommonService, 
+
+  constructor(private fb: FormBuilder,
+    private commonService: CommonService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {
@@ -32,7 +32,7 @@ export class LoginComponent {
   }
 
   ngOnInit() {
-    if(localStorage.getItem('email')) {
+    if (localStorage.getItem('email')) {
       this.router.navigate(['/admin']);
     }
   }
@@ -54,7 +54,7 @@ export class LoginComponent {
         if (res.success == true) {
           this.otpSent = true;
           this.showSuccessNotification(res.message)
-        }else {
+        } else {
           this.showErrorNotification(res.message)
         }
       })
@@ -71,26 +71,26 @@ export class LoginComponent {
           localStorage.setItem('email', email);
           this.router.navigate(['/admin']);
           this.showSuccessNotification(res.message)
-        }else {
+        } else {
           this.showErrorNotification(res.message)
         }
       })
     }
   }
 
-    // Show success notification
-    showSuccessNotification(message: string) {
-      this.snackBar.open(message, 'Close', {
-        duration: 4000,
-        panelClass: ['snackbar-success']
-      });
-    }
-  
-    // Show error notification
-    showErrorNotification(message: string) {
-      this.snackBar.open(message, 'Close', {
-        duration: 3000,
-        panelClass: ['snackbar-error']
-      });
-    }
+  // Show success notification
+  showSuccessNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 4000,
+      panelClass: ['snackbar-success']
+    });
+  }
+
+  // Show error notification
+  showErrorNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: ['snackbar-error']
+    });
+  }
 }

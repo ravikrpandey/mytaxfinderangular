@@ -1,7 +1,7 @@
 export const environment = {
-  production: false,
-  // apiUrl: 'https://infosys-backend-pr1k.onrender.com'
-  apiUrl: 'http://localhost:5000'
+  production: true,
+  apiUrl: 'https://api.mytaxfinder.com'
+  // apiUrl: 'http://localhost:5000'
 };
 
 

@@ -281,7 +281,7 @@ export interface BusinessAccountCheckResponse {
 })
 export class ApiService {
   private apiUrl = environment.apiUrl;
-  private businessAccountsApiUrl = 'http://localhost:5000/api/v1/client-user/meta-data/business-account/business-accounts';
+  private businessAccountsApiUrl = `${environment.apiUrl}/api/v1/client-user/meta-data/business-account/business-accounts`;
 
   constructor(private http: HttpClient) {}
 

@@ -88,7 +88,7 @@ export class HomeComponent implements AfterViewInit {
       } else {
         console.error('PureCounter library not available on window');
       }
-  
+
       // Check for hash in URL and scroll to the corresponding section if it exists
       const hash = window.location.hash;
       if (hash) {
@@ -96,15 +96,15 @@ export class HomeComponent implements AfterViewInit {
       }
     }, 100);
   }
-  
-  
+
+
   scrollToSection(hash: string): void {
     const element = document.querySelector(hash);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
-  
+
 
   addPlusSign() {
     // Select all purecounter elements and append the '+' sign only if it does not already exist
@@ -116,13 +116,13 @@ export class HomeComponent implements AfterViewInit {
       }
     });
   }
-  
+
 
   onScroll = () => {
     // Re-add '+' sign on scroll (if necessary)
     this.addPlusSign();
   };
-  
+
   ngOnDestroy() {
     // Clean up the event listener
     window.removeEventListener('scroll', this.onScroll);
@@ -183,7 +183,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
 
-  
+
 }
 
 
