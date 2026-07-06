@@ -29,164 +29,200 @@
     @if (showForm()) {
       <form class="business-form" (ngSubmit)="save()">
         @if (error()) {
-          <div class="error-message">{{ error() }}</div>
+          <div class="error-message full-width">{{ error() }}</div>
         }
 
-      <div class="form-row">
-        <label>Have GSTIN?</label>
-        <div class="radio-group">
-          <label class="radio-option">
-            <input
-              type="radio"
-              name="hasGstin"
-              [checked]="form().hasGstin === 'yes'"
-              (change)="updateField('hasGstin', 'yes')"
-            />
-            <span>Yes</span>
-          </label>
-          <label class="radio-option">
-            <input
-              type="radio"
-              name="hasGstin"
-              [checked]="form().hasGstin === 'no'"
-              (change)="updateField('hasGstin', 'no')"
-            />
-            <span>No</span>
-          </label>
+        <div class="form-row">
+          <label>Have GSTIN?</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input
+                type="radio"
+                name="hasGstin"
+                [checked]="form().hasGstin === 'yes'"
+                (change)="updateField('hasGstin', 'yes')"
+              />
+              <span>Yes</span>
+            </label>
+            <label class="radio-option">
+              <input
+                type="radio"
+                name="hasGstin"
+                [checked]="form().hasGstin === 'no'"
+                (change)="updateField('hasGstin', 'no')"
+              />
+              <span>No</span>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <label for="gstin">GSTIN</label>
-        <div class="input-with-action">
+        <div class="form-row">
+          <label for="gstin">GSTIN</label>
+          <div class="input-with-action">
+            <input
+              id="gstin"
+              type="text"
+              name="gstin"
+              [ngModel]="form().gstin"
+              (ngModelChange)="updateField('gstin', $event)"
+              placeholder="Enter GSTIN"
+              [disabled]="form().hasGstin === 'no'"
+            />
+            <button type="button" class="btn-autofill" (click)="autoFillGstin()" [disabled]="form().hasGstin === 'no'">
+              Auto Fill
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="companyName">Company Name<span class="required">*</span></label>
           <input
-            id="gstin"
+            id="companyName"
             type="text"
-            name="gstin"
-            [ngModel]="form().gstin"
-            (ngModelChange)="updateField('gstin', $event)"
-            placeholder="Enter GSTIN"
-            [disabled]="form().hasGstin === 'no'"
+            name="companyName"
+            [ngModel]="form().companyName"
+            (ngModelChange)="updateField('companyName', $event)"
+            placeholder="Enter company name"
           />
-          <button type="button" class="btn-autofill" (click)="autoFillGstin()" [disabled]="form().hasGstin === 'no'">
-            Auto Fill
-          </button>
         </div>
-      </div>
 
-      <div class="form-row">
-        <label for="companyName">Company Name<span class="required">*</span></label>
-        <input
-          id="companyName"
-          type="text"
-          name="companyName"
-          [ngModel]="form().companyName"
-          (ngModelChange)="updateField('companyName', $event)"
-          placeholder="Enter company name"
-        />
-      </div>
+        <div class="form-row">
+          <label for="companyCode">Company Code<span class="required">*</span></label>
+          <input
+            id="companyCode"
+            type="text"
+            name="companyCode"
+            [ngModel]="form().companyCode"
+            (ngModelChange)="updateField('companyCode', $event)"
+            placeholder="Enter unique company code"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="fullName">Full Name<span class="required">*</span></label>
-        <input
-          id="fullName"
-          type="text"
-          name="fullName"
-          [ngModel]="form().fullName"
-          (ngModelChange)="updateField('fullName', $event)"
-          placeholder="Enter full name"
-        />
-      </div>
+        <div class="form-row">
+          <label for="fullName">Full Name<span class="required">*</span></label>
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            [ngModel]="form().fullName"
+            (ngModelChange)="updateField('fullName', $event)"
+            placeholder="Enter contact person name"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          [ngModel]="form().email"
-          (ngModelChange)="updateField('email', $event)"
-          placeholder="Enter email address"
-        />
-      </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [ngModel]="form().email"
+            (ngModelChange)="updateField('email', $event)"
+            placeholder="Enter email address"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="addressLine1">Address Line 1<span class="required">*</span></label>
-        <input
-          id="addressLine1"
-          type="text"
-          name="addressLine1"
-          [ngModel]="form().addressLine1"
-          (ngModelChange)="updateField('addressLine1', $event)"
-          placeholder="Enter address line 1"
-        />
-      </div>
+        <div class="form-row">
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            id="phoneNumber"
+            type="tel"
+            name="phoneNumber"
+            [ngModel]="form().phoneNumber"
+            (ngModelChange)="updateField('phoneNumber', $event)"
+            placeholder="Enter mobile/phone number"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="addressLine2">Address Line 2</label>
-        <input
-          id="addressLine2"
-          type="text"
-          name="addressLine2"
-          [ngModel]="form().addressLine2"
-          (ngModelChange)="updateField('addressLine2', $event)"
-          placeholder="Enter address line 2"
-        />
-      </div>
+        <div class="form-row">
+          <label for="website">Website</label>
+          <input
+            id="website"
+            type="url"
+            name="website"
+            [ngModel]="form().website"
+            (ngModelChange)="updateField('website', $event)"
+            placeholder="Enter website (e.g. www.mybiz.com)"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="pincode">Pincode<span class="required">*</span></label>
-        <input
-          id="pincode"
-          type="text"
-          name="pincode"
-          [ngModel]="form().pincode"
-          (ngModelChange)="updateField('pincode', $event)"
-          placeholder="Enter pincode"
-        />
-      </div>
+        <div class="form-row full-width">
+          <label for="addressLine1">Address Line 1<span class="required">*</span></label>
+          <input
+            id="addressLine1"
+            type="text"
+            name="addressLine1"
+            [ngModel]="form().addressLine1"
+            (ngModelChange)="updateField('addressLine1', $event)"
+            placeholder="Enter office address line 1"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="city">City<span class="required">*</span></label>
-        <select
-          id="city"
-          name="city"
-          [ngModel]="form().city"
-          (ngModelChange)="updateField('city', $event)"
-        >
-          <option value="">Select City</option>
-          @for (city of cities; track city) {
-            <option [value]="city">{{ city }}</option>
-          }
-        </select>
-      </div>
+        <div class="form-row full-width">
+          <label for="addressLine2">Address Line 2</label>
+          <input
+            id="addressLine2"
+            type="text"
+            name="addressLine2"
+            [ngModel]="form().addressLine2"
+            (ngModelChange)="updateField('addressLine2', $event)"
+            placeholder="Enter office address line 2"
+          />
+        </div>
 
-      <div class="form-row">
-        <label for="state">State<span class="required">*</span></label>
-        <select
-          id="state"
-          name="state"
-          [ngModel]="form().state"
-          (ngModelChange)="updateField('state', $event)"
-        >
-          <option value="">Select State</option>
-          @for (state of states; track state) {
-            <option [value]="state">{{ state }}</option>
-          }
-        </select>
-      </div>
+        <div class="form-row">
+          <label for="pincode">Pincode<span class="required">*</span></label>
+          <input
+            id="pincode"
+            type="text"
+            name="pincode"
+            [ngModel]="form().pincode"
+            (ngModelChange)="updateField('pincode', $event)"
+            placeholder="Enter pincode"
+          />
+        </div>
 
-      <footer class="form-footer">
-        <button type="button" class="btn-outline" (click)="close()">✕ Close</button>
-        <button type="submit" class="btn-primary" [disabled]="isSaving()">
-          @if (isSaving()) {
-            <span>Saving...</span>
-          } @else {
-            <span>💾 Save</span>
-          }
-        </button>
-      </footer>
-    </form>
+        <div class="form-row">
+          <label for="city">City<span class="required">*</span></label>
+          <select
+            id="city"
+            name="city"
+            [ngModel]="form().city"
+            (ngModelChange)="updateField('city', $event)"
+          >
+            <option value="">Select City</option>
+            @for (city of cities; track city) {
+              <option [value]="city">{{ city }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-row full-width">
+          <label for="state">State<span class="required">*</span></label>
+          <select
+            id="state"
+            name="state"
+            [ngModel]="form().state"
+            (ngModelChange)="updateField('state', $event)"
+          >
+            <option value="">Select State</option>
+            @for (state of states; track state) {
+              <option [value]="state">{{ state }}</option>
+            }
+          </select>
+        </div>
+
+        <footer class="form-footer full-width">
+          <button type="button" class="btn-outline" (click)="close()">✕ Close</button>
+          <button type="submit" class="btn-primary" [disabled]="isSaving()">
+            @if (isSaving()) {
+              <span>Saving...</span>
+            } @else {
+              <span>💾 Save</span>
+            }
+          </button>
+        </footer>
+      </form>
     }
   </div>
 </div>

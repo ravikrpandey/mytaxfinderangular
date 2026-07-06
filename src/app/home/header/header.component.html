@@ -17,6 +17,7 @@
         <li><a href="home#recent-posts" [class.active]="activeSection === 'recent-posts'" (click)="closeMobileNav()">Blog</a></li>
         <li><a href="home#contact" [class.active]="activeSection === 'contact'" (click)="closeMobileNav()">Contact</a></li>
         <li><a routerLink="/tax-by-region" fragment="contact">Tax-By-Region</a></li>
+        <li><a [href]="adminPanelUrl" target="_blank" (click)="closeMobileNav()">Pro Services</a></li>
 
         <!-- Search field as a list item with toggle behavior for mobile view -->
         <li class="search-list-item">

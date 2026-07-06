@@ -22,7 +22,7 @@ export class WelcomeComponent implements OnInit {
   isLoading = signal(false);
   
   // Mock data for recent cases/tasks
-  recentCases = signal([
+  recentCases = signal<any[]>([
     { id: '1', clientName: 'John Doe', serviceType: 'ITR Filing', status: 'In Progress', priority: 'High', date: new Date() },
     { id: '2', clientName: 'Jane Smith', serviceType: 'GST Return', status: 'Pending', priority: 'Medium', date: new Date(Date.now() - 86400000) },
     { id: '3', clientName: 'ABC Corp', serviceType: 'Tax Planning', status: 'Completed', priority: 'Low', date: new Date(Date.now() - 172800000) },
@@ -31,7 +31,7 @@ export class WelcomeComponent implements OnInit {
   ]);
   
   // Mock data for recent services
-  recentServices = signal([
+  recentServices = signal<any[]>([
     { id: '1', clientName: 'John Doe', serviceType: 'ITR Filing', amount: 2500, status: 'Completed', date: new Date() },
     { id: '2', clientName: 'Jane Smith', serviceType: 'GST Return Filing', amount: 1500, status: 'Completed', date: new Date(Date.now() - 86400000) },
     { id: '3', clientName: 'ABC Corp', serviceType: 'Tax Planning', amount: 5000, status: 'Completed', date: new Date(Date.now() - 172800000) },
@@ -108,11 +108,19 @@ export class WelcomeComponent implements OnInit {
     this.apiService.getDashboardStats(startDateStr, endDate).subscribe({
       next: (stats) => {
         // Map inventory stats to tax service stats
-        this.totalClients.set(stats.totalProducts || 45); // Total clients
-        this.pendingITR.set(stats.lowStockCount || 12); // Pending ITR filings
-        this.completedReturns.set(Math.floor((stats.totalProducts || 45) * 0.7) || 32); // Completed returns
-        this.activeGST.set(Math.floor((stats.totalProducts || 45) * 0.4) || 18); // Active GST registrations
-        this.totalRevenue.set(stats.totalSales || 125000); // Total revenue
+        this.totalClients.set(stats.totalProducts !== undefined ? stats.totalProducts : 45); // Total clients
+        this.pendingITR.set(stats.lowStockCount !== undefined ? stats.lowStockCount : 12); // Pending ITR filings
+        this.completedReturns.set(stats.completedReturns !== undefined ? stats.completedReturns : 32); // Completed returns
+        this.activeGST.set(stats.activeGST !== undefined ? stats.activeGST : 18); // Active GST registrations
+        this.totalRevenue.set(stats.totalSales !== undefined ? stats.totalSales : 125000); // Total revenue
+        
+        if (stats.recentCases && stats.recentCases.length > 0) {
+          this.recentCases.set(stats.recentCases);
+        }
+        if (stats.recentServices && stats.recentServices.length > 0) {
+          this.recentServices.set(stats.recentServices);
+        }
+        
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -132,12 +140,12 @@ export class WelcomeComponent implements OnInit {
     this.router.navigate(['/products']);
   }
 
-  navigateToTransactions(): void {
-    this.router.navigate(['/transactions']);
+  navigateToServices(): void {
+    this.router.navigate(['/sales/sales-invoice']);
   }
 
-  navigateToAlerts(): void {
-    this.router.navigate(['/alerts']);
+  navigateToCases(): void {
+    this.router.navigate(['/crm/organisation']);
   }
   
   getPriorityClass(priority: string): string {

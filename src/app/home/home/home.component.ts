@@ -23,6 +23,10 @@ export class HomeComponent implements AfterViewInit {
   email: string = '';
   currentYear: string = `${new Date().getFullYear()}-${(new Date().getFullYear() + 1).toString().slice(-2)}`; // Set to current assessment year display
 
+  get adminPanelUrl(): string {
+    return this.commonService.getAdminPanelUrl();
+  }
+
   faqs: Faq[] = [
     {
       question: "What is e-Filing of income tax return (ITR)?",

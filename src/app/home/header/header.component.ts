@@ -14,6 +14,10 @@ export class HeaderComponent implements OnInit {
   queryStatusMessage: string = '';
   isSearchExpanded: boolean = false;
 
+  get adminPanelUrl(): string {
+    return this.commonService.getAdminPanelUrl();
+  }
+
   constructor(private renderer: Renderer2,
      private elementRef: ElementRef, 
      private snackBar: MatSnackBar,

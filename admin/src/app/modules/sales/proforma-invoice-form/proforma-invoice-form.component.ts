@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { ProformaInvoiceService, ProformaInvoice } from '../services/proforma-invoice.service';
@@ -21,6 +22,12 @@ export class ProformaInvoiceFormComponent implements OnInit {
   isEditMode = signal(false);
   isPreviewMode = signal(false);
   invoiceId = signal<string | number | null>(null);
+  formSubmitted = signal(false);
+
+  // PDF Preview state
+  pdfPreviewOpen = signal(false);
+  pdfUrl = signal<SafeResourceUrl | null>(null);
+  pdfBlob = signal<Blob | null>(null);
 
   selectedCustomerId = signal<number | string>('');
   selectedContactName = signal<string>('');
@@ -75,7 +82,8 @@ export class ProformaInvoiceFormComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly service: ProformaInvoiceService,
     private readonly apiService: ApiService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly sanitizer: DomSanitizer
   ) {
     this.piForm = this.fb.group({
       customerName: ['', [Validators.required]],
@@ -336,8 +344,8 @@ export class ProformaInvoiceFormComponent implements OnInit {
     if (this.lineItems.length > 1) this.lineItems.removeAt(index);
     else this.toastService.warning('At least one line item is required');
   }
-
   onSave(): void {
+    this.formSubmitted.set(true);
     if (this.piForm.invalid) {
       this.piForm.markAllAsTouched();
       this.toastService.error('Please fill all required fields');
@@ -397,6 +405,82 @@ export class ProformaInvoiceFormComponent implements OnInit {
   }
 
   onClose(): void { this.router.navigate(['/sales/proforma-invoice']); }
+  onPreview(): void {
+    this.formSubmitted.set(true);
+    if (this.piForm.invalid) {
+      this.piForm.markAllAsTouched();
+      this.toastService.error('Please fill all required fields before previewing');
+      return;
+    }
+    const formVal = this.piForm.value;
+    const payload: Partial<ProformaInvoice> = {
+      invoiceNo: formVal.invoiceNo,
+      customerName: formVal.customerName,
+      customerId: this.selectedCustomerId() ? Number(this.selectedCustomerId()) : undefined,
+      contactName: formVal.contactName,
+      contactPhone: formVal.contactPhone,
+      phone2: formVal.phone2,
+      phone3: formVal.phone3,
+      billingAddress: formVal.billingAddress,
+      deliveryAddress: formVal.deliveryAddress,
+      invoiceDate: formVal.invoiceDate,
+      dueDate: formVal.dueDate || undefined,
+      customerOrder: formVal.customerOrder,
+      status: formVal.status,
+      invoiceType: formVal.invoiceType,
+      deliveryCharge: Number(formVal.deliveryCharge) || 0,
+      subtotal: this.subtotal(),
+      taxAmount: this.taxValue(),
+      totalAmount: this.totalAmount(),
+      notes: formVal.notes,
+      items: formVal.lineItems.map((item: any) => ({
+        productCode: item.productCode,
+        description: item.description,
+        size: item.size,
+        finish: item.finish,
+        packaging: item.packaging,
+        boxQty: Number(item.boxQty) || 0,
+        outerQty: Number(item.outerQty) || 0,
+        palletQty: Number(item.palletQty) || 0,
+        weight: Number(item.weight) || 0,
+        qty: Number(item.qty) || 1,
+        salePrice: Number(item.salePrice) || 0,
+        totalPrice: Number(item.totalPrice) || 0
+      }))
+    };
+
+    this.loading.set(true);
+    this.service.getPreviewPdf(payload).subscribe({
+      next: (blob: Blob) => {
+        this.loading.set(false);
+        this.pdfBlob.set(blob);
+        const objectUrl = URL.createObjectURL(blob);
+        this.pdfUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl));
+        this.pdfPreviewOpen.set(true);
+      },
+      error: (err: any) => {
+        this.loading.set(false);
+        this.toastService.error(err.message || 'Failed to generate PDF preview');
+      }
+    });
+  }
+
+  downloadPdf(): void {
+    const blob = this.pdfBlob();
+    if (!blob) return;
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = `sales-acknowledgment-${this.piForm.get('invoiceNo')?.value || 'invoice'}.pdf`;
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  closePdfPreview(): void {
+    this.pdfPreviewOpen.set(false);
+    this.pdfUrl.set(null);
+    this.pdfBlob.set(null);
+  }
 
   private todayStr(): string { return new Date().toISOString().split('T')[0]; }
 

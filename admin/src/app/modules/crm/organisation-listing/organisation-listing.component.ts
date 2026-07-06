@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
+import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,118 +31,7 @@ interface Organisation {
 export class OrganisationListingComponent implements OnInit {
   searchTerm = signal('');
 
-  mockOrganisations: Organisation[] = [
-    {
-      id: 1,
-      customerType: 'SUPPLIER, CUSTOMER',
-      code: 'ZED0001',
-      name: 'ZED FOR SHEDS LIMITE',
-      taxNo: 'sadfs',
-      phone: '01772824870',
-      email: 'sales@zedfix.com',
-      website: 'asdfs.com',
-      balance: 0
-    },
-    {
-      id: 2,
-      customerType: 'SUPPLIER',
-      code: 'YAN001',
-      name: 'YANTAI LOCK SUPPLIES',
-      taxNo: 'its taxsdf',
-      phone: '01252448700',
-      email: 'yantailocku@gmail.com',
-      website: 'sadfsd.com',
-      balance: 0
-    },
-    {
-      id: 3,
-      customerType: 'CUSTOMER',
-      code: 'XTR001',
-      name: 'XTRA BUILDING SUPPLII',
-      taxNo: '',
-      phone: '020 8577 5430',
-      email: '',
-      website: '',
-      balance: 0
-    },
-    {
-      id: 4,
-      customerType: 'SUPPLIER',
-      code: 'XLT001',
-      name: 'XL TAPE INTERNATIONA',
-      taxNo: 'XL TAX',
-      phone: '48413489226',
-      email: 'wchewicki@bluedolp',
-      website: 'XL.COM',
-      balance: 0
-    },
-    {
-      id: 5,
-      customerType: 'MANUFACTURER, SUPPLIER',
-      code: 'XIN001',
-      name: 'XINGSHENGFA HARDWA',
-      taxNo: 'asdfsadf',
-      phone: '8613826274238',
-      email: 'xsf02@gz-xsf.com',
-      website: 'www.gz-xsf.com',
-      balance: 0
-    },
-    {
-      id: 6,
-      customerType: 'SUPPLIER',
-      code: 'WUH001',
-      name: 'WUHU AIHUA INDUSTRI',
-      taxNo: '.',
-      phone: '00865532667230',
-      email: 'qualpro1006@keybui',
-      website: 'www.keytobuilding.com',
-      balance: 0
-    },
-    {
-      id: 7,
-      customerType: 'CUSTOMER',
-      code: 'WTL001',
-      name: 'WT LYNN',
-      taxNo: 'TAX NO',
-      phone: '01782834818',
-      email: 'pandeyravikumar181',
-      website: 'website.com',
-      balance: 0
-    },
-    {
-      id: 8,
-      customerType: 'SUPPLIER',
-      code: 'WOO001',
-      name: 'WOOLBRO DISTRIBUTIC',
-      taxNo: '',
-      phone: '01274725396',
-      email: 'sales@rapideproduct',
-      website: 'www.rapideproducts.co.uk',
-      balance: 0
-    },
-    {
-      id: 9,
-      customerType: 'CUSTOMER',
-      code: 'WBM001',
-      name: 'WINGATE BUILDERS ME',
-      taxNo: '.',
-      phone: '02084785075',
-      email: 'WINGATE@GMAIL.C',
-      website: '.',
-      balance: 0
-    },
-    {
-      id: 10,
-      customerType: 'CUSTOMER',
-      code: 'WIL005',
-      name: 'WILLESDEN SUPPLIES L',
-      taxNo: '.',
-      phone: '02084594440',
-      email: 'willesdensupplies@gi',
-      website: '.',
-      balance: 0
-    }
-  ];
+  mockOrganisations: Organisation[] = [];
 
   organisations = signal<Organisation[]>(this.mockOrganisations);
   selectedOrgId = signal<number | null>(null);
@@ -361,7 +251,6 @@ export class OrganisationListingComponent implements OnInit {
       error: (err) => {
         console.error('Failed to load organisations from backend, using mocks', err);
         this.toastService.error('Failed to load organisations from backend. Using mock fallback data.');
-        this.organisations.set(this.mockOrganisations);
       }
     });
   }
@@ -408,5 +297,92 @@ export class OrganisationListingComponent implements OnInit {
 
   clearSearch(): void {
     this.searchTerm.set('');
+  }
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+  triggerImport(): void {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Reset file input so same file can be selected again
+    event.target.value = '';
+
+    Swal.fire({
+      title: 'Importing Organisations',
+      text: 'Processing your file, please wait...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    this.apiService.importOrganisations(file).subscribe({
+      next: (res) => {
+        Swal.close();
+        if (res && res.success) {
+          const summary = res.summary;
+          const total = summary.total;
+          const created = summary.created;
+          const updated = summary.updated;
+          const failed = summary.failed;
+
+          let htmlMessage = `
+            <div style="text-align: left; font-size: 14px;">
+              <p><strong>Total rows processed:</strong> ${total}</p>
+              <p style="color: #10b981;"><strong>Created new:</strong> ${created}</p>
+              <p style="color: #3b82f6;"><strong>Updated existing:</strong> ${updated}</p>
+              <p style="color: #ef4444;"><strong>Failed rows:</strong> ${failed}</p>
+          `;
+
+          if (res.errors && res.errors.length > 0) {
+            htmlMessage += `
+              <div style="margin-top: 15px; border-top: 1px solid #e5e7eb; padding-top: 10px;">
+                <h4 style="margin: 0 0 5px 0; color: #b91c1c; font-size: 13px;">Row Errors:</h4>
+                <ul style="max-height: 120px; overflow-y: auto; padding-left: 20px; margin: 0; font-size: 12px; color: #555;">
+            `;
+            res.errors.forEach((err: any) => {
+              htmlMessage += `<li>Row ${err.row}: ${err.error}</li>`;
+            });
+            htmlMessage += `</ul></div>`;
+          }
+
+          htmlMessage += `</div>`;
+
+          Swal.fire({
+            title: 'Import Results',
+            html: htmlMessage,
+            icon: failed === 0 ? 'success' : failed === total ? 'error' : 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0f5e9c'
+          });
+
+          this.loadOrganisations();
+        } else {
+          Swal.fire({
+            title: 'Import Failed',
+            text: res.message || 'Unknown error occurred during import.',
+            icon: 'error',
+            confirmButtonColor: '#ef4444'
+          });
+        }
+      },
+      error: (err) => {
+        Swal.close();
+        console.error('Import error:', err);
+        Swal.fire({
+          title: 'Import Failed',
+          text: err.error?.message || err.error?.error || err.message || 'Failed to upload and import file.',
+          icon: 'error',
+          confirmButtonColor: '#ef4444'
+        });
+      }
+    });
   }
 }

@@ -5,7 +5,7 @@ import { adminGuard } from './guards/role.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'sales/return',
     pathMatch: 'full'
   },
   {
@@ -99,6 +99,16 @@ export const routes: Routes = [
   {
     path: 'sales',
     loadChildren: () => import('./modules/sales/sales.routes').then(m => m.salesRoutes),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'receipt',
+    loadChildren: () => import('./modules/receipt/receipt.routes').then(m => m.receiptRoutes),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./modules/payment/payment.routes').then(m => m.paymentRoutes),
     canActivate: [authGuard]
   },
   {

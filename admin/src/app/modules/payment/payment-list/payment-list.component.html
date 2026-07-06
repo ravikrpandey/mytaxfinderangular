@@ -1,0 +1,116 @@
+<div class="pcl-page">
+  <div class="pcl-card">
+    <!-- Card Header -->
+    <div class="pcl-card-header">
+      <h3 class="pcl-card-title">PAYMENTS & EXPENSES LIST</h3>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="pcl-toolbar">
+      <div class="pcl-toolbar-actions-left">
+        <button class="btn btn-add btn-primary" (click)="onCreatePayment()" title="Add Payment/Expense">
+          ADD PAYMENT/EXPENSE
+        </button>
+        <button class="btn btn-edit" [disabled]="!selectedRow()" (click)="onEditSelected()" title="Edit Selected">
+          EDIT
+        </button>
+        <button class="btn btn-preview" [disabled]="!selectedRow()" (click)="onPreviewSelected()" title="Preview Selected">
+          PREVIEW
+        </button>
+        <button class="btn btn-delete" [disabled]="!selectedRow()" (click)="deleteSelected()" title="Delete Selected">
+          DELETE
+        </button>
+        <button class="btn btn-refresh" (click)="refreshList()" title="Refresh List">
+          REFRESH
+        </button>
+      </div>
+
+      <div class="pcl-toolbar-actions-right">
+        <button class="btn btn-layout" (click)="onSaveLayout()" title="Save Layout">
+          SAVE GRID LAYOUT
+        </button>
+        <button class="btn btn-layout-reset" (click)="onResetLayout()" title="Reset Layout">
+          RESET GRID LAYOUT
+        </button>
+        <button class="btn btn-export" (click)="onExportCsv()" title="Export CSV">
+          EXPORT TO CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="pcl-filters" [formGroup]="filterForm">
+      <div class="pcl-filters-row">
+        <div class="field-group">
+          <label>TYPE</label>
+          <select formControlName="paymentType" (change)="applyFilter()">
+            <option value="">ALL TYPES</option>
+            <option value="invoice_payment">VENDOR PAYMENT</option>
+            <option value="direct_expense">DIRECT EXPENSE</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>DATE FROM</label>
+          <input type="date" formControlName="dateFrom" (change)="applyFilter()" />
+        </div>
+        <div class="field-group">
+          <label>DATE TO</label>
+          <input type="date" formControlName="dateTo" (change)="applyFilter()" />
+        </div>
+        <button class="btn btn-clear" (click)="clearFilters()">CLEAR</button>
+      </div>
+
+      <div class="pcl-search-row">
+        <input
+          type="text"
+          formControlName="search"
+          (input)="applyFilter()"
+          placeholder="SEARCH BY PAYMENT NO, VENDOR, CATEGORY, REFERENCE NO..."
+          class="pcl-search-input"
+        />
+      </div>
+    </div>
+
+    <!-- Loading & Error States -->
+    @if (loading()) {
+      <div class="center">
+        <div class="spinner large"></div>
+        <span>LOADING PAYMENTS & EXPENSES...</span>
+      </div>
+    } @else if (error()) {
+      <div class="error-message">
+        {{ error() }}
+      </div>
+    } @else {
+      <!-- Grid Container -->
+      <div class="pcl-grid-shell">
+        <ag-grid-angular
+          class="pcl-ag-grid ag-theme-balham"
+          [rowData]="gridRows()"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [rowSelection]="rowSelection"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          (gridReady)="onGridReady($event)"
+          (selectionChanged)="onSelectionChanged($event)"
+          (rowDoubleClicked)="onRowDoubleClicked($event)"
+        ></ag-grid-angular>
+      </div>
+    }
+
+    <!-- Total Bar -->
+    <div class="pcl-total-bar">
+      <span class="pcl-total-label">TOTAL PAYMENTS</span>
+      <div class="pcl-total-values">
+        <span>{{ totalAmount | number: '1.2-2' }}</span>
+      </div>
+    </div>
+
+    <!-- Footer Bar -->
+    <div class="pcl-footer-bar">
+      <div class="pager">
+        <div class="pager-text">{{ selectedRecordText() }}</div>
+      </div>
+    </div>
+  </div>
+</div>

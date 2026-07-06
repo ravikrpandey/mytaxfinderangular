@@ -104,9 +104,21 @@
               </a>
             }
 
+            @if (getMenuEntry('sales')?.children?.['salesOrder']?.canView !== false) {
+              <a
+                [routerLink]="getMenuEntry('sales')?.children?.['salesOrder']?.path || '/sales/sales-order'"
+                routerLinkActive="active"
+                class="nav-sublink"
+              >
+                <span class="label">
+                  {{ getMenuEntry('sales')?.children?.['salesOrder']?.label || 'SALES ORDER' }}
+                </span>
+              </a>
+            }
+
             @if (getMenuEntry('sales')?.children?.['salesInvoice']?.canView !== false) {
               <a
-                [routerLink]="getMenuEntry('sales')?.children?.['salesInvoice']?.path || '/sales/invoice'"
+                [routerLink]="getMenuEntry('sales')?.children?.['salesInvoice']?.path || '/sales/sales-invoice'"
                 routerLinkActive="active"
                 class="nav-sublink"
               >
@@ -141,6 +153,18 @@
       >
         <span class="icon">💵</span>
         <span class="label">{{ getMenuEntry('receipt')?.label || 'Receipt' }}</span>
+      </a>
+    }
+
+    @if (canView('payment')) {
+      <a
+        [routerLink]="getMenuEntry('payment')?.path || '/payment'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link"
+      >
+        <span class="icon">💳</span>
+        <span class="label">{{ getMenuEntry('payment')?.label || 'Payment' }}</span>
       </a>
     }
 

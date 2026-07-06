@@ -58,4 +58,14 @@ export class CommonService {
     return this.http.patch(url, payload);
   }
 
+  getAdminPanelUrl(): string {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:4300';
+      }
+    }
+    return '/adminpanel/';
+  }
+
 }

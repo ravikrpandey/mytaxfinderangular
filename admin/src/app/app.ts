@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Component, signal, inject, OnDestroy, effect } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -30,9 +30,36 @@ export class App implements OnDestroy {
   private timerId: any;
 
   constructor() {
-    this.loadAdminEntities();
+    effect(() => {
+      if (this.authService.isAuthenticated()) {
+        this.loadUserEntityIfNeeded();
+      }
+    });
     this.updateDateTime();
     this.timerId = setInterval(() => this.updateDateTime(), 1000);
+  }
+
+  /**
+   * Load user-scoped entity or admin entity list depending on user role
+   */
+  private loadUserEntityIfNeeded(): void {
+    const user = this.authService.currentUser();
+    if (!user) return;
+
+    if (this.authService.isAdmin()) {
+      this.loadAdminEntities();
+    } else if (user.email) {
+      this.apiService.getBusinessAccount(user.email, 'email').subscribe({
+        next: (res) => {
+          if (res.exists && res.data) {
+            this.authService.switchEntity(res.data);
+          }
+        },
+        error: (err) => {
+          console.error('Failed to load user business entity:', err);
+        }
+      });
+    }
   }
 
   /**

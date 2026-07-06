@@ -8,6 +8,9 @@ interface BusinessAccountForm {
   hasGstin: 'yes' | 'no';
   gstin: string;
   companyName: string;
+  companyCode: string;
+  phoneNumber: string;
+  website: string;
   fullName: string;
   email: string;
   addressLine1: string;
@@ -35,6 +38,9 @@ export class BusinessAccountComponent implements OnInit {
     hasGstin: 'yes',
     gstin: '',
     companyName: '',
+    companyCode: '',
+    phoneNumber: '',
+    website: '',
     fullName: '',
     email: '',
     addressLine1: '',
@@ -245,7 +251,7 @@ export class BusinessAccountComponent implements OnInit {
 
   save(): void {
     const formValue = this.form();
-    if (!formValue.companyName || !formValue.fullName || !formValue.addressLine1 || !formValue.pincode || !formValue.city || !formValue.state) {
+    if (!formValue.companyName || !formValue.companyCode || !formValue.fullName || !formValue.addressLine1 || !formValue.pincode || !formValue.city || !formValue.state) {
       this.error.set('Please fill all required fields.');
       return;
     }

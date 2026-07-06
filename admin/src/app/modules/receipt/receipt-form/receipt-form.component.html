@@ -1,0 +1,241 @@
+<div class="rcf-page">
+  <div class="rcf-card">
+    <!-- Header -->
+    <div class="rcf-card-header">
+      <h3 class="rcf-card-title">{{ modeTitle() }}</h3>
+      <button class="rcf-back-btn" (click)="onCancel()" title="Back to List">
+        &larr;
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="rcf-center">
+        <div class="spinner"></div>
+        <span>LOADING RECEIPT DETAILS...</span>
+      </div>
+    } @else {
+      <!-- Form Content -->
+      <form [formGroup]="receiptForm" (ngSubmit)="onSave()">
+        <div class="rcf-form-grid">
+          <!-- Left Panel -->
+          <div class="rcf-form-left">
+            <!-- Row 1: Receipt No + Date -->
+            <div class="rcf-row">
+              <div class="rcf-half">
+                <span class="rcf-lbl rcf-lbl--req">RECEIPT NO.</span>
+                <input
+                  type="text"
+                  formControlName="receiptNo"
+                  class="rcf-input rcf-input--grow"
+                  [class.rcf-invalid]="isInvalid('receiptNo')"
+                  placeholder="AUTO-GENERATED"
+                />
+              </div>
+              <div class="rcf-half">
+                <span class="rcf-lbl rcf-lbl--req rcf-lbl--narrow">DATE</span>
+                <input
+                  type="date"
+                  formControlName="receiptDate"
+                  class="rcf-input rcf-input--grow rcf-date-highlight"
+                  [class.rcf-invalid]="isInvalid('receiptDate')"
+                />
+              </div>
+            </div>
+
+            <!-- Row 2: Customer + Payment Mode -->
+            <div class="rcf-row">
+              <div class="rcf-half">
+                <span class="rcf-lbl rcf-lbl--req">CUSTOMER</span>
+                <select
+                  formControlName="customerId"
+                  (change)="onCustomerChanged()"
+                  class="rcf-select rcf-select--grow"
+                  [class.rcf-invalid]="isInvalid('customerId')"
+                >
+                  <option value="" disabled>-- SELECT CUSTOMER --</option>
+                  @for (cust of customers(); track cust.id) {
+                    <option [value]="cust.id">{{ cust.orgName }}</option>
+                  }
+                </select>
+              </div>
+              <div class="rcf-half">
+                <span class="rcf-lbl rcf-lbl--req rcf-lbl--narrow">PAYMENT MODE</span>
+                <select
+                  formControlName="paymentMode"
+                  class="rcf-select rcf-select--grow"
+                  [class.rcf-invalid]="isInvalid('paymentMode')"
+                >
+                  <option value="CASH">CASH</option>
+                  <option value="BANK">BANK</option>
+                  <option value="CHEQUE">CHEQUE</option>
+                  <option value="ONLINE">ONLINE</option>
+                  <option value="OTHER">OTHER</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 3: Reference No + Amount -->
+            <div class="rcf-row">
+              <div class="rcf-half">
+                <span class="rcf-lbl">REF NO / TX ID</span>
+                <input
+                  type="text"
+                  formControlName="referenceNo"
+                  class="rcf-input rcf-input--grow"
+                  placeholder="CHEQUE NO / BANK REF"
+                />
+              </div>
+              <div class="rcf-half">
+                <span class="rcf-lbl rcf-lbl--req rcf-lbl--narrow">RECEIPT AMOUNT</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  formControlName="amount"
+                  (input)="onAmountChanged()"
+                  class="rcf-input rcf-input--grow right"
+                  [class.rcf-invalid]="isInvalid('amount')"
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+
+            <!-- Row 4: Notes -->
+            <div class="rcf-row rcf-row--textarea">
+              <div class="rcf-half--textarea">
+                <span class="rcf-lbl">NOTES / REMARKS</span>
+                <textarea
+                  formControlName="notes"
+                  rows="3"
+                  class="rcf-textarea"
+                  placeholder="ENTER NOTES OR INTERNAL REMARKS..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Meta Sidebar -->
+          <div class="rcf-form-right">
+            <span class="rcf-meta-title">RECEIPT METADATA</span>
+            <div class="rcf-meta-item">
+              <span>TOTAL RECEIVED:</span>
+              <span class="rcf-meta-val">{{ receiptAmount() | number: '1.2-2' }}</span>
+            </div>
+            <div class="rcf-meta-item">
+              <span>TOTAL ALLOCATED:</span>
+              <span class="rcf-meta-val success">{{ totalAllocated() | number: '1.2-2' }}</span>
+            </div>
+            <div class="rcf-meta-item">
+              <span>UNALLOCATED BALANCE:</span>
+              <span class="rcf-meta-val" [class.highlight]="unallocated() !== 0" [class.success]="unallocated() === 0">
+                {{ unallocated() | number: '1.2-2' }}
+              </span>
+            </div>
+
+            @if (mode() !== 'preview' && allocationsFormArray.length > 0) {
+              <button
+                type="button"
+                class="btn btn-save-act"
+                (click)="autoAllocate()"
+                style="margin-top: 10px; width: 100%;"
+              >
+                AUTO-ALLOCATE FUNDS
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Allocation Table Section -->
+        <div class="rcf-table-section">
+          <table class="rcf-table">
+            <thead>
+              <tr>
+                <th class="rcf-th col-invoice">INVOICE NO.</th>
+                <th class="rcf-th col-date">INVOICE DATE</th>
+                <th class="rcf-th col-amount">TOTAL AMOUNT</th>
+                <th class="rcf-th col-outstanding">OUTSTANDING AMOUNT</th>
+                <th class="rcf-th col-allocated">ALLOCATED AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="allocations">
+              @if (allocationsFormArray.length === 0) {
+                <tr>
+                  <td colspan="5" class="rcf-td" style="text-align: center; padding: 15px; color: #6b7280; font-size: 11px;">
+                    @if (receiptForm.get('customerId')?.value) {
+                      NO OUTSTANDING INVOICES FOUND FOR THIS CUSTOMER.
+                    } @else {
+                      PLEASE SELECT A CUSTOMER TO LOAD OUTSTANDING INVOICES.
+                    }
+                  </td>
+                </tr>
+              } @else {
+                @for (alloc of allocationsFormArray.controls; track $index; let i = $index) {
+                  <tr [formGroupName]="i" class="rcf-tr">
+                    <!-- Invoice No -->
+                    <td class="rcf-td">
+                      <input
+                        type="text"
+                        formControlName="invoiceNo"
+                        class="rcf-cell-input"
+                        [readonly]="true"
+                      />
+                    </td>
+                    <!-- Date -->
+                    <td class="rcf-td" style="text-align: center;">
+                      <input
+                        type="text"
+                        formControlName="invoiceDateText"
+                        class="rcf-cell-input"
+                        style="text-align: center;"
+                        [readonly]="true"
+                      />
+                    </td>
+                    <!-- Total Amount -->
+                    <td class="rcf-td right-align">
+                      {{ alloc.get('totalAmount')?.value | number: '1.2-2' }}
+                    </td>
+                    <!-- Outstanding -->
+                    <td class="rcf-td right-align">
+                      {{ alloc.get('outstandingAmount')?.value | number: '1.2-2' }}
+                    </td>
+                    <!-- Allocated Amount -->
+                    <td class="rcf-td">
+                      <input
+                        type="number"
+                        step="0.01"
+                        formControlName="allocatedAmount"
+                        (input)="onAllocationInput($index)"
+                        class="rcf-cell-input right"
+                        [readonly]="mode() === 'preview'"
+                        placeholder="0.00"
+                      />
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Action Bar Footer -->
+        <div class="rcf-action-bar">
+          <div class="rcf-action-left">
+            <button type="button" class="btn btn-close" (click)="onCancel()">
+              {{ mode() === 'preview' ? 'CLOSE' : 'CANCEL' }}
+            </button>
+          </div>
+          <div class="rcf-action-right">
+            @if (mode() !== 'preview') {
+              <button
+                type="submit"
+                class="btn btn-save-act"
+                [disabled]="submitting() || receiptForm.invalid"
+              >
+                {{ submitting() ? 'SAVING...' : 'SAVE & CLOSE' }}
+              </button>
+            }
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+</div>

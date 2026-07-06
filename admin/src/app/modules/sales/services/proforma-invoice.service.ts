@@ -134,4 +134,20 @@ export class ProformaInvoiceService {
       catchError((e) => this.handleError(e))
     );
   }
+
+  getPreviewPdf(body: Partial<ProformaInvoice>): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}/preview-pdf`, body, {
+      responseType: 'blob'
+    }).pipe(
+      catchError((e) => this.handleError(e))
+    );
+  }
+
+  getStoredPdf(id: number | string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/${id}/pdf`, {
+      responseType: 'blob'
+    }).pipe(
+      catchError((e) => this.handleError(e))
+    );
+  }
 }

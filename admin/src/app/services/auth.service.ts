@@ -147,6 +147,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     localStorage.removeItem(this.CURRENT_ENTITY_KEY);
+    localStorage.removeItem('entityId');
     this.currentUser.set(null);
     this.currentEntity.set(null);
     this.isAuthenticated.set(false);
@@ -238,6 +239,9 @@ export class AuthService {
    */
   switchEntity(entity: Entity): void {
     localStorage.setItem(this.CURRENT_ENTITY_KEY, JSON.stringify(entity));
+    if (entity && entity.id != null) {
+      localStorage.setItem('entityId', entity.id.toString());
+    }
     this.currentEntity.set(entity);
   }
 

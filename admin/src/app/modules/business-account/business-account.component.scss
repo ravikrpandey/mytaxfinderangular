@@ -1,10 +1,13 @@
 .business-overlay {
   min-height: 100vh;
-  background: var(--theme-overlay);
+  width: 100%;
+  background: linear-gradient(135deg, #dfe4ff 0%, #f3f5ff 50%, #e9efff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .business-card {
@@ -66,24 +69,41 @@
 }
 
 .business-form {
-  padding: 24px 28px 28px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-height: 72vh;
-  overflow: auto;
+  padding: 18px 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 36px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+    &:hover {
+      background: #a0aec0;
+    }
+  }
 }
 
 .error-message {
+  grid-column: span 2;
   background: #fff5f5;
   color: #c53030;
-  padding: 12px 14px;
+  padding: 10px 14px;
   border-radius: 8px;
   font-size: 13px;
   border: 1px solid #fed7d7;
 }
 
 .loading-message {
+  grid-column: span 2;
   background: #ebf8ff;
   color: #2c5282;
   padding: 24px;
@@ -101,23 +121,30 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 16px;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
   align-items: center;
 
+  &.full-width {
+    grid-column: span 2;
+  }
+
   label {
-    font-size: 14px;
+    font-size: 13px;
     color: #4a5568;
     font-weight: 600;
+    padding-right: 8px;
+    box-sizing: border-box;
   }
 
   input,
   select {
+    box-sizing: border-box;
     width: 100%;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
+    padding: 8px 12px;
+    font-size: 13.5px;
     color: #2d3748;
     background: #ffffff;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -179,6 +206,7 @@
 }
 
 .form-footer {
+  grid-column: span 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -221,8 +249,19 @@
     gap: 12px;
   }
 
+  .business-form {
+    grid-template-columns: 1fr;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
+    gap: 4px;
+    align-items: stretch;
+  }
+
+  .form-row.full-width,
+  .form-footer {
+    grid-column: span 1;
   }
 
   .form-footer {

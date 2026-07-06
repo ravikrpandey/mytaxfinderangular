@@ -193,6 +193,10 @@ export interface DashboardStats {
   totalPurchases: number;
   netProfit: number;
   totalTransactions: number;
+  recentCases?: any[];
+  recentServices?: any[];
+  completedReturns?: number;
+  activeGST?: number;
 }
 
 export interface SalesStats {
@@ -217,6 +221,9 @@ export interface BusinessAccountSubmitRequest {
   hasGstin: 'yes' | 'no';
   gstin: string;
   companyName: string;
+  companyCode: string;
+  phoneNumber?: string;
+  website?: string;
   fullName: string;
   email: string;
   addressLine1: string;
@@ -787,6 +794,28 @@ export class ApiService {
     const url = `${this.apiUrl}/api/organisation/${id}`;
     console.log('📡 API Call: DELETE', url);
     return this.http.delete<any>(url, { headers: this.getAuthHeaders() });
+  }
+
+  /**
+   * Import CRM Organisations from Excel/CSV file
+   */
+  importOrganisations(file: File): Observable<any> {
+    const url = `${this.apiUrl}/api/organisation/import`;
+    console.log('📡 API Call: POST (File Upload)', url, file.name);
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(url, formData, { headers: this.getAuthHeadersWithoutContentType() });
+  }
+
+  /**
+   * Import Products from Excel/CSV file
+   */
+  importProducts(file: File): Observable<any> {
+    const url = `${this.apiUrl}/api/products/import`;
+    console.log('📡 API Call: POST (File Upload)', url, file.name);
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(url, formData, { headers: this.getAuthHeadersWithoutContentType() });
   }
 }
 

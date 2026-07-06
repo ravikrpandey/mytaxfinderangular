@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
+import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
@@ -273,5 +274,92 @@ export class ProductListComponent implements OnInit {
       balanceValue: Number(p.balance) || 0,
       shelf: (p as any).shelf || ''
     };
+  }
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+  triggerImport(): void {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Reset file input so same file can be selected again
+    event.target.value = '';
+
+    Swal.fire({
+      title: 'Importing Products',
+      text: 'Processing your file, please wait...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    this.apiService.importProducts(file).subscribe({
+      next: (res) => {
+        Swal.close();
+        if (res && res.success) {
+          const summary = res.summary;
+          const total = summary.total;
+          const created = summary.created;
+          const updated = summary.updated;
+          const failed = summary.failed;
+
+          let htmlMessage = `
+            <div style="text-align: left; font-size: 14px;">
+              <p><strong>Total rows processed:</strong> ${total}</p>
+              <p style="color: #10b981;"><strong>Created new:</strong> ${created}</p>
+              <p style="color: #3b82f6;"><strong>Updated existing:</strong> ${updated}</p>
+              <p style="color: #ef4444;"><strong>Failed rows:</strong> ${failed}</p>
+          `;
+
+          if (res.errors && res.errors.length > 0) {
+            htmlMessage += `
+              <div style="margin-top: 15px; border-top: 1px solid #e5e7eb; padding-top: 10px;">
+                <h4 style="margin: 0 0 5px 0; color: #b91c1c; font-size: 13px;">Row Errors:</h4>
+                <ul style="max-height: 120px; overflow-y: auto; padding-left: 20px; margin: 0; font-size: 12px; color: #555;">
+            `;
+            res.errors.forEach((err: any) => {
+              htmlMessage += `<li>Row ${err.row}: ${err.error}</li>`;
+            });
+            htmlMessage += `</ul></div>`;
+          }
+
+          htmlMessage += `</div>`;
+
+          Swal.fire({
+            title: 'Import Results',
+            html: htmlMessage,
+            icon: failed === 0 ? 'success' : failed === total ? 'error' : 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0f5e9c'
+          });
+
+          this.loadProducts();
+        } else {
+          Swal.fire({
+            title: 'Import Failed',
+            text: res.message || 'Unknown error occurred during import.',
+            icon: 'error',
+            confirmButtonColor: '#ef4444'
+          });
+        }
+      },
+      error: (err) => {
+        Swal.close();
+        console.error('Import error:', err);
+        Swal.fire({
+          title: 'Import Failed',
+          text: err.error?.message || err.error?.error || err.message || 'Failed to upload and import file.',
+          icon: 'error',
+          confirmButtonColor: '#ef4444'
+        });
+      }
+    });
   }
 }

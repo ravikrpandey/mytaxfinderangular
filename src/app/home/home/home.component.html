@@ -1,4 +1,3 @@
-
 <app-header></app-header>
 
 <main id="main">
@@ -20,20 +19,14 @@
         </div>
         <div class="col-lg-5">
           <form class="sign-up-form d-flex" (submit)="submitEmail(); $event.preventDefault()">
-            <input
-              type="email"
-              class="form-control"
-              placeholder="Enter email address"
-              required
-              [(ngModel)]="email"
-              name="email"
-            />
+            <input type="email" class="form-control" placeholder="Enter email address" required [(ngModel)]="email"
+              name="email" />
             <button type="submit" class="btn btn-primary" style="color: white;">Submit</button>
           </form>
         </div>
       </div>
     </div>
-    
+
 
   </section><!-- End Hero Section -->
 
@@ -49,7 +42,7 @@
         </div><!-- End Client Item -->
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
-          <img src="assets/client-2.png" class="img-fluid"  style="background-color: white;" alt="">
+          <img src="assets/client-2.png" class="img-fluid" style="background-color: white;" alt="">
         </div><!-- End Client Item -->
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
@@ -59,7 +52,7 @@
         <div class="col-xl-2 col-md-3 col-6 client-logo">
           <img src="assets/client-4.png" class="img-fluid" style="background-color: white;" alt="">
         </div><!-- End Client Item -->
-        
+
 
         <div class="col-xl-2 col-md-3 col-6 client-logo">
           <img src="assets/client-5.png" class="img-fluid" style="background-color: white;" alt="">
@@ -83,12 +76,14 @@
 
         <div class="col-xl-5 content">
           <h3>About Us</h3>
-          <h2>MyTax<span style="color: #e84545;">Finder</span> MyTaxFinder provides a comprehensive suite of financial products under a single platform.</h2>
+          <h2>MyTax<span style="color: #e84545;">Finder</span> provides a comprehensive suite of financial products
+            under a single platform.</h2>
           <p>Backed by a leadership team with over seven years of domain expertise,
 
             the firm leverages advanced, technology-driven tools to deliver data-informed portfolio strategies
 
-            Our approach ensures tax efficiency and aligns investment planning with clients' long-term financial objectives.</p>
+            Our approach ensures tax efficiency and aligns investment planning with clients' long-term financial
+            objectives.</p>
           <a href="tel:+919958588826" class="read-more"><span>Call To Action &nbsp;</span><span
               style="font-size: 24px;">&#x260E;</span></a>
         </div>
@@ -137,60 +132,52 @@
 
   </section><!-- End About Section -->
 
-<!-- Stats Section - Home Page -->
-<section id="stats" class="stats">
-  <img src="assets/stats-bg.jpg" alt="" data-aos="fade-in">
+  <!-- Stats Section - Home Page -->
+  <section id="stats" class="stats">
+    <img src="assets/stats-bg.jpg" alt="" data-aos="fade-in">
 
-  <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-    <div class="row gy-4">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
 
-      <!-- Clients Counter -->
-      <div class="col-lg-3 col-md-6">
-        <div class="stats-item text-center w-100 h-100">
-          <span class="purecounter" 
-                data-purecounter-start="0" 
-                data-purecounter-end="1500" 
-                data-purecounter-duration="2">1500+</span>
-          <p>Clients</p>
-        </div>
-      </div><!-- End Stats Item -->
+        <!-- Clients Counter -->
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span class="purecounter" data-purecounter-start="0" data-purecounter-end="1500"
+              data-purecounter-duration="2">1500+</span>
+            <p>Clients</p>
+          </div>
+        </div><!-- End Stats Item -->
 
-      <!-- Servicable Countries Counter -->
-      <div class="col-lg-3 col-md-6">
-        <div class="stats-item text-center w-100 h-100">
-          <span class="purecounter" 
-                data-purecounter-start="0" 
-                data-purecounter-end="8" 
-                data-purecounter-duration="2">08</span>
-          <p>Serviceable Countries</p>
-        </div>
-      </div><!-- End Stats Item -->
+        <!-- Servicable Countries Counter -->
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span class="purecounter" data-purecounter-start="0" data-purecounter-end="8"
+              data-purecounter-duration="2">08</span>
+            <p>Serviceable Countries</p>
+          </div>
+        </div><!-- End Stats Item -->
 
-      <!-- Years of Experience Counter -->
-      <div class="col-lg-3 col-md-6">
-        <div class="stats-item text-center w-100 h-100">
-          <span class="purecounter" 
-                data-purecounter-start="0" 
-                data-purecounter-end="7" 
-                data-purecounter-duration="2">07</span>
-          <p>Year Of Experience</p>
-        </div>
-      </div><!-- End Stats Item -->
+        <!-- Years of Experience Counter -->
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span class="purecounter" data-purecounter-start="0" data-purecounter-end="7"
+              data-purecounter-duration="2">07</span>
+            <p>Year Of Experience</p>
+          </div>
+        </div><!-- End Stats Item -->
 
-      <!-- Works Completed Counter -->
-      <div class="col-lg-3 col-md-6">
-        <div class="stats-item text-center w-100 h-100">
-          <span class="purecounter" 
-                data-purecounter-start="0" 
-                data-purecounter-end="1459" 
-                data-purecounter-duration="2">1459</span>
-          <p>Works Completed</p>
-        </div>
-      </div><!-- End Stats Item -->
+        <!-- Works Completed Counter -->
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span class="purecounter" data-purecounter-start="0" data-purecounter-end="1459"
+              data-purecounter-duration="2">1459</span>
+            <p>Works Completed</p>
+          </div>
+        </div><!-- End Stats Item -->
 
+      </div>
     </div>
-  </div>
-</section><!-- End Stats Section -->
+  </section><!-- End Stats Section -->
 
 
   <!-- Services Section - Home Page -->
@@ -275,12 +262,23 @@
           <div class="service-item d-flex">
             <div class="icon flex-shrink-0"><i class="bi bi-calendar4-week"></i></div>
             <div>
-              <h4 class="title"><a routerLink="/financial-planning-ai" class="stretched-link">Financial Planning</a></h4>
+              <h4 class="title"><a routerLink="/financial-planning-ai" class="stretched-link">Financial Planning</a>
+              </h4>
               <p class="description">Financial planning is a comprehensive process that involves evaluating an
                 individual's or an
                 organization's current financial situation, setting financial goals, and developing strategies to
                 achieve those
                 goals.</p>
+            </div>
+          </div>
+        </div><!-- End Service Item -->
+
+        <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="700">
+          <div class="service-item d-flex">
+            <div class="icon flex-shrink-0"><i class="bi bi-shield-lock"></i></div>
+            <div>
+              <h4 class="title"><a [href]="adminPanelUrl" target="_blank" class="stretched-link">Pro Services</a></h4>
+              <p class="description">Access the MyTaxFinder Admin Panel to manage clients, track queries, review financial documents, and configure platform settings.</p>
             </div>
           </div>
         </div><!-- End Service Item -->
@@ -320,8 +318,7 @@
 
               <div class="col-4-image">
                 <div class="col-4-image">
-                  <img src="assets/committe-security.png" class="testimonial-img flex-shrink-0"
-                    alt="">
+                  <img src="assets/committe-security.png" class="testimonial-img flex-shrink-0" alt="">
 
                 </div>
               </div>
@@ -340,33 +337,33 @@
 
   </section><!-- End Testimonials Section -->
 
-<!-- Faq Section -->
-<section id="faq" class="faq">
-  <div class="container">
-    <div class="row gy-4">
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="content px-xl-5">
-          <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
+  <!-- Faq Section -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="content px-xl-5">
+            <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
+          </div>
         </div>
-      </div>
 
-      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-        <div class="faq-container">
-          <div *ngFor="let faq of faqs; let i = index" class="faq-item" [class.faq-active]="expandedIndex === i">
-            <h3 (click)="toggleAnswer(i)">
-              <span class="num">{{ i + 1 }}.</span>
-              <span>{{ faq.question }}</span>
-              <i class="faq-toggle bi bi-chevron-right" [ngClass]="{'bi-chevron-down': expandedIndex === i}"></i>
-            </h3>
-            <div class="faq-content" *ngIf="expandedIndex === i">
-              <p>{{ faq.answer }}</p>
-            </div>
-          </div><!-- End Faq item -->
+        <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+          <div class="faq-container">
+            <div *ngFor="let faq of faqs; let i = index" class="faq-item" [class.faq-active]="expandedIndex === i">
+              <h3 (click)="toggleAnswer(i)">
+                <span class="num">{{ i + 1 }}.</span>
+                <span>{{ faq.question }}</span>
+                <i class="faq-toggle bi bi-chevron-right" [ngClass]="{'bi-chevron-down': expandedIndex === i}"></i>
+              </h3>
+              <div class="faq-content" *ngIf="expandedIndex === i">
+                <p>{{ faq.answer }}</p>
+              </div>
+            </div><!-- End Faq item -->
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section><!-- End Faq Section -->
+  </section><!-- End Faq Section -->
 
 
 
@@ -408,7 +405,8 @@
         </div>
 
         <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
-          <swiper-container class="swiper" pagination-clickable="true" pagination="true" speed="1000" loop="true" autoplay="true">
+          <swiper-container class="swiper" pagination-clickable="true" pagination="true" speed="1000" loop="true"
+            autoplay="true">
 
             <swiper-slide>
               <div class="testimonial-item">
@@ -418,13 +416,15 @@
                     <h3>Avichal Singh</h3>
                     <h4>Tcs Founder</h4>
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     </div>
                   </div>
                 </div>
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Very good service in Tax filings, Mr deepak has provided all the necessary support and assisted really with the process. Hope to continue with same spirit.</span>
+                  <span>Very good service in Tax filings, Mr deepak has provided all the necessary support and assisted
+                    really with the process. Hope to continue with same spirit.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
               </div>
@@ -438,13 +438,16 @@
                     <h3>Girish Tarwatkar</h3>
                     <h4>Local Guide</h4>
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     </div>
                   </div>
                 </div>
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>My overall experience was really good. They filed my return fast without any doubt. They also helped me to cleared all my doubts before processing income tax return. Strongly recommended. 👍</span>
+                  <span>My overall experience was really good. They filed my return fast without any doubt. They also
+                    helped me to cleared all my doubts before processing income tax return. Strongly recommended.
+                    👍</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
               </div>
@@ -458,13 +461,17 @@
                     <h3>Prabhat Kumar</h3>
                     <h4>Store Owner</h4>
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     </div>
                   </div>
                 </div>
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>I recently had the pleasure of working with Mr. Deepak to file my income tax return, and I must say that the service I received was truly exceptional. From the moment I reached out for assistance until the completion of the filing process, Deepak demonstrated professionalism, expertise, and a genuine dedication to helping me navigate the complexities of tax filing.</span>
+                  <span>I recently had the pleasure of working with Mr. Deepak to file my income tax return, and I must
+                    say that the service I received was truly exceptional. From the moment I reached out for assistance
+                    until the completion of the filing process, Deepak demonstrated professionalism, expertise, and a
+                    genuine dedication to helping me navigate the complexities of tax filing.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
               </div>
@@ -478,8 +485,8 @@
                     <h3>Gaurav Lakhera</h3>
                     <h4>Freelancer</h4>
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                      class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     </div>
                   </div>
                 </div>
@@ -499,7 +506,8 @@
                     <h3>Vishal Gupta</h3>
                     <h4>Entrepreneur</h4>
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     </div>
                   </div>
                 </div>
@@ -661,7 +669,7 @@
 
               </div>
             </div>
-            
+
 
             <!-- End Info Item -->
 
@@ -682,35 +690,47 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
         <div class="col-lg-6">
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="php-email-form" data-aos="fade-up"
+            data-aos-delay="200">
             <div class="row gy-4">
               <div class="col-md-6">
                 <input type="text" formControlName="name" class="form-control" placeholder="Your Name" required>
-                <div *ngIf="contactForm.controls['name'].invalid && (contactForm.controls['name'].dirty || contactForm.controls['name'].touched)">
-                  <small class="text-danger" *ngIf="contactForm.controls['name'].errors?.['required']">Name is required.</small>
+                <div
+                  *ngIf="contactForm.controls['name'].invalid && (contactForm.controls['name'].dirty || contactForm.controls['name'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['name'].errors?.['required']">Name is
+                    required.</small>
                 </div>
               </div>
               <div class="col-md-6">
                 <input type="email" formControlName="email" class="form-control" placeholder="Your Email" required>
-                <div *ngIf="contactForm.controls['email'].invalid && (contactForm.controls['email'].dirty || contactForm.controls['email'].touched)">
-                  <small class="text-danger" *ngIf="contactForm.controls['email'].errors?.['required']">Email is required.</small>
-                  <small class="text-danger" *ngIf="contactForm.controls['email'].errors?.['email']">Email is not valid.</small>
+                <div
+                  *ngIf="contactForm.controls['email'].invalid && (contactForm.controls['email'].dirty || contactForm.controls['email'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['email'].errors?.['required']">Email is
+                    required.</small>
+                  <small class="text-danger" *ngIf="contactForm.controls['email'].errors?.['email']">Email is not
+                    valid.</small>
                 </div>
               </div>
               <div class="col-md-12">
                 <input type="text" formControlName="subject" class="form-control" placeholder="Subject" required>
-                <div *ngIf="contactForm.controls['subject'].invalid && (contactForm.controls['subject'].dirty || contactForm.controls['subject'].touched)">
-                  <small class="text-danger" *ngIf="contactForm.controls['subject'].errors?.['required']">Subject is required.</small>
+                <div
+                  *ngIf="contactForm.controls['subject'].invalid && (contactForm.controls['subject'].dirty || contactForm.controls['subject'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['subject'].errors?.['required']">Subject is
+                    required.</small>
                 </div>
               </div>
               <div class="col-md-12">
-                <textarea formControlName="message" class="form-control" rows="6" placeholder="Message" required></textarea>
-                <div *ngIf="contactForm.controls['message'].invalid && (contactForm.controls['message'].dirty || contactForm.controls['message'].touched)">
-                  <small class="text-danger" *ngIf="contactForm.controls['message'].errors?.['required']">Message is required.</small>
+                <textarea formControlName="message" class="form-control" rows="6" placeholder="Message"
+                  required></textarea>
+                <div
+                  *ngIf="contactForm.controls['message'].invalid && (contactForm.controls['message'].dirty || contactForm.controls['message'].touched)">
+                  <small class="text-danger" *ngIf="contactForm.controls['message'].errors?.['required']">Message is
+                    required.</small>
                 </div>
               </div>
               <div class="col-md-12 text-center">
-                <div class="sent-message" *ngIf="submitted && contactForm.valid">Your message has been sent. Thank you!</div>
+                <div class="sent-message" *ngIf="submitted && contactForm.valid">Your message has been sent. Thank you!
+                </div>
                 <button type="submit" [disabled]="contactForm.invalid">Send Message</button>
               </div>
             </div>
@@ -739,4 +759,3 @@
   <div></div>
   <div></div>
 </div>
-

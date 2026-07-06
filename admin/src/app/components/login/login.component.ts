@@ -77,6 +77,7 @@ export class LoginComponent {
           // Store full business account (with role_menu_access) as current entity
           if (response.data) {
             this.authService.switchEntity(response.data as any);
+            this.selectedRole.set((response.data.role as 'admin' | 'user') || 'user');
           }
           this.resolvedLoginIdentifier.set(response.data?.email?.trim() || candidate);
           this.showOtpInput.set(true);
@@ -154,18 +155,36 @@ export class LoginComponent {
 
     this.isLoading.set(true);
     
-    // Simulate login
-    setTimeout(() => {
-      this.isLoading.set(false);
-      
-      this.authService.setUserFromApiResponse(
-        'user',
-        this.selectedRole(),
-        userId
-      );
-      
-      this.router.navigate(['/welcome']);
-    }, 1000);
+    const queryKey = userId.includes('@') ? 'email' : 'identifier';
+    this.apiService.checkBusinessAccountExists(userId, queryKey).subscribe({
+      next: (response) => {
+        this.isLoading.set(false);
+        let role: 'admin' | 'user' = 'user';
+        if (response.exists && response.data) {
+          role = (response.data.role as 'admin' | 'user') || 'user';
+          this.authService.switchEntity(response.data as any);
+        } else if (userId === 'admin@example.com') {
+          role = 'admin';
+        }
+        
+        this.authService.setUserFromApiResponse(
+          'user',
+          role,
+          userId
+        );
+        this.router.navigate(['/welcome']);
+      },
+      error: () => {
+        this.isLoading.set(false);
+        const role = userId === 'admin@example.com' ? 'admin' : 'user';
+        this.authService.setUserFromApiResponse(
+          'user',
+          role,
+          userId
+        );
+        this.router.navigate(['/welcome']);
+      }
+    });
   }
 
   onOtpInput(index: number, event: any): void {
